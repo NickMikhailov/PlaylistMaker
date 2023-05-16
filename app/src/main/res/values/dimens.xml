@@ -4,11 +4,9 @@
     <dimen name="text_button_big">22sp</dimen>
     <dimen name="text_main">16sp</dimen>
 
-
     <dimen name="text_block_height">60dp</dimen>
-
-
     <dimen name="medium_padding">8dp</dimen>
+
     <dimen name="icon_padding">10dp</dimen>
     <dimen name="margin_horizontal">16dp</dimen>
     <dimen name="margin_top">16dp</dimen>

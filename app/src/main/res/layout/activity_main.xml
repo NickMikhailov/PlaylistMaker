@@ -21,30 +21,24 @@
         <Button
             android:id="@+id/search_button"
             style="@style/button_big"
-            app:cornerRadius="@dimen/corner_radius"
             android:text="@string/search"
             app:icon="@drawable/search_light_mode"
             app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
             app:iconTint="@color/black"/>
         <Button
             android:id="@+id/library_button"
             style="@style/button_big"
             android:text="@string/library"
-            app:cornerRadius="@dimen/corner_radius"
             app:icon="@drawable/library_light_mode"
             app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
             app:iconTint="@color/black">
         </Button>
         <Button
             android:id="@+id/settings_button"
             style="@style/button_big"
             android:text="@string/settings"
-            app:cornerRadius="@dimen/corner_radius"
             app:icon="@drawable/settings_light_mode"
             app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
             app:iconTint="@color/black"
             android:layout_marginBottom="@dimen/margin_bottom">
         </Button>
