@@ -10,7 +10,7 @@
         <item name="android:textColor">@color/black</item>
     </style>
     <style name="text_main" >
-        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textSize">@dimen/text_main</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
