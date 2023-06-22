@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/colorSecondary">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +24,7 @@
             android:layout_marginStart="@dimen/margin_horizontal"
             android:contentDescription="@string/back"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/array_back_light_mode"
+            android:src="@drawable/array_back_icon"
             />
 
         <TextView
@@ -26,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_horizontal"
             android:text="@string/settings"
-            android:textAppearance="@style/text_header_black" />
+            android:textAppearance="@style/text_header" />
     </LinearLayout>
 
     <FrameLayout
@@ -64,6 +70,7 @@
             android:text="@string/share"/>
 
         <ImageView
+            android:id="@+id/share_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
@@ -86,10 +93,11 @@
             android:text="@string/support"/>
 
         <ImageView
+            android:id="@+id/support_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/support_light_mode"/>
+            android:src="@drawable/support_icon"/>
     </FrameLayout>
 
     <FrameLayout
@@ -107,10 +115,11 @@
             android:text="@string/agreement"/>
 
         <ImageView
+            android:id="@+id/agreement_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/arrow_forward_inactive"/>
+            android:src="@drawable/arrow_forward_icon"/>
     </FrameLayout>
 </LinearLayout>
 
