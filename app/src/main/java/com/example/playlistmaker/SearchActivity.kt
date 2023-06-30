@@ -11,13 +11,24 @@ import android.widget.ImageView
 class SearchActivity : AppCompatActivity() {
     private var searchText: String? = null
     private lateinit var inputSearchText: EditText
+    private lateinit var clearIcon: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         inputSearchText = findViewById<EditText>(R.id.inputSearchText)
-        val clearIcon = findViewById<ImageView>(R.id.clearIcon)
 
-    // Иконка очистки сроки поиска
+        val backButton = findViewById<ImageView>(R.id.back_arrow)
+        backButton.setOnClickListener {
+            finish()
+        }
+
+        //restore search text
+        if (savedInstanceState != null) {
+            searchText = savedInstanceState.getString(SEARCH_TEXT_KEY)
+            inputSearchText.setText(searchText)
+        }
+        // Create clear icon
+        clearIcon = findViewById<ImageView>(R.id.clearIcon)
         clearIcon.setOnClickListener {
             inputSearchText.text.clear()
             clearIcon.visibility = View.GONE
@@ -36,21 +47,20 @@ class SearchActivity : AppCompatActivity() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
-
-        if (savedInstanceState != null) {
-            searchText = savedInstanceState.getString("searchText")
-        }
     }
 
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val searchText = inputSearchText.text.toString()
-        outState.putString("searchText", searchText)
+        outState.putString(SEARCH_TEXT_KEY, searchText)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        searchText = savedInstanceState.getString("searchText")
+        searchText = savedInstanceState.getString(SEARCH_TEXT_KEY)
+    }
+    companion object {
+        private const val SEARCH_TEXT_KEY = "searchText"
     }
 }
