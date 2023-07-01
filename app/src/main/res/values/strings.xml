@@ -9,4 +9,10 @@
     <string name="agreement">Пользовательское соглашение</string>
     <string name="settings">Настройки</string>
     <string name="back">Назад</string>
+    <string name="msg_to_dev_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="msg_to_dev_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="link">https://practicum.yandex.ru/profile/android-developer/?from=new_landing_android-developer</string>
+    <string name="email">mikhailov.nick@ya.ru</string>
+    <string name="uri_practicum_offer">https://yandex.ru/legal/practicum_offer/</string>
+
 </resources>

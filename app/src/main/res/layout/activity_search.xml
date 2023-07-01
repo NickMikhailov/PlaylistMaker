@@ -1,9 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    android:orientation="vertical"
+    android:background="?attr/colorSecondary">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_block_height"
+        android:gravity="center_vertical|start"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_horizontal"
+            android:contentDescription="@string/back"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/array_back_icon"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_horizontal"
+            android:text="@string/search"
+            android:textAppearance="@style/text_header" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_block_height"
+        android:gravity="center_vertical|start"
+        android:orientation="horizontal">
+    <EditText
+        android:id="@+id/inputSearchText"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_height="@dimen/text_block_height"
+        android:hint="@string/search"
+        android:autofillHints="@string/search"
+        android:lines="1"
+        android:maxLength="@integer/text_medium"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:textColorHint="?attr/textAppearanceBody2"
+        android:background="@drawable/edit_text_style"
+        android:drawableStart="@drawable/search_icon"
+        android:drawableTint="?attr/textAppearanceBody2"
+        android:drawablePadding="@dimen/icon_padding"
+        android:padding="@dimen/medium_padding"
+        />
+    <ImageView
+        android:id="@+id/clearIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/margin_horizontal"
+        />
+    </LinearLayout>
+</LinearLayout>
+
