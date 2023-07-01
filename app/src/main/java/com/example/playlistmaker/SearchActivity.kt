@@ -1,10 +1,12 @@
 package com.example.playlistmaker
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 
@@ -12,12 +14,13 @@ class SearchActivity : AppCompatActivity() {
     private var searchText: String? = null
     private lateinit var inputSearchText: EditText
     private lateinit var clearIcon: ImageView
+    private lateinit var backButton: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        inputSearchText = findViewById<EditText>(R.id.inputSearchText)
 
-        val backButton = findViewById<ImageView>(R.id.back_arrow)
+        inputSearchText = findViewById<EditText>(R.id.inputSearchText)
+        backButton = findViewById<ImageView>(R.id.back_arrow)
         backButton.setOnClickListener {
             finish()
         }
@@ -32,6 +35,8 @@ class SearchActivity : AppCompatActivity() {
         clearIcon.setOnClickListener {
             inputSearchText.text.clear()
             clearIcon.visibility = View.GONE
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(inputSearchText.windowToken, 0)
         }
 
         // Show the clear icon when the text changes

@@ -25,18 +25,17 @@ class SettingsActivity : AppCompatActivity() {
         }
         val supportButton: ImageView = findViewById<ImageView>(R.id.support_icon)
         supportButton.setOnClickListener{
-            val subject = getString(R.string.msg_to_dev_subject)
-            val message = getString(R.string.msg_to_dev_text)
-            val email = getString(R.string.email)
-
-            val supportIntent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
-            putExtra(Intent.EXTRA_SUBJECT, subject)
-            putExtra(Intent.EXTRA_TEXT, message)
-            }
-            if (supportIntent.resolveActivity(packageManager) != null) {
-                startActivity(supportIntent)
+            Intent(Intent.ACTION_SENDTO).apply {
+                val subject = getString(R.string.msg_to_dev_subject)
+                val message = getString(R.string.msg_to_dev_text)
+                val email = getString(R.string.email)
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                putExtra(Intent.EXTRA_SUBJECT, subject)
+                putExtra(Intent.EXTRA_TEXT, message)
+                if (this.resolveActivity(packageManager) != null) {
+                startActivity(this)
+                }
             }
         }
         val agreementButton: ImageView = findViewById<ImageView>(R.id.agreement_icon)
