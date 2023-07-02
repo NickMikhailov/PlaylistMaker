@@ -38,7 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_block_height"
         android:gravity="center_vertical|start"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/medium_padding">
     <EditText
         android:id="@+id/inputSearchText"
         android:layout_width="0dp"
@@ -68,5 +69,10 @@
         android:layout_marginEnd="@dimen/margin_horizontal"
         />
     </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 </LinearLayout>
 
