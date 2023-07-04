@@ -14,7 +14,5 @@ class TrackListAdapter (private val trackList: ArrayList<Track>) : RecyclerView.
     override fun onBindViewHolder(holder: TrackCardViewHolder, position: Int) {
         holder.bind(trackList[position], itemView)
     }
-    override fun getItemCount(): Int {
-        return trackList.size
-    }
+    override fun getItemCount() = trackList.size
 }
