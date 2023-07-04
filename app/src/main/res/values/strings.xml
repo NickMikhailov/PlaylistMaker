@@ -14,5 +14,10 @@
     <string name="link">https://practicum.yandex.ru/profile/android-developer/?from=new_landing_android-developer</string>
     <string name="email">mikhailov.nick@ya.ru</string>
     <string name="uri_practicum_offer">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="error">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="itunes_base_url">https://itunes.apple.com</string>
+    <string name="enter_query">Введите запрос</string>
+    <string name="update">Обновить</string>
 
 </resources>
