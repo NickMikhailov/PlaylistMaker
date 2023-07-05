@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?attr/colorSecondary">
+    android:background="?attr/colorSecondary"
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -24,8 +22,7 @@
             android:layout_marginStart="@dimen/margin_horizontal"
             android:contentDescription="@string/back"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/array_back_icon"
-            />
+            android:src="@drawable/array_back_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,45 +31,83 @@
             android:text="@string/search"
             android:textAppearance="@style/text_header" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_block_height"
+        android:layout_marginBottom="@dimen/medium_padding"
         android:gravity="center_vertical|start"
-        android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/medium_padding">
-    <EditText
-        android:id="@+id/inputSearchText"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_height="@dimen/text_block_height"
-        android:hint="@string/search"
-        android:autofillHints="@string/search"
-        android:lines="1"
-        android:maxLength="@integer/text_medium"
-        android:inputType="text"
-        android:textColor="@color/black"
-        android:textColorHint="?attr/textAppearanceBody2"
-        android:background="@drawable/edit_text_style"
-        android:drawableStart="@drawable/search_icon"
-        android:drawableTint="?attr/textAppearanceBody2"
-        android:drawablePadding="@dimen/icon_padding"
-        android:padding="@dimen/medium_padding"
-        />
-    <ImageView
-        android:id="@+id/clearIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"
-        android:visibility="gone"
-        android:layout_marginEnd="@dimen/margin_horizontal"
-        />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/inputSearchText"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/text_block_height"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_weight="1"
+            android:autofillHints="@string/search"
+            android:background="@drawable/edit_text_style"
+            android:drawableStart="@drawable/search_icon"
+            android:drawablePadding="@dimen/icon_padding"
+            android:drawableTint="?attr/textAppearanceBody2"
+            android:hint="@string/search"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLength="@integer/text_medium"
+            android:padding="@dimen/medium_padding"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="?attr/textAppearanceBody2" />
+
+        <ImageView
+            android:id="@+id/clearIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/margin_horizontal"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/error_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/error_image_placeholder"
+            style="@style/text_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@drawable/nothing_found_placeholder"/>
+        <TextView
+            android:id="@+id/error_text_placeholder"
+            style="@style/text_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_top"
+            android:text="@string/nothing_found"/>
+        <Button
+            android:id="@+id/reload_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update"
+            android:layout_marginTop="@dimen/margin_top"
+            android:backgroundTint="?attr/textAppearanceBody1"
+            android:visibility="gone"/>
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trackList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 </LinearLayout>
 

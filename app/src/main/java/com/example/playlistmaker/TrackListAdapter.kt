@@ -11,13 +11,8 @@ class TrackListAdapter (private val trackList: ArrayList<Track>) : RecyclerView.
         itemView = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
         return TrackCardViewHolder(itemView)
     }
-
     override fun onBindViewHolder(holder: TrackCardViewHolder, position: Int) {
         holder.bind(trackList[position], itemView)
     }
-
-    override fun getItemCount(): Int {
-        return trackList.size
-    }
-
+    override fun getItemCount() = trackList.size
 }
