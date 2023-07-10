@@ -16,7 +16,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/back_arrow"
+            android:id="@+id/arrowBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_horizontal"
@@ -40,7 +40,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/inputSearchText"
+            android:id="@+id/searchField"
             android:layout_width="0dp"
             android:layout_height="@dimen/text_block_height"
             android:layout_marginHorizontal="@dimen/margin_horizontal"
@@ -71,7 +71,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/error_placeholder"
+        android:id="@+id/placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -79,7 +79,7 @@
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/error_image_placeholder"
+            android:id="@+id/placeholderImage"
             style="@style/text_big"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
             android:gravity="center"
             android:src="@drawable/nothing_found_placeholder"/>
         <TextView
-            android:id="@+id/error_text_placeholder"
+            android:id="@+id/placeholderText"
             style="@style/text_big"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,8 +95,14 @@
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_top"
             android:text="@string/nothing_found"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchHistoryView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
         <Button
-            android:id="@+id/reload_button"
+            android:id="@+id/placeholderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/update"
@@ -105,7 +111,7 @@
             android:visibility="gone"/>
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trackList"
+        android:id="@+id/trackListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

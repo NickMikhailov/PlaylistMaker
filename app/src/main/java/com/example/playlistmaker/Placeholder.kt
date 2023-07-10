@@ -4,5 +4,6 @@ enum class Placeholder {
     EMPTY,
     ENTER_QUERY,
     NOTHING_FOUND,
-    ERROR
+    ERROR,
+    HISTORY
 }
