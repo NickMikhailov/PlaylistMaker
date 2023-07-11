@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:ellipsize="end"
             tools:text="Track Name NO REPLAY TOO LONG NAME OF TRACK" />
 
         <LinearLayout
@@ -44,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:maxWidth="150dp"
                 android:maxLines="1"
+                android:ellipsize="end"
                 tools:text="Artist Name TOO LONG ARTIST NAME" />
 
             <ImageView
@@ -62,6 +64,7 @@
                 android:layout_marginStart="@dimen/medium_padding"
                 android:maxWidth="100dp"
                 android:maxLines="1"
+                android:ellipsize="end"
                 tools:text="Track Time TOO LONG TRACK TIME" />
         </LinearLayout>
     </LinearLayout>

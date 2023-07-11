@@ -19,5 +19,7 @@
     <string name="itunes_base_url">https://itunes.apple.com</string>
     <string name="enter_query">Введите запрос</string>
     <string name="update">Обновить</string>
+    <string name="search_history">Вы искали</string>
+    <string name="clear_history">Очистить историю</string>
 
 </resources>
