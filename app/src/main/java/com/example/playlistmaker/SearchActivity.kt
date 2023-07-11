@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -156,6 +157,7 @@ class SearchActivity : AppCompatActivity() {
     }
     private fun showPlaceholder(placeHolderType: Placeholder, errorMessage: String = "") {
         binding.placeholder.visibility = View.VISIBLE
+        binding.placeholder.gravity = Gravity.CENTER_VERTICAL
         when (placeHolderType) {
             Placeholder.EMPTY -> {
                 binding.placeholderImage.visibility = View.GONE
@@ -191,6 +193,7 @@ class SearchActivity : AppCompatActivity() {
                 binding.placeholderButton.visibility = View.GONE
             }
             Placeholder.HISTORY ->{
+                binding.placeholder.gravity = Gravity.TOP
                 binding.placeholderImage.visibility = View.GONE
                 binding.placeholderText.visibility = View.VISIBLE
                 binding.placeholderText.text = getString(R.string.search_history)

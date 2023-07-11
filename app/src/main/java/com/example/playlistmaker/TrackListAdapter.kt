@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TrackListAdapter(private val trackList: ArrayList<Track>) :
     RecyclerView.Adapter<TrackCardViewHolder>() {
-    private lateinit var itemView: View
     interface OnItemClickListener {
         fun onItemClick(position: Int)
     }
@@ -16,12 +15,12 @@ class TrackListAdapter(private val trackList: ArrayList<Track>) :
     }
     private var itemClickListener: OnItemClickListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackCardViewHolder {
-        itemView = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
         return TrackCardViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: TrackCardViewHolder, position: Int) {
-        holder.bind(trackList[position], itemView)
+        holder.bind(trackList[position])
         holder.itemView.setOnClickListener {
             itemClickListener?.onItemClick(position)
         }

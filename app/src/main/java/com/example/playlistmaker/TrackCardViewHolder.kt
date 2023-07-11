@@ -16,7 +16,7 @@ class TrackCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
     private val trackCover: ImageView = itemView.findViewById(R.id.trackCover)
 
-    fun bind(model: Track, itemView: View) {
+    fun bind(model: Track) {
         trackName.text = model.trackName
         artistName.text = model.artistName
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis.toInt())

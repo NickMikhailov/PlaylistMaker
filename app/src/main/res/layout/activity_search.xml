@@ -42,7 +42,7 @@
         <EditText
             android:id="@+id/searchField"
             android:layout_width="0dp"
-            android:layout_height="@dimen/text_block_height"
+            android:layout_height="@dimen/text_field_height"
             android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:layout_weight="1"
             android:autofillHints="@string/search"
@@ -74,8 +74,8 @@
         android:id="@+id/placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <ImageView
@@ -85,31 +85,42 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:src="@drawable/nothing_found_placeholder"/>
+            android:src="@drawable/nothing_found_placeholder" />
+
         <TextView
             android:id="@+id/placeholderText"
             style="@style/text_big"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_top"
             android:gravity="center"
-            android:layout_marginTop="@dimen/margin_top"
-            android:text="@string/nothing_found"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/searchHistoryView"
+            android:text="@string/nothing_found" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        <Button
-            android:id="@+id/placeholderButton"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/update"
-            android:layout_marginTop="@dimen/margin_top"
-            android:backgroundTint="?attr/textAppearanceBody1"
-            android:visibility="gone"/>
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchHistoryView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <Button
+                android:id="@+id/placeholderButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top"
+                android:backgroundTint="?attr/textAppearanceBody1"
+                android:text="@string/update"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trackListView"
         android:layout_width="match_parent"
