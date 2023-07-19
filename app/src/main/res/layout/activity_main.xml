@@ -16,7 +16,7 @@
                 <TextView
                     style="@style/block_title"
                     android:text="@string/title"
-                    android:textAppearance="@style/text_title_white" />
+                    android:textAppearance="@style/text_title_white_22" />
         </LinearLayout>
 
         <Button
@@ -34,7 +34,7 @@
         <Button
             android:id="@+id/settings_button"
             style="@style/button_big"
-            android:layout_marginBottom="@dimen/margin_bottom"
+            android:layout_marginBottom="@dimen/big_margin_vertical"
             android:text="@string/settings"
-            app:icon="@drawable/settings_icon"></Button>
+            app:icon="@drawable/settings_icon"/>
 </LinearLayout>

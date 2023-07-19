@@ -9,9 +9,9 @@
 
     <ImageView
         android:id="@+id/trackCover"
-        android:layout_width="@dimen/square_image"
-        android:layout_height="@dimen/square_image"
-        android:layout_marginStart="@dimen/margin_horizontal"
+        android:layout_width="@dimen/square_image_45"
+        android:layout_height="@dimen/square_image_45"
+        android:layout_marginStart="@dimen/default_margin_horizontal"
         android:src="@drawable/cover_placeholder" />
 
     <LinearLayout
@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/trackName"
-            style="@style/text_main"
+            style="@style/text_main_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
@@ -40,7 +40,7 @@
 
             <TextView
                 android:id="@+id/artistName"
-                style="@style/text_secondary"
+                style="@style/text_small_11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxWidth="150dp"
@@ -58,7 +58,7 @@
 
             <TextView
                 android:id="@+id/trackTime"
-                style="@style/text_secondary"
+                style="@style/text_small_11"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/medium_padding"
@@ -74,6 +74,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|center_vertical"
-        android:layout_marginEnd="@dimen/margin_horizontal"
+        android:layout_marginEnd="@dimen/default_margin_horizontal"
         android:src="@drawable/arrow_forward_icon" />
 </LinearLayout>

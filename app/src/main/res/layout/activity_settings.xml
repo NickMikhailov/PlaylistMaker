@@ -21,7 +21,7 @@
             android:id="@+id/arrowBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_horizontal"
+            android:layout_marginStart="@dimen/default_margin_horizontal"
             android:contentDescription="@string/back"
             android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/array_back_icon"
@@ -30,15 +30,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_horizontal"
+            android:layout_marginStart="@dimen/default_margin_horizontal"
             android:text="@string/settings"
-            android:textAppearance="@style/text_header" />
+            android:textAppearance="@style/text_header_22" />
     </LinearLayout>
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/themeSwitcher"
         android:text="@string/dark_mode"
-        style="@style/text_main"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        style="@style/text_main_16"
+        android:layout_marginHorizontal="@dimen/default_margin_horizontal"
         android:layout_gravity="start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,10 +49,10 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical|start"
         android:orientation="horizontal"
-        android:padding="@dimen/margin_horizontal">
+        android:padding="@dimen/default_margin_horizontal">
 
         <TextView
-            style="@style/text_main"
+            style="@style/text_main_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -72,10 +72,10 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical|start"
         android:orientation="horizontal"
-        android:padding="@dimen/margin_horizontal">
+        android:padding="@dimen/default_margin_horizontal">
 
         <TextView
-            style="@style/text_main"
+            style="@style/text_main_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -86,7 +86,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/support_icon"/>
+            android:src="@drawable/support_icon"
+            android:contentDescription="@string/support"/>
     </FrameLayout>
 
     <FrameLayout
@@ -94,10 +95,10 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical|start"
         android:orientation="horizontal"
-        android:padding="@dimen/margin_horizontal">
+        android:padding="@dimen/default_margin_horizontal">
 
         <TextView
-            style="@style/text_main"
+            style="@style/text_main_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -108,7 +109,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/arrow_forward_icon"/>
+            android:src="@drawable/arrow_forward_icon"
+            android:contentDescription="@string/agreement"/>
     </FrameLayout>
 </LinearLayout>
 

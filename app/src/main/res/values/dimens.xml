@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_title">22sp</dimen>
-    <dimen name="text_button_big">22sp</dimen>
-    <dimen name="text_big">22sp</dimen>
-    <dimen name="text_main">16sp</dimen>
-    <dimen name="text_secondary">11sp</dimen>
+    <dimen name="text_title_22">22sp</dimen>
+    <dimen name="text_button_big_22">22sp</dimen>
+    <dimen name="text_big_22">22sp</dimen>
+    <dimen name="text_main_16">16sp</dimen>
+    <dimen name="text_medium_14">14sp</dimen>
+    <dimen name="text_medium_13">13sp</dimen>
+    <dimen name="text_small_11">11sp</dimen>
 
     <dimen name="text_block_height">52dp</dimen>
     <dimen name="text_field_height">36dp</dimen>
-    <dimen name="card_height">61dp</dimen>
+    <dimen name="card_height">64dp</dimen>
 
     <dimen name="medium_padding">8dp</dimen>
     <dimen name="icon_padding">10dp</dimen>
-    <dimen name="margin_horizontal">16dp</dimen>
-    <dimen name="margin_top">16dp</dimen>
-    <dimen name="margin_bottom">28sp</dimen>
+    <dimen name="default_margin_horizontal">16dp</dimen>
+    <dimen name="default_margin_vertical">16dp</dimen>
+    <dimen name="big_margin_vertical">24sp</dimen>
     <dimen name="corner_radius_large">16dp</dimen>
     <dimen name="corner_radius_small">8dp</dimen>
-    <dimen name="square_image">45dp</dimen>
+    <dimen name="square_image_45">45dp</dimen>
+    <dimen name="square_image_51">51dp</dimen>
+    <dimen name="square_image_100">100dp</dimen>
 
 </resources>
