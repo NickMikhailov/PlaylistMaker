@@ -16,7 +16,7 @@
                 <TextView
                     style="@style/block_title"
                     android:text="@string/title"
-                    android:textAppearance="@style/text_title_white_22" />
+                    android:textAppearance="@style/text_title_regular_22_white" />
         </LinearLayout>
 
         <Button

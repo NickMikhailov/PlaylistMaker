@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin_horizontal"
             android:text="@string/search"
-            android:textAppearance="@style/text_header_22" />
+            android:textAppearance="@style/text_regular_22" />
     </LinearLayout>
 
     <LinearLayout
@@ -81,7 +81,7 @@
 
         <ImageView
             android:id="@+id/placeholderImage"
-            style="@style/text_big_22"
+            style="@style/text_regular_22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -90,7 +90,7 @@
 
         <TextView
             android:id="@+id/placeholderText"
-            style="@style/text_big_22"
+            style="@style/text_regular_22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

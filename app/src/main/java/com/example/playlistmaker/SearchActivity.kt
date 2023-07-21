@@ -135,7 +135,7 @@ class SearchActivity : AppCompatActivity() {
     private fun showPlayer(track: Track){
         val displayIntent = Intent(this, PlayerActivity::class.java)
         searchHistory.addToHistory(track)
-        displayIntent.putExtra("track", Gson().toJson(track))
+        displayIntent.putExtra(KEY_TRACK, Gson().toJson(track))
         startActivity(displayIntent)
     }
     private fun sendQuery() {
@@ -234,5 +234,6 @@ class SearchActivity : AppCompatActivity() {
     }
     companion object {
         private const val SEARCH_TEXT_KEY = "searchText"
+        private const val KEY_TRACK = "track"
     }
 }

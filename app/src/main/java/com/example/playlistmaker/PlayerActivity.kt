@@ -11,14 +11,14 @@ import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
-
+    private lateinit var track: Track
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initializeBackButton()
-        val track = Gson().fromJson(intent.getStringExtra("track"), Track::class.java)
+        track = Gson().fromJson(intent.getStringExtra(KEY_TRACK), Track::class.java)
         initializeTrack(track)
         initializePlayPauseButton()
         initializeAddToFavoriteButton()
@@ -27,12 +27,11 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val track = intent.getStringExtra("track")
-        outState.putString("track", track)
+        outState.putString(KEY_TRACK, Gson().toJson(track))
     }
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val track = Gson().fromJson(savedInstanceState.getString("track"), Track::class.java)
+        track = Gson().fromJson(savedInstanceState.getString(KEY_TRACK), Track::class.java)
         initializeTrack(track)
     }
     private fun initializeBackButton() {
@@ -53,7 +52,7 @@ class PlayerActivity : AppCompatActivity() {
             .load(track.getCoverArtwork())
             .placeholder(R.drawable.cover_placeholder)
             .fitCenter()
-            .transform(RoundedCorners(16)) //не получается подтянуть 8 из R.dimen.corner_radius_large
+            .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius_small)))
             .into(binding.trackCover)    }
 
     private fun initializePlayPauseButton() {
@@ -69,5 +68,8 @@ class PlayerActivity : AppCompatActivity() {
         binding.addToPlayListButton.setOnClickListener{
             binding.addToPlayListButton.setImageResource(R.drawable.add_to_playlist_button_true)
         }
+    }
+    companion object {
+        private const val KEY_TRACK = "track"
     }
 }
