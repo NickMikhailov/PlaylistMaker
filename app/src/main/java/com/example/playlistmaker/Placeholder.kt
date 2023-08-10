@@ -5,5 +5,6 @@ enum class Placeholder {
     ENTER_QUERY,
     NOTHING_FOUND,
     ERROR,
-    HISTORY
+    HISTORY,
+    PROGRESSBAR
 }

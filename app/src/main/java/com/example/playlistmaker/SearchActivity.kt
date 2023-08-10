@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
@@ -29,12 +31,15 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistoryAdapter: TrackListAdapter
 
     private lateinit var sharedPreferences: SharedPreferences
+
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPreferences = getSharedPreferences("track_history", Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(TRACK_HISTORY, Context.MODE_PRIVATE)
 
         initializeSearchField(savedInstanceState)
         initializeBackButton()
@@ -47,16 +52,19 @@ class SearchActivity : AppCompatActivity() {
         super.onResume()
         initializeSearchHistoryView()
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val searchText = binding.searchField.text.toString()
         outState.putString(SEARCH_TEXT_KEY, searchText)
     }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val searchText = savedInstanceState.getString(SEARCH_TEXT_KEY)
         binding.searchField.setText(searchText)
     }
+
     private fun initializeSearchField(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
             val searchText = savedInstanceState.getString(SEARCH_TEXT_KEY)
@@ -73,11 +81,13 @@ class SearchActivity : AppCompatActivity() {
                     binding.clearIcon.visibility = View.GONE
                     showPlaceholder(Placeholder.EMPTY)
                 }
+                searchDebounce()
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
         binding.searchField.setOnFocusChangeListener { view, hasFocus ->
-            if(hasFocus && binding.searchField.text.isEmpty() && searchHistory.getHistory().size!=0) {
+            if (hasFocus && binding.searchField.text.isEmpty() && searchHistory.getHistory().size != 0) {
                 showPlaceholder(Placeholder.HISTORY)
             } else {
                 showPlaceholder(Placeholder.ENTER_QUERY)
@@ -85,17 +95,19 @@ class SearchActivity : AppCompatActivity() {
         }
         binding.searchField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                sendQuery()
+                sendRequest()
                 true
             }
             false
         }
     }
+
     private fun initializeBackButton() {
         binding.arrowBack.setOnClickListener {
             finish()
         }
     }
+
     private fun initializeTrackListView() {
         trackList = ArrayList()
         trackListAdapter = TrackListAdapter(trackList)
@@ -103,12 +115,13 @@ class SearchActivity : AppCompatActivity() {
 
         trackListAdapter.setOnItemClickListener(object : TrackListAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                val track = trackListAdapter.getTrack(position)
-                showPlayer(track)
+                if (clickDebounce()) {
+                    showPlayer(trackListAdapter.getTrack(position))
+                }
             }
         })
     }
-    private fun initializeSearchHistoryView(){
+    private fun initializeSearchHistoryView() {
         searchHistory = SearchHistory(sharedPreferences)
         searchHistoryAdapter = TrackListAdapter(searchHistory.getHistory())
         binding.searchHistoryView.adapter = searchHistoryAdapter
@@ -120,6 +133,7 @@ class SearchActivity : AppCompatActivity() {
             }
         })
     }
+
     private fun initializeClearIcon() {
         binding.clearIcon.setOnClickListener {
             binding.searchField.text.clear()
@@ -132,18 +146,21 @@ class SearchActivity : AppCompatActivity() {
             showPlaceholder(Placeholder.HISTORY)
         }
     }
-    private fun showPlayer(track: Track){
+
+    private fun showPlayer(track: Track) {
         val displayIntent = Intent(this, PlayerActivity::class.java)
         searchHistory.addToHistory(track)
         displayIntent.putExtra(KEY_TRACK, Gson().toJson(track))
         startActivity(displayIntent)
     }
-    private fun sendQuery() {
+
+    private fun sendRequest() {
         val retrofit = Retrofit.Builder()
             .baseUrl(getString(R.string.itunes_base_url))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val iTunesService = retrofit.create(ITunesSearchAPI::class.java)
+        showPlaceholder(Placeholder.PROGRESSBAR)
         if (binding.searchField.text.toString().isNotEmpty()) {
             iTunesService.search(binding.searchField.text.toString())
                 .enqueue(object : Callback<TrackResponse> {
@@ -173,46 +190,43 @@ class SearchActivity : AppCompatActivity() {
                 })
         }
     }
+
     private fun showPlaceholder(placeHolderType: Placeholder, errorMessage: String = "") {
         binding.placeholder.visibility = View.VISIBLE
+        binding.placeholderImage.visibility = View.GONE
+        binding.placeholderText.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+        binding.searchHistoryView.visibility = View.GONE
+        binding.placeholderButton.visibility = View.GONE
         binding.placeholder.gravity = Gravity.CENTER_VERTICAL
+
         when (placeHolderType) {
             Placeholder.EMPTY -> {
-                binding.placeholderImage.visibility = View.GONE
-                binding.placeholderText.visibility = View.GONE
-                binding.searchHistoryView.visibility = View.GONE
-                binding.placeholderButton.visibility = View.GONE
             }
             Placeholder.NOTHING_FOUND -> {
                 binding.placeholderImage.visibility = View.VISIBLE
                 binding.placeholderImage.setImageResource(R.drawable.nothing_found_placeholder)
                 binding.placeholderText.visibility = View.VISIBLE
                 binding.placeholderText.text = getString(R.string.nothing_found)
-                binding.searchHistoryView.visibility = View.GONE
-                binding.placeholderButton.visibility = View.GONE
             }
             Placeholder.ERROR -> {
                 binding.placeholderImage.visibility = View.VISIBLE
                 binding.placeholderImage.setImageResource(R.drawable.error_placeholder)
                 binding.placeholderText.visibility = View.VISIBLE
                 binding.placeholderText.text = getString(R.string.error)
-                binding.searchHistoryView.visibility = View.GONE
                 binding.placeholderButton.visibility = View.VISIBLE
                 binding.placeholderButton.text = getString(R.string.update)
                 binding.placeholderButton.setOnClickListener {
-                    sendQuery()
+                    sendRequest()
                 }
             }
+
             Placeholder.ENTER_QUERY -> {
-                binding.placeholderImage.visibility = View.GONE
                 binding.placeholderText.visibility = View.VISIBLE
                 binding.placeholderText.text = getString(R.string.enter_query)
-                binding.searchHistoryView.visibility = View.GONE
-                binding.placeholderButton.visibility = View.GONE
             }
-            Placeholder.HISTORY ->{
+            Placeholder.HISTORY -> {
                 binding.placeholder.gravity = Gravity.TOP
-                binding.placeholderImage.visibility = View.GONE
                 binding.placeholderText.visibility = View.VISIBLE
                 binding.placeholderText.text = getString(R.string.search_history)
                 binding.searchHistoryView.visibility = View.VISIBLE
@@ -223,6 +237,9 @@ class SearchActivity : AppCompatActivity() {
                     showPlaceholder(Placeholder.ENTER_QUERY)
                 }
             }
+            Placeholder.PROGRESSBAR -> {
+                binding.progressBar.visibility = View.VISIBLE
+            }
         }
         if (errorMessage.isNotEmpty()) {
             Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG)
@@ -232,8 +249,22 @@ class SearchActivity : AppCompatActivity() {
     private fun hidePlaceholder() {
         binding.placeholder.visibility = View.GONE
     }
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, DateTimeUtil.CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+    private val searchRunnable = Runnable { sendRequest() }
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, DateTimeUtil.SEARCH_DEBOUNCE_DELAY)
+    }
     companion object {
         private const val SEARCH_TEXT_KEY = "searchText"
         private const val KEY_TRACK = "track"
+        private const val TRACK_HISTORY = "track_history"
     }
 }

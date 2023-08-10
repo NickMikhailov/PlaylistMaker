@@ -79,6 +79,13 @@
         android:orientation="vertical"
         android:visibility="gone">
 
+        <ProgressBar android:id="@+id/progressBar"
+            android:layout_width="@dimen/square_image_45"
+            android:layout_height="@dimen/square_image_45"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone"/>
+
         <ImageView
             android:id="@+id/placeholderImage"
             style="@style/text_regular_22"
