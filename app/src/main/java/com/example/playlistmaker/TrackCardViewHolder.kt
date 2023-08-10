@@ -24,7 +24,7 @@ class TrackCardViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .load(model.artworkUrl100)
             .placeholder(R.drawable.cover_placeholder)
             .fitCenter()
-            .transform(RoundedCorners(10))
+            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_small)))
             .into(trackCover)
     }
 }

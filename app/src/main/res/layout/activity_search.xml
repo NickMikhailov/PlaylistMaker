@@ -19,7 +19,7 @@
             android:id="@+id/arrowBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_horizontal"
+            android:layout_marginStart="@dimen/default_margin_horizontal"
             android:contentDescription="@string/back"
             android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/array_back_icon" />
@@ -27,9 +27,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_horizontal"
+            android:layout_marginStart="@dimen/default_margin_horizontal"
             android:text="@string/search"
-            android:textAppearance="@style/text_header" />
+            android:textAppearance="@style/text_regular_22" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,7 +43,7 @@
             android:id="@+id/searchField"
             android:layout_width="0dp"
             android:layout_height="@dimen/text_field_height"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginHorizontal="@dimen/default_margin_horizontal"
             android:layout_weight="1"
             android:autofillHints="@string/search"
             android:background="@drawable/edit_text_style"
@@ -65,9 +65,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/margin_horizontal"
+            android:layout_marginEnd="@dimen/default_margin_horizontal"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="@string/clear"/>
     </LinearLayout>
 
     <LinearLayout
@@ -80,7 +81,7 @@
 
         <ImageView
             android:id="@+id/placeholderImage"
-            style="@style/text_big"
+            style="@style/text_regular_22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -89,11 +90,11 @@
 
         <TextView
             android:id="@+id/placeholderText"
-            style="@style/text_big"
+            style="@style/text_regular_22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginTop="@dimen/default_margin_vertical"
             android:gravity="center"
             android:text="@string/nothing_found" />
 
@@ -114,7 +115,7 @@
                 android:id="@+id/placeholderButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_top"
+                android:layout_marginTop="@dimen/default_margin_vertical"
                 android:backgroundTint="?attr/textAppearanceBody1"
                 android:text="@string/update"
                 android:visibility="gone" />

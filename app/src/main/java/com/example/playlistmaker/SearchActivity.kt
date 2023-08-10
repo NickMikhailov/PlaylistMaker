@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,9 +39,13 @@ class SearchActivity : AppCompatActivity() {
         initializeSearchField(savedInstanceState)
         initializeBackButton()
         initializeTrackListView()
-        initializeSearchHistoryView()
         initializeClearIcon()
         showPlaceholder(Placeholder.ENTER_QUERY)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initializeSearchHistoryView()
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -97,7 +103,8 @@ class SearchActivity : AppCompatActivity() {
 
         trackListAdapter.setOnItemClickListener(object : TrackListAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                searchHistory.addToHistory(trackListAdapter.getTrack(position))
+                val track = trackListAdapter.getTrack(position)
+                showPlayer(track)
             }
         })
     }
@@ -105,21 +112,32 @@ class SearchActivity : AppCompatActivity() {
         searchHistory = SearchHistory(sharedPreferences)
         searchHistoryAdapter = TrackListAdapter(searchHistory.getHistory())
         binding.searchHistoryView.adapter = searchHistoryAdapter
+
+        searchHistoryAdapter.setOnItemClickListener(object : TrackListAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val track = searchHistoryAdapter.getTrack(position)
+                showPlayer(track)
+            }
+        })
     }
     private fun initializeClearIcon() {
         binding.clearIcon.setOnClickListener {
             binding.searchField.text.clear()
             trackList.clear()
             trackListAdapter.notifyDataSetChanged()
-            searchHistoryAdapter = TrackListAdapter(searchHistory.getHistory())
-            binding.searchHistoryView.adapter=searchHistoryAdapter
+            initializeSearchHistoryView()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
             binding.clearIcon.visibility = View.GONE
             showPlaceholder(Placeholder.HISTORY)
         }
     }
-
+    private fun showPlayer(track: Track){
+        val displayIntent = Intent(this, PlayerActivity::class.java)
+        searchHistory.addToHistory(track)
+        displayIntent.putExtra(KEY_TRACK, Gson().toJson(track))
+        startActivity(displayIntent)
+    }
     private fun sendQuery() {
         val retrofit = Retrofit.Builder()
             .baseUrl(getString(R.string.itunes_base_url))
@@ -216,5 +234,6 @@ class SearchActivity : AppCompatActivity() {
     }
     companion object {
         private const val SEARCH_TEXT_KEY = "searchText"
+        private const val KEY_TRACK = "track"
     }
 }
