@@ -13,34 +13,4 @@ object DateTimeUtil {
     const val QUARTER_SECOND_DELAY = 250L
     const val MILLISECONDS_IN_A_SECOND = 1000L
     const val SECONDS_IN_A_MINUTE = 60L
-    var isTimerOn = false
-
-    private var mainThreadHandler: Handler? = Handler(Looper.getMainLooper())
-
-    fun timerStart(mediaPlayer: MediaPlayer, textView: TextView) {
-        isTimerOn = true
-        mainThreadHandler?.post(
-            createUpdateTimerTask(mediaPlayer, textView)
-        )
-    }
-    fun timerStop(textView: TextView) {
-        isTimerOn = false
-        textView.text = ZERO
-    }
-
-    fun timerPause(){
-        isTimerOn = false
-    }
-
-    private fun createUpdateTimerTask(mediaPlayer: MediaPlayer, textView: TextView): Runnable {
-        return object : Runnable {
-            override fun run() {
-                val currentPosition = mediaPlayer.currentPosition/MILLISECONDS_IN_A_SECOND
-                if (isTimerOn) {
-                    textView.text = String.format("%d:%02d", currentPosition / SECONDS_IN_A_MINUTE, currentPosition % SECONDS_IN_A_MINUTE)
-                    mainThreadHandler?.postDelayed(this, QUARTER_SECOND_DELAY)
-                }
-            }
-        }
-    }
 }

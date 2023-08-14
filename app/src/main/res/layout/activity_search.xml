@@ -32,7 +32,7 @@
             android:textAppearance="@style/text_regular_22" />
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_block_height"
         android:layout_marginBottom="@dimen/medium_padding"
@@ -41,10 +41,9 @@
 
         <EditText
             android:id="@+id/searchField"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/text_field_height"
             android:layout_marginHorizontal="@dimen/default_margin_horizontal"
-            android:layout_weight="1"
             android:autofillHints="@string/search"
             android:background="@drawable/edit_text_style"
             android:drawableStart="@drawable/search_icon"
@@ -64,12 +63,12 @@
             android:id="@+id/clearIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="end"
             android:layout_marginEnd="@dimen/default_margin_horizontal"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:src="@drawable/clear_icon"
             android:visibility="gone"
             android:contentDescription="@string/clear"/>
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/placeholder"

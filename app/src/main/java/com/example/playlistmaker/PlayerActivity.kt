@@ -2,6 +2,10 @@ package com.example.playlistmaker
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -15,11 +19,15 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var track: Track
     private var mediaPlayer = MediaPlayer()
     private var playerState = PlayerState.DEFAULT
+    var isTimerOn = false
+    private var mainThreadHandler: Handler? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        mainThreadHandler =  Handler(Looper.getMainLooper())
 
         initializeBackButton()
         track = Gson().fromJson(intent.getStringExtra(KEY_TRACK), Track::class.java)
@@ -80,7 +88,7 @@ class PlayerActivity : AppCompatActivity() {
                 pausePlayer()
             }
             PlayerState.DEFAULT -> {
-                preparePlayer()
+//                preparePlayer()
             }
         }
     }
@@ -101,27 +109,53 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.setOnCompletionListener {
             binding.playPauseButton.setImageResource(R.drawable.play_button)
             playerState = PlayerState.PREPARED
-            DateTimeUtil.timerStop(binding.trackTime)
+            timerStop()
         }
     }
 
     private fun startPlayer() {
         binding.playPauseButton.setImageResource(R.drawable.pause_button)
         mediaPlayer.start()
-        DateTimeUtil.timerStart(mediaPlayer, binding.trackTime)
+        timerStart()
         playerState = PlayerState.PLAYING
     }
 
     private fun pausePlayer() {
         binding.playPauseButton.setImageResource(R.drawable.play_button)
         mediaPlayer.pause()
-        DateTimeUtil.timerPause()
+        timerPause()
         playerState = PlayerState.PAUSED
     }
 
     private fun initializeAddToPlaylistButton() {
         binding.addToPlayListButton.setOnClickListener {
             binding.addToPlayListButton.setImageResource(R.drawable.add_to_playlist_button_true)
+        }
+    }
+    fun timerStart() {
+        isTimerOn = true
+        mainThreadHandler?.post(
+            createUpdateTimerTask()
+        )
+    }
+    fun timerStop() {
+        isTimerOn = false
+        binding.trackTime.text = DateTimeUtil.ZERO
+    }
+
+    fun timerPause(){
+        isTimerOn = false
+    }
+
+    private fun createUpdateTimerTask(): Runnable {
+        return object : Runnable {
+            override fun run() {
+                val currentPosition = mediaPlayer.currentPosition/ DateTimeUtil.MILLISECONDS_IN_A_SECOND
+                if (isTimerOn) {
+                    binding.trackTime.text  = String.format("%02d:%02d", currentPosition / DateTimeUtil.SECONDS_IN_A_MINUTE, currentPosition % DateTimeUtil.SECONDS_IN_A_MINUTE)
+                    mainThreadHandler?.postDelayed(this, DateTimeUtil.QUARTER_SECOND_DELAY)
+                }
+            }
         }
     }
 
@@ -132,7 +166,9 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        mainThreadHandler?.removeCallbacksAndMessages(null)
         mediaPlayer.release()
+        Log.d("crushSearch","PlayerActivity is destroyed")
     }
 
     companion object {

@@ -42,10 +42,11 @@ class SearchActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences(TRACK_HISTORY, Context.MODE_PRIVATE)
 
         initializeSearchField(savedInstanceState)
+        initializeSearchHistoryView()
         initializeBackButton()
         initializeTrackListView()
         initializeClearIcon()
-        showPlaceholder(Placeholder.ENTER_QUERY)
+        showPlaceholder(Placeholder.EMPTY)
     }
 
     override fun onResume() {
@@ -77,11 +78,11 @@ class SearchActivity : AppCompatActivity() {
                 if (s.toString().isNotEmpty()) {
                     binding.clearIcon.visibility = View.VISIBLE
                     hidePlaceholder()
+                    searchDebounce()
                 } else {
                     binding.clearIcon.visibility = View.GONE
-                    showPlaceholder(Placeholder.EMPTY)
+                    showPlaceholder(Placeholder.HISTORY)
                 }
-                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -90,7 +91,7 @@ class SearchActivity : AppCompatActivity() {
             if (hasFocus && binding.searchField.text.isEmpty() && searchHistory.getHistory().size != 0) {
                 showPlaceholder(Placeholder.HISTORY)
             } else {
-                showPlaceholder(Placeholder.ENTER_QUERY)
+                showPlaceholder(Placeholder.EMPTY)
             }
         }
         binding.searchField.setOnEditorActionListener { _, actionId, _ ->
@@ -139,7 +140,6 @@ class SearchActivity : AppCompatActivity() {
             binding.searchField.text.clear()
             trackList.clear()
             trackListAdapter.notifyDataSetChanged()
-            initializeSearchHistoryView()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
             binding.clearIcon.visibility = View.GONE
@@ -234,7 +234,7 @@ class SearchActivity : AppCompatActivity() {
                 binding.placeholderButton.text = getString(R.string.clear_history)
                 binding.placeholderButton.setOnClickListener {
                     searchHistory.clearHistory()
-                    showPlaceholder(Placeholder.ENTER_QUERY)
+                    showPlaceholder(Placeholder.EMPTY)
                 }
             }
             Placeholder.PROGRESSBAR -> {
