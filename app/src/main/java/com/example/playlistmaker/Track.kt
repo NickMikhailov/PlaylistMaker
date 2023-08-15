@@ -9,7 +9,8 @@ data class Track (
     val collectionName: String, //Альбом
     val releaseDate: String, //Дата выхода песни
     val primaryGenreName: String, //Жанр
-    val country: String //Страна
+    val country: String, //Страна
+    val previewUrl: String //Ссылка на аудио
 )
 {
     override fun equals(other: Any?): Boolean {
