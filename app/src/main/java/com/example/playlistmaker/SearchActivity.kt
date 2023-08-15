@@ -221,10 +221,6 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
 
-            Placeholder.ENTER_QUERY -> {
-                binding.placeholderText.visibility = View.VISIBLE
-                binding.placeholderText.text = getString(R.string.enter_query)
-            }
             Placeholder.HISTORY -> {
                 binding.placeholder.gravity = Gravity.TOP
                 binding.placeholderText.visibility = View.VISIBLE

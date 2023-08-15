@@ -32,5 +32,8 @@
     <string name="add_to_favorites">Добавить в избранное</string>
     <string name="start_timer">00:00</string>
     <string name="time_format">mm:ss</string>
+    <string name="err_msg_to_send_email">Не удалось отправить сообщение!</string>
+    <string name="err_msg_to_share">Не удалось поделиться ссылкой!</string>
+    <string name="err_msg_to_open_url">Не удалось открыть ссылку!</string>
 
 </resources>

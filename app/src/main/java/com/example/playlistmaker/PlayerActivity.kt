@@ -69,7 +69,7 @@ class PlayerActivity : AppCompatActivity() {
             .load(track.getCoverArtwork())
             .placeholder(R.drawable.cover_placeholder)
             .fitCenter()
-            .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius_small)))
+            .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius_medium)))
             .into(binding.trackCover)
     }
 
@@ -88,7 +88,6 @@ class PlayerActivity : AppCompatActivity() {
                 pausePlayer()
             }
             PlayerState.DEFAULT -> {
-//                preparePlayer()
             }
         }
     }

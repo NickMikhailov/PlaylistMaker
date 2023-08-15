@@ -36,7 +36,7 @@ class SettingsActivity : AppCompatActivity() {
             try {
                 startActivity(shareIntent)
             } catch (ex: Exception) {
-                Toast.makeText(applicationContext, ex.toString(), Toast.LENGTH_LONG)
+                Toast.makeText(applicationContext, getString(R.string.err_msg_to_share), Toast.LENGTH_LONG)
                     .show()
             }
         }
@@ -52,13 +52,11 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
                 putExtra(Intent.EXTRA_SUBJECT, subject)
                 putExtra(Intent.EXTRA_TEXT, message)
-                if (this.resolveActivity(packageManager) != null) {
-                    try {
-                        startActivity(this)
-                    } catch (ex: Exception) {
-                        Toast.makeText(applicationContext, ex.toString(), Toast.LENGTH_LONG)
-                            .show()
-                    }
+                try {
+                    startActivity(this)
+                } catch (ex: Exception) {
+                    Toast.makeText(applicationContext, getString(R.string.err_msg_to_send_email), Toast.LENGTH_LONG)
+                        .show()
                 }
             }
         }
@@ -72,7 +70,7 @@ class SettingsActivity : AppCompatActivity() {
             try {
                 startActivity(agreementIntent)
             } catch (ex: Exception) {
-                Toast.makeText(applicationContext, ex.toString(), Toast.LENGTH_LONG)
+                Toast.makeText(applicationContext, getString(R.string.err_msg_to_open_url), Toast.LENGTH_LONG)
                     .show()
             }
         }
