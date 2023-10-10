@@ -1,9 +1,10 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui.track
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.models.Track
 
 class TrackListAdapter(private val trackList: ArrayList<Track>) :
     RecyclerView.Adapter<TrackCardViewHolder>() {
@@ -27,7 +28,7 @@ class TrackListAdapter(private val trackList: ArrayList<Track>) :
     }
 
     override fun getItemCount() = trackList.size
-    fun getTrack(position: Int):Track{
+    fun getTrack(position: Int): Track {
         return trackList[position]
     }
 }

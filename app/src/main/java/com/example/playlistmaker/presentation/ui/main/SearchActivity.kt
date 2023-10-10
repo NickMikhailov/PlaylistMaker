@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui.main
 
 import android.content.Context
 import android.content.Intent
@@ -14,7 +14,21 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.example.playlistmaker.Creator
+import com.example.playlistmaker.R
+import com.example.playlistmaker.data.dto.TrackDto
+import com.example.playlistmaker.data.dto.TrackSearchRequest
+import com.example.playlistmaker.presentation.ui.track.TrackListAdapter
+import com.example.playlistmaker.data.dto.TrackSearchResponse
+import com.example.playlistmaker.data.network.ITunesSearchAPI
+import com.example.playlistmaker.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.domain.api.TracksInteractor
+import com.example.playlistmaker.domain.models.DateTimeUtil
+import com.example.playlistmaker.domain.models.Placeholder
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.use_case.SearchHistory
+import com.example.playlistmaker.presentation.track.TrackPresenter
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -155,40 +169,22 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun sendRequest() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(getString(R.string.itunes_base_url))
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val iTunesService = retrofit.create(ITunesSearchAPI::class.java)
         showPlaceholder(Placeholder.PROGRESSBAR)
         if (binding.searchField.text.toString().isNotEmpty()) {
-            iTunesService.search(binding.searchField.text.toString())
-                .enqueue(object : Callback<TrackResponse> {
-                    override fun onResponse(
-                        call: Call<TrackResponse>,
-                        response: Response<TrackResponse>
-                    ) {
-                        trackList.clear()
-                        if (response.code() == 200) {
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                trackList.addAll(response.body()?.results!!)
-                            }
-                            if (trackList.isEmpty()) {
-                                showPlaceholder(Placeholder.NOTHING_FOUND)
-                            } else {
-                                hidePlaceholder()
-                            }
-                        } else {
-                            showPlaceholder(Placeholder.ERROR)
-                        }
-                        trackListAdapter.notifyDataSetChanged()
-                    }
-
-                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                        showPlaceholder(Placeholder.ERROR, t.message.toString())
-                    }
-                })
+            trackList.clear()
+            val trackConsumer = TrackPresenter()
+            Creator.provideTracksInteractor().search(binding.searchField.text.toString(),trackConsumer)
+            //я не могу понять, почему на данном этапе не запускается метод search
+            trackList = trackConsumer.getTrackList()
+            if (trackList.isEmpty()) {
+                showPlaceholder(Placeholder.NOTHING_FOUND)
+            } else {
+                hidePlaceholder()
+            }
+        } else {
+            showPlaceholder(Placeholder.ERROR)
         }
+        trackListAdapter.notifyDataSetChanged()
     }
 
     private fun showPlaceholder(placeHolderType: Placeholder, errorMessage: String = "") {
