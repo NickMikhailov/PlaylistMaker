@@ -1,15 +1,18 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui.main
 
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.domain.models.DateTimeUtil
+import com.example.playlistmaker.domain.models.PlayerState
+import com.example.playlistmaker.domain.models.Track
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -59,14 +62,14 @@ class PlayerActivity : AppCompatActivity() {
         binding.trackName.text = track.trackName
         binding.artistName.text = track.artistName
         binding.trackTime.text = DateTimeUtil.ZERO
-        binding.listDurationValue.text =
-            SimpleDateFormat(DateTimeUtil.FORMAT_MINUTES_SECONDS, Locale.getDefault()).format(track.trackTimeMillis.toInt())
+        binding.listDurationValue.text = track.trackTime
+//            SimpleDateFormat(DateTimeUtil.FORMAT_MINUTES_SECONDS, Locale.getDefault()).format(track.trackTimeMillis.toInt())
         binding.listCollectionValue.text = track.collectionName
         binding.listYearValue.text = track.releaseDate.substring(FIRST_SYMBOL, FOURTH_SYMBOL)
         binding.listGenreValue.text = track.primaryGenreName
         binding.listCountryValue.text = track.country
         Glide.with(this)
-            .load(track.getCoverArtwork())
+            .load(track.artworkUrl500)
             .placeholder(R.drawable.cover_placeholder)
             .fitCenter()
             .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius_medium)))

@@ -1,10 +1,12 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui.main
 
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.playlistmaker.data.network.App
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import java.lang.Exception
 

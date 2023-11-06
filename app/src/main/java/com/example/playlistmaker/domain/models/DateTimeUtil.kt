@@ -1,9 +1,4 @@
-package com.example.playlistmaker
-
-import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
-import android.widget.TextView
+package com.example.playlistmaker.domain.models
 
 object DateTimeUtil {
     const val ZERO = "00:00"
