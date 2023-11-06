@@ -4,8 +4,9 @@ data class Track (
     val trackId: Int,   //Id
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя
-    val trackTimeMillis: String, // Продолжительность трека
+    val trackTime: String, // Продолжительность трека
     val artworkUrl100: String, // Ссылка на изображение обложки
+    val artworkUrl500: String, // Ссылка на изображение обложки
     val collectionName: String, //Альбом
     val releaseDate: String, //Дата выхода песни
     val primaryGenreName: String, //Жанр
@@ -24,7 +25,6 @@ data class Track (
     override fun hashCode(): Int {
         return trackId.hashCode()
     }
-    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
 }
 
 

@@ -1,5 +1,10 @@
 package com.example.playlistmaker.data.dto
 
+import com.example.playlistmaker.domain.models.DateTimeUtil
+import com.example.playlistmaker.domain.models.Track
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 data class TrackDto (    val trackId: Int,   //Id
                     val trackName: String, // Название композиции
                     val artistName: String, // Имя исполнителя
@@ -10,4 +15,25 @@ data class TrackDto (    val trackId: Int,   //Id
                     val primaryGenreName: String, //Жанр
                     val country: String, //Страна
                     val previewUrl: String //Ссылка на аудио
-)
+) {
+    fun getTrack(): Track {
+        return Track(
+            trackId,
+            trackName,
+            artistName,
+            formatTime(),
+            artworkUrl100,
+            getCoverArtwork500(),
+            collectionName,
+            releaseDate,
+            primaryGenreName,
+            country,
+            previewUrl
+        )
+    }
+
+
+    private fun getCoverArtwork500() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+    private fun formatTime() = SimpleDateFormat(DateTimeUtil.FORMAT_MINUTES_SECONDS, Locale.getDefault()).format(trackTimeMillis.toInt())
+
+}

@@ -13,28 +13,18 @@ import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.dto.TrackDto
-import com.example.playlistmaker.data.dto.TrackSearchRequest
 import com.example.playlistmaker.presentation.ui.track.TrackListAdapter
-import com.example.playlistmaker.data.dto.TrackSearchResponse
-import com.example.playlistmaker.data.network.ITunesSearchAPI
-import com.example.playlistmaker.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.api.TracksInteractor
 import com.example.playlistmaker.domain.models.DateTimeUtil
 import com.example.playlistmaker.domain.models.Placeholder
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.use_case.SearchHistory
-import com.example.playlistmaker.presentation.track.TrackPresenter
 import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
@@ -43,11 +33,15 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var searchHistory: SearchHistory
     private lateinit var searchHistoryAdapter: TrackListAdapter
+    private lateinit var queryInput: EditText
+    private val searchRunnable = Runnable { sendRequest() }
 
     private lateinit var sharedPreferences: SharedPreferences
 
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
+
+    private val tracksInteractor = Creator.provideTracksInteractor()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -70,23 +64,23 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val searchText = binding.searchField.text.toString()
-        outState.putString(SEARCH_TEXT_KEY, searchText)
+        outState.putString(SEARCH_TEXT_KEY, queryInput.text.toString())
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val searchText = savedInstanceState.getString(SEARCH_TEXT_KEY)
-        binding.searchField.setText(searchText)
+        queryInput.setText(searchText)
     }
 
     private fun initializeSearchField(savedInstanceState: Bundle?) {
+        queryInput = binding.searchField
         if (savedInstanceState != null) {
             val searchText = savedInstanceState.getString(SEARCH_TEXT_KEY)
-            binding.searchField.setText(searchText)
+            queryInput.setText(searchText)
             hidePlaceholder()
         }
-        binding.searchField.addTextChangedListener(object : TextWatcher {
+        queryInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) {
@@ -101,14 +95,14 @@ class SearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
-        binding.searchField.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus && binding.searchField.text.isEmpty() && searchHistory.getHistory().size != 0) {
+        queryInput.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus && queryInput.text.isEmpty() && searchHistory.getHistory().size != 0) {
                 showPlaceholder(Placeholder.HISTORY)
             } else {
                 showPlaceholder(Placeholder.EMPTY)
             }
         }
-        binding.searchField.setOnEditorActionListener { _, actionId, _ ->
+        queryInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 sendRequest()
                 true
@@ -151,11 +145,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initializeClearIcon() {
         binding.clearIcon.setOnClickListener {
-            binding.searchField.text.clear()
+            queryInput.text.clear()
             trackList.clear()
             trackListAdapter.notifyDataSetChanged()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
+            imm.hideSoftInputFromWindow(queryInput.windowToken, 0)
             binding.clearIcon.visibility = View.GONE
             showPlaceholder(Placeholder.HISTORY)
         }
@@ -169,13 +163,18 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun sendRequest() {
+//        val useCase = getTrackListUseCase(tracksRepository,queryInput.text)
         showPlaceholder(Placeholder.PROGRESSBAR)
-        if (binding.searchField.text.toString().isNotEmpty()) {
-            trackList.clear()
-            val trackConsumer = TrackPresenter()
-            Creator.provideTracksInteractor().search(binding.searchField.text.toString(),trackConsumer)
-            //я не могу понять, почему на данном этапе не запускается метод search
-            trackList = trackConsumer.getTrackList()
+        if (queryInput.text.isNotEmpty()) {
+            tracksInteractor.search(queryInput.text.toString(), object: TracksInteractor.TracksConsumer {
+                override fun consume(foundTrack: List<Track>) {
+                    handler.post {
+                        trackList.clear()
+                        trackList.addAll(foundTrack)
+                        trackListAdapter.notifyDataSetChanged()
+                    }
+                }
+            })
             if (trackList.isEmpty()) {
                 showPlaceholder(Placeholder.NOTHING_FOUND)
             } else {
@@ -184,7 +183,7 @@ class SearchActivity : AppCompatActivity() {
         } else {
             showPlaceholder(Placeholder.ERROR)
         }
-        trackListAdapter.notifyDataSetChanged()
+//        trackListAdapter.notifyDataSetChanged()
     }
 
     private fun showPlaceholder(placeHolderType: Placeholder, errorMessage: String = "") {
@@ -249,7 +248,6 @@ class SearchActivity : AppCompatActivity() {
         }
         return current
     }
-    private val searchRunnable = Runnable { sendRequest() }
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, DateTimeUtil.SEARCH_DEBOUNCE_DELAY)

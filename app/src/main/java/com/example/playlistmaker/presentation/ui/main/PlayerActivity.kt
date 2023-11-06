@@ -62,14 +62,14 @@ class PlayerActivity : AppCompatActivity() {
         binding.trackName.text = track.trackName
         binding.artistName.text = track.artistName
         binding.trackTime.text = DateTimeUtil.ZERO
-        binding.listDurationValue.text =
-            SimpleDateFormat(DateTimeUtil.FORMAT_MINUTES_SECONDS, Locale.getDefault()).format(track.trackTimeMillis.toInt())
+        binding.listDurationValue.text = track.trackTime
+//            SimpleDateFormat(DateTimeUtil.FORMAT_MINUTES_SECONDS, Locale.getDefault()).format(track.trackTimeMillis.toInt())
         binding.listCollectionValue.text = track.collectionName
         binding.listYearValue.text = track.releaseDate.substring(FIRST_SYMBOL, FOURTH_SYMBOL)
         binding.listGenreValue.text = track.primaryGenreName
         binding.listCountryValue.text = track.country
         Glide.with(this)
-            .load(track.getCoverArtwork())
+            .load(track.artworkUrl500)
             .placeholder(R.drawable.cover_placeholder)
             .fitCenter()
             .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius_medium)))
