@@ -163,7 +163,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun sendRequest() {
-//        val useCase = getTrackListUseCase(tracksRepository,queryInput.text)
         showPlaceholder(Placeholder.PROGRESSBAR)
         if (queryInput.text.isNotEmpty()) {
             tracksInteractor.search(queryInput.text.toString(), object: TracksInteractor.TracksConsumer {
@@ -172,14 +171,14 @@ class SearchActivity : AppCompatActivity() {
                         trackList.clear()
                         trackList.addAll(foundTrack)
                         trackListAdapter.notifyDataSetChanged()
+                        if (trackList.isEmpty()) {
+                            showPlaceholder(Placeholder.NOTHING_FOUND)
+                        } else {
+                            hidePlaceholder()
+                        }
                     }
                 }
             })
-            if (trackList.isEmpty()) {
-                showPlaceholder(Placeholder.NOTHING_FOUND)
-            } else {
-                hidePlaceholder()
-            }
         } else {
             showPlaceholder(Placeholder.ERROR)
         }
