@@ -3,10 +3,11 @@ package com.example.playlistmaker.presentation.ui.track
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.TrackViewBinding
 import com.example.playlistmaker.domain.models.Track
 
-class TrackListAdapter(private val trackList: ArrayList<Track>) :
+
+class TrackListAdapter(var trackList: ArrayList<Track>) :
     RecyclerView.Adapter<TrackCardViewHolder>() {
     interface OnItemClickListener {
         fun onItemClick(position: Int)
@@ -16,17 +17,15 @@ class TrackListAdapter(private val trackList: ArrayList<Track>) :
     }
     private var itemClickListener: OnItemClickListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackCardViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
-        return TrackCardViewHolder(itemView)
+        val layoutInspector = LayoutInflater.from(parent.context)
+        return TrackCardViewHolder(TrackViewBinding.inflate(layoutInspector, parent, false))
     }
-
     override fun onBindViewHolder(holder: TrackCardViewHolder, position: Int) {
         holder.bind(trackList[position])
         holder.itemView.setOnClickListener {
             itemClickListener?.onItemClick(position)
         }
     }
-
     override fun getItemCount() = trackList.size
     fun getTrack(position: Int): Track {
         return trackList[position]

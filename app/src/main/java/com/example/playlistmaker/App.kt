@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.network
+package com.example.playlistmaker
 
 import android.app.Application
 import android.content.Context

@@ -65,25 +65,26 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="@dimen/default_margin_horizontal"
+            android:contentDescription="@string/clear"
             android:src="@drawable/clear_icon"
-            android:visibility="gone"
-            android:contentDescription="@string/clear"/>
+            android:visibility="gone" />
     </FrameLayout>
 
     <LinearLayout
         android:id="@+id/placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="vertical"
         android:visibility="gone">
 
-        <ProgressBar android:id="@+id/progressBar"
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="@dimen/square_image_45"
             android:layout_height="@dimen/square_image_45"
             android:layout_gravity="center"
             android:indeterminateTint="@color/blue"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/placeholderImage"
@@ -104,6 +105,34 @@
             android:gravity="center"
             android:text="@string/nothing_found" />
 
+        <Button
+            android:id="@+id/placeholderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_vertical"
+            android:backgroundTint="?attr/textAppearanceBody1"
+            android:text="@string/update"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/historyText"
+            style="@style/text_regular_22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/default_margin_vertical"
+            android:gravity="center"
+            android:text="@string/search_history" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -118,7 +147,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <Button
-                android:id="@+id/placeholderButton"
+                android:id="@+id/clearHistoryButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin_vertical"

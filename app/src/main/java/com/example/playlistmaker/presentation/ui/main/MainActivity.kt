@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val searchButton = findViewById<Button>(R.id.search_button)
-        val displayIntent = Intent(this, SearchActivity::class.java)
+        val displayIntent = Intent(this, TrackSearchActivity::class.java)
         val searchClickListener: View.OnClickListener = object : View.OnClickListener
         {
             override fun onClick(v: View?) {

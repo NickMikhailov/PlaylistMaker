@@ -14,8 +14,7 @@ import com.example.playlistmaker.domain.models.DateTimeUtil
 import com.example.playlistmaker.domain.models.PlayerState
 import com.example.playlistmaker.domain.models.Track
 import com.google.gson.Gson
-import java.text.SimpleDateFormat
-import java.util.Locale
+
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding

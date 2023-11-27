@@ -14,4 +14,8 @@ class TracksInteractorImpl (private val repository: TracksRepository) : TracksIn
             consumer.consume(foundTrack)
         }
     }
+
+//    override fun loadTrackData(trackId: String, onComplete: Any) {
+//        TODO("Not yet implemented")
+//    }
 }
