@@ -152,8 +152,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin_vertical"
                 android:backgroundTint="?attr/textAppearanceBody1"
-                android:text="@string/update"
-                android:visibility="gone" />
+                android:text="@string/clear_history"
+                android:visibility="visible" />
         </LinearLayout>
     </LinearLayout>
 
