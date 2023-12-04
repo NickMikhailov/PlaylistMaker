@@ -13,17 +13,16 @@ import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 
 class PlayerViewModel(private val track: Track): ViewModel() {
-    private var mediaPlayer = MediaPlayer()
+    private val mediaPlayer = MediaPlayer()
     private val handler = Handler(Looper.getMainLooper())
-    private var isPlaying = false
-    private var playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.Default)
+    private val playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.Default)
 
     fun observeState(): LiveData<PlayerState> = playerStateLiveData
     private fun renderState(state: PlayerState) {
         this.playerStateLiveData.postValue(state)
     }
     fun playBackControl() {
-        if(isPlaying) {
+        if(mediaPlayer.isPlaying) {
             pausePlayer()
         } else {
             startPlayer()
@@ -37,23 +36,20 @@ class PlayerViewModel(private val track: Track): ViewModel() {
             renderState(PlayerState.Prepared)
         }
         mediaPlayer.setOnCompletionListener {
-            isPlaying = false
             renderState(PlayerState.Stopped)
         }
     }
     private fun startPlayer(){
-        isPlaying = true
         mediaPlayer.start()
         timerStart()
         playerStateLiveData.value = PlayerState.Playing
     }
     fun pausePlayer(){
-        isPlaying = false
         mediaPlayer.pause()
         playerStateLiveData.value = PlayerState.Paused
     }
     private fun timerStart() {
-        handler?.post(
+        handler.post(
             updateTimer()
         )
     }
@@ -61,16 +57,16 @@ class PlayerViewModel(private val track: Track): ViewModel() {
         return object : Runnable {
             override fun run() {
                 val currentPosition = mediaPlayer.currentPosition/ DateTimeUtil.MILLISECONDS_IN_A_SECOND
-                if (isPlaying) {
+                if (mediaPlayer.isPlaying) {
                     val currentTime  = String.format("%02d:%02d", currentPosition / DateTimeUtil.SECONDS_IN_A_MINUTE, currentPosition % DateTimeUtil.SECONDS_IN_A_MINUTE)
                     renderState(PlayerState.TimerUpdated(currentTime))
-                    handler?.postDelayed(this, DateTimeUtil.QUARTER_SECOND_DELAY)
+                    handler.postDelayed(this, DateTimeUtil.QUARTER_SECOND_DELAY)
                 }
             }
         }
     }
     public override fun onCleared() {
-        handler?.removeCallbacksAndMessages(null)
+        handler.removeCallbacksAndMessages(null)
         mediaPlayer.release()
     }
     companion object{

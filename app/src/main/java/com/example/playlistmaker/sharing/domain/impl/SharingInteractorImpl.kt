@@ -1,14 +1,11 @@
 package com.example.playlistmaker.sharing.domain.impl
 
-import android.content.Context
-import android.content.Intent
-import com.example.playlistmaker.R
 import com.example.playlistmaker.sharing.SharingInteractor
 import com.example.playlistmaker.sharing.data.ExternalNavigator
 import com.example.playlistmaker.sharing.domain.model.EmailData
 
-class SharingInteractorImpl(private val externalNavigator: ExternalNavigator,
-                            private val context: Context
+class SharingInteractorImpl(
+    private val externalNavigator: ExternalNavigator
 ) : SharingInteractor {
     override fun shareApp() {
        externalNavigator.shareLink(getShareAppLink())
@@ -22,14 +19,22 @@ class SharingInteractorImpl(private val externalNavigator: ExternalNavigator,
         externalNavigator.openEmail(getSupportEmailData())
     }
     private fun getShareAppLink(): String {
-        return context.getString(R.string.link)
+        return SHARE_LINK
         }
 
     private fun getSupportEmailData(): EmailData {
-        return EmailData(context.getString(R.string.email),context.getString(R.string.msg_to_dev_subject),context.getString(R.string.msg_to_dev_text))
+        return EmailData(EMAIL, SUBJECT, MESSAGE)
     }
 
     private fun getTermsLink(): String {
-        return context.getString(R.string.uri_practicum_offer)
+        return TERMS_LINK
     }
+    companion object {
+        private const val SHARE_LINK = "https://practicum.yandex.ru/profile/android-developer/?from=new_landing_android-developer"
+        private const val EMAIL = "mikhailov.nick@ya.ru"
+        private const val SUBJECT = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
+        private const val MESSAGE = "Спасибо разработчикам и разработчицам за крутое приложение!"
+        private const val TERMS_LINK = "https://yandex.ru/legal/practicum_offer/"
+    }
+
 }

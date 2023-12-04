@@ -1,22 +1,19 @@
 package com.example.playlistmaker.settings.ui.view_model
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.R
 import com.example.playlistmaker.settings.domain.SettingsInteractor
 import com.example.playlistmaker.sharing.SharingInteractor
 import java.lang.Exception
 
 class SettingsViewModel(
-    private final val application: Application,
     private val sharingInteractor: SharingInteractor,
     private val settingsInteractor: SettingsInteractor,
-) : AndroidViewModel(application) {
+) : ViewModel() {
     private val settingsStateLiveData = MutableLiveData<SettingsState>()
     fun observeState(): LiveData<SettingsState> = settingsStateLiveData
     private fun renderState(state: SettingsState) {
@@ -28,7 +25,7 @@ class SettingsViewModel(
             sharingInteractor.shareApp()
             renderState(SettingsState.Success)
         } catch (ex: Exception) {
-            renderState(SettingsState.Error(application.getString(R.string.err_msg_to_share)))
+            renderState(SettingsState.Error(ERROR_SHARE_LINK))
         }
     }
 
@@ -37,7 +34,7 @@ class SettingsViewModel(
             renderState(SettingsState.Success)
         }
         catch (ex: Exception){
-            renderState(SettingsState.Error(application.getString(R.string.err_msg_to_open_url)))
+            renderState(SettingsState.Error(ERROR_OPEN_LINK))
         }
     }
 
@@ -47,13 +44,13 @@ class SettingsViewModel(
             renderState(SettingsState.Success)
         }
         catch (ex: Exception){
-            renderState(SettingsState.Error(application.getString(R.string.err_msg_to_send_email)))
+            renderState(SettingsState.Error(ERROR_SEND_EMAIL))
         }
 
     }
 
-    fun updateThemeSettings(isChecked: Boolean) {
-        settingsInteractor.updateThemeSetting(isChecked)
+    fun updateThemeSettings(isDarkMode: Boolean) {
+        settingsInteractor.updateThemeSetting(isDarkMode)
     }
 
     companion object {
@@ -62,13 +59,12 @@ class SettingsViewModel(
             settingsInteractor: SettingsInteractor
         ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                SettingsViewModel(
-                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application,
-                    sharingInteractor,
-                    settingsInteractor
-                )
+                SettingsViewModel(sharingInteractor, settingsInteractor)
             }
         }
+        private const val ERROR_SEND_EMAIL = "Не удалось отправить сообщение!"
+        private const val ERROR_OPEN_LINK = "Не удалось открыть ссылку!"
+        private const val ERROR_SHARE_LINK = "Не удалось поделиться ссылкой!"
     }
 }
 

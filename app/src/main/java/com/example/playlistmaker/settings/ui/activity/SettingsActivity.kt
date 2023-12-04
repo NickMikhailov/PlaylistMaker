@@ -6,14 +6,13 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
-import com.example.playlistmaker.main.domain.App
 import com.example.playlistmaker.settings.ui.view_model.SettingsState
 import com.example.playlistmaker.settings.ui.view_model.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
-    private val sharingInteractor = Creator.provideSharingInteractor(this)
-    private val settingsInteractor = Creator.provideSettingsInteractor(this)
+    private val sharingInteractor = Creator.provideSharingInteractor()
+    private val settingsInteractor = Creator.provideSettingsInteractor()
     private val viewModel by lazy {
         ViewModelProvider(this, SettingsViewModel.factory(sharingInteractor,settingsInteractor))[SettingsViewModel::class.java]
     }
@@ -23,7 +22,8 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setListeners()
-        //binding.themeSwitcher.isChecked = (applicationContext as App).getCurrentTheme()
+
+        binding.themeSwitcher.isChecked = settingsInteractor.isDarkTheme()
 
         viewModel.observeState().observe(this){
             render(it)
@@ -41,7 +41,6 @@ class SettingsActivity : AppCompatActivity() {
             null -> {}
         }
     }
-
     private fun setListeners() {
         binding.arrowBack.setOnClickListener {
             finish()
@@ -57,9 +56,8 @@ class SettingsActivity : AppCompatActivity() {
             viewModel.openTerms()
         }
 
-        binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
-
-        //viewModel.updateThemeSettings(isChecked)
+        binding.themeSwitcher.setOnCheckedChangeListener { _, isDarkMode ->
+        viewModel.updateThemeSettings(isDarkMode)
         }
     }
 }

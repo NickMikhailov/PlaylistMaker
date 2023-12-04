@@ -12,19 +12,14 @@ class RetrofitNetworkClient (): NetworkClient {
         .build()
     val iTunesService = retrofit.create(ITunesSearchAPI::class.java)
 
-    override fun doRequest(dto: Any): Response {
+    override fun doTrackSearchRequest(dto: TrackSearchRequest): Response {
         try {
-            if (dto is TrackSearchRequest) {
                 val resp = iTunesService
                     .findTrack(dto.expression)
                     .execute()
 
                 val body = resp.body() ?: Response()
-
                 return body.apply { resultCode = resp.code() }
-            } else {
-                return Response().apply { resultCode = 400 }
-            }
         }
         catch (ex: Exception){
             return Response().apply { resultCode = 484 }

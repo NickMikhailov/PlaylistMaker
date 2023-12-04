@@ -9,7 +9,7 @@ import com.example.playlistmaker.search.data.network.TrackSearchResponse
 class TracksRepositoryImpl (private val networkClient: NetworkClient) : TracksRepository {
 
     override fun getTracks(expression: String): List<Track> {
-        val response = networkClient.doRequest(TrackSearchRequest(expression))
+        val response = networkClient.doTrackSearchRequest(TrackSearchRequest(expression))
         if (response.resultCode == 200) {
             return (response as TrackSearchResponse).results.map {
                 it.getTrack()

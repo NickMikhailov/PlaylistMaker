@@ -1,5 +1,5 @@
 package com.example.playlistmaker.search.data.network
 
 interface NetworkClient {
-    fun doRequest(dto: Any): Response
+    fun doTrackSearchRequest(dto: TrackSearchRequest): Response
 }
