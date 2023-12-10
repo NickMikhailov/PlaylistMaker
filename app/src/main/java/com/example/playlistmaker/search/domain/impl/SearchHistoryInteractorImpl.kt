@@ -1,14 +1,17 @@
-package com.example.playlistmaker.search.domain.models
+package com.example.playlistmaker.search.domain.impl
 
-import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.main.data.shared_prefs.AppSharedPreferences
 import com.example.playlistmaker.player.domain.models.Track
+import com.example.playlistmaker.search.domain.SearchHistoryInteractor
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
-class SearchHistory (){
-    private var sharedPreferences = Creator.provideSharedPreferences()
-    private var trackListHistory = ArrayList<Track>()
-    fun addToHistory(track: Track) {
+class SearchHistoryInteractorImpl (
+    private val sharedPreferences: AppSharedPreferences,
+    private var trackListHistory: ArrayList<Track>,
+):SearchHistoryInteractor{
+    override fun addToHistory(track: Track) {
+    getHistory()
         if (trackListHistory.contains(track)) {
             trackListHistory.remove(track)
             trackListHistory.add(0,track)
@@ -24,11 +27,11 @@ class SearchHistory (){
             }
         }
     }
-    fun clearHistory(){
+    override fun  clearHistory(){
         trackListHistory.clear()
         sharedPreferences.clear(TRACK_HISTORY)
     }
-    fun getHistory():ArrayList<Track>{
+    override fun  getHistory():ArrayList<Track>{
         val jsonString = sharedPreferences.getString(TRACK_HISTORY)
         val json = GsonBuilder().create()
         val itemType = object : TypeToken<ArrayList<Track>>() {}.type

@@ -12,18 +12,18 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
+import com.example.playlistmaker.search.domain.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.models.Placeholder
-import com.example.playlistmaker.search.domain.models.SearchHistory
 import com.example.playlistmaker.search.ui.TrackListAdapter
 import com.example.playlistmaker.search.ui.view_model.TrackSearchState
 import com.example.playlistmaker.search.ui.view_model.TrackSearchViewModel
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TrackSearchActivity : AppCompatActivity() {
 
@@ -32,9 +32,10 @@ class TrackSearchActivity : AppCompatActivity() {
     private var searchHistoryAdapter = TrackListAdapter(ArrayList())
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
-    private val viewModel by lazy {
-        ViewModelProvider(this, TrackSearchViewModel.factory())[TrackSearchViewModel::class.java]
-    }
+    private val viewModel by viewModel<TrackSearchViewModel>()
+//    private val viewModel by lazy {
+//        ViewModelProvider(this, TrackSearchViewModel.factory())[TrackSearchViewModel::class.java]
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +63,7 @@ class TrackSearchActivity : AppCompatActivity() {
 
     private fun setListeners() {
         //слушатели поля поиска
-        var textWatcher = object : TextWatcher {
+        val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) {
@@ -75,18 +76,15 @@ class TrackSearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         }
-        textWatcher?.let { binding.searchField.addTextChangedListener(it) }
+        textWatcher.let { binding.searchField.addTextChangedListener(it) }
         binding.searchField.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus && binding.searchField.text.isEmpty()) {
                 viewModel.showHistory()
-            } else {
-
             }
         }
         binding.searchField.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.sendRequest(newSearchText = binding.searchField.text.toString())
-                true
             }
             false
         }
@@ -168,13 +166,13 @@ class TrackSearchActivity : AppCompatActivity() {
         trackListAdapter.trackList.addAll(newTrackList)
         trackListAdapter.notifyDataSetChanged()
     }
-    private fun showHistory(searchHistory: SearchHistory) {
+    private fun showHistory(searchHistory: SearchHistoryInteractor) {
         searchHistoryAdapter.update(searchHistory.getHistory())
         searchHistoryAdapter.notifyDataSetChanged()
         binding.placeholder.visibility = View.GONE
         binding.history.visibility = View.VISIBLE
     }
-    private fun showPlaceholder(placeHolderType: Placeholder, errorMessage: String = "") {
+    private fun showPlaceholder(placeHolderType: Placeholder, errorMessage: Int = 0) {
         binding.placeholder.visibility = View.VISIBLE
         binding.history.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
@@ -205,8 +203,8 @@ class TrackSearchActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.VISIBLE
             }
         }
-        if (errorMessage.isNotEmpty()) {
-            Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG)
+        if (errorMessage != 0) {
+            Toast.makeText(applicationContext, getString(errorMessage), Toast.LENGTH_LONG)
                 .show()
         }
     }
