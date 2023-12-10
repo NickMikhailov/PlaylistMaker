@@ -1,13 +1,12 @@
 package com.example.playlistmaker.settings.data.impl
 
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.main.data.shared_prefs.AppSharedPreferences
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.settings.data.SettingsRepository
 
-class SettingsRepositoryImpl(
-    private val sharedPreferences:AppSharedPreferences
-    ): SettingsRepository {
+class SettingsRepositoryImpl: SettingsRepository {
 
+    private val sharedPreferences = Creator.provideSharedPreferences()
     override fun updateThemeSetting(isDarkTheme: Boolean) {
         if (isDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

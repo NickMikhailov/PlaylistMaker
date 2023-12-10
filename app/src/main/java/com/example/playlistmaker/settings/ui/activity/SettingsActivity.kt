@@ -3,15 +3,19 @@ package com.example.playlistmaker.settings.ui.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.settings.ui.view_model.SettingsState
 import com.example.playlistmaker.settings.ui.view_model.SettingsViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
-
-    private val viewModel: SettingsViewModel by viewModel()
+    private val sharingInteractor = Creator.provideSharingInteractor()
+    private val settingsInteractor = Creator.provideSettingsInteractor()
+    private val viewModel by lazy {
+        ViewModelProvider(this, SettingsViewModel.factory(sharingInteractor,settingsInteractor))[SettingsViewModel::class.java]
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
@@ -19,7 +23,7 @@ class SettingsActivity : AppCompatActivity() {
 
         setListeners()
 
-        binding.themeSwitcher.isChecked = viewModel.isDarkTheme()
+        binding.themeSwitcher.isChecked = settingsInteractor.isDarkTheme()
 
         viewModel.observeState().observe(this){
             render(it)
@@ -31,7 +35,7 @@ class SettingsActivity : AppCompatActivity() {
             is SettingsState.Success -> {
             }
             is SettingsState.Error -> {
-                Toast.makeText(applicationContext, getString(state.errorMessage), Toast.LENGTH_LONG)
+                Toast.makeText(applicationContext, state.errorMessage, Toast.LENGTH_LONG)
                     .show()
             }
             null -> {}

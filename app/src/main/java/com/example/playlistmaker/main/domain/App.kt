@@ -1,22 +1,13 @@
 package com.example.playlistmaker.main.domain
 
 import android.app.Application
-import com.example.playlistmaker.settings.domain.SettingsInteractor
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.GlobalContext.startKoin
-import dataModule
-import interactorModule
-import repositoryModule
-import viewModelModule
-import org.koin.android.ext.android.inject
+import com.example.playlistmaker.creator.Creator
+
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        startKoin {
-            androidContext(this@App)
-            modules(dataModule, repositoryModule, interactorModule, viewModelModule)
-        }
-        val settingsInteractor: SettingsInteractor by inject()
+        Creator.putApplication(this)
+        val settingsInteractor = Creator.provideSettingsInteractor()
         settingsInteractor.updateThemeSetting(settingsInteractor.isDarkTheme())
     }
 }
