@@ -14,21 +14,21 @@ import org.koin.dsl.module
 
 val interactorModule = module {
 
-    single<TracksInteractor> {
+    factory<TracksInteractor> {
         TracksInteractorImpl(get())
     }
 
-    single<SearchHistoryInteractor> {
+    factory<SearchHistoryInteractor> {
         SearchHistoryInteractorImpl(get(), ArrayList<Track>())
     }
 
-    single<SharingInteractor>{
+    factory<SharingInteractor>{
         SharingInteractorImpl(get())
     }
-    single<SettingsInteractor>{
+    factory<SettingsInteractor>{
         SettingsInteractorImpl(get())
     }
-    single<ExternalNavigator>{
+    factory<ExternalNavigator>{
         ExternalNavigatorImpl(androidContext())
     }
 }

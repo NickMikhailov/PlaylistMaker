@@ -20,10 +20,6 @@ class PlayerActivity : AppCompatActivity() {
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(track)
     }
-    //    private val viewModel by lazy {
-//        ViewModelProvider(this, PlayerViewModel.factory(track))[PlayerViewModel::class.java]
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)

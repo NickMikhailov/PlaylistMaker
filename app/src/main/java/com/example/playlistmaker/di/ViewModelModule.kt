@@ -11,9 +11,9 @@ val viewModelModule = module {
         TrackSearchViewModel(get(),get())
     }
     viewModel {(track: Track) ->
-        PlayerViewModel(track)  //надо понять откуда брать track
+        PlayerViewModel(track)
     }
     viewModel {
-        SettingsViewModel(get(),get())  //надо понять откуда брать track
+        SettingsViewModel(get(),get())
     }
 }

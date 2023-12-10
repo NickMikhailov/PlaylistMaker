@@ -1,6 +1,7 @@
 package com.example.playlistmaker.search.data.network
 
 import java.lang.Exception
+import java.net.HttpURLConnection.HTTP_NOT_FOUND
 
 class RetrofitNetworkClient (private val iTunesService: ITunesSearchAPI): NetworkClient {
 
@@ -13,7 +14,7 @@ class RetrofitNetworkClient (private val iTunesService: ITunesSearchAPI): Networ
             val body = resp.body() ?: Response()
             body.apply { resultCode = resp.code() }
         } catch (ex: Exception){
-            Response().apply { resultCode = 484 }
+            Response().apply { resultCode = HTTP_NOT_FOUND }
         }
     }
 }

@@ -33,10 +33,6 @@ class TrackSearchActivity : AppCompatActivity() {
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
     private val viewModel by viewModel<TrackSearchViewModel>()
-//    private val viewModel by lazy {
-//        ViewModelProvider(this, TrackSearchViewModel.factory())[TrackSearchViewModel::class.java]
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
