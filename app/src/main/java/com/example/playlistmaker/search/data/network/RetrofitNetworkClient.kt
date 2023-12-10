@@ -1,28 +1,20 @@
 package com.example.playlistmaker.search.data.network
 
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Exception
+import java.net.HttpURLConnection.HTTP_NOT_FOUND
 
-class RetrofitNetworkClient (): NetworkClient {
-    private val itunesBaseUrl = "https://itunes.apple.com"
-    val retrofit = Retrofit.Builder()
-        .baseUrl(itunesBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    val iTunesService = retrofit.create(ITunesSearchAPI::class.java)
+class RetrofitNetworkClient (private val iTunesService: ITunesSearchAPI): NetworkClient {
 
     override fun doTrackSearchRequest(dto: TrackSearchRequest): Response {
-        try {
-                val resp = iTunesService
-                    .findTrack(dto.expression)
-                    .execute()
+        return try {
+            val resp = iTunesService
+                .findTrack(dto.expression)
+                .execute()
 
-                val body = resp.body() ?: Response()
-                return body.apply { resultCode = resp.code() }
-        }
-        catch (ex: Exception){
-            return Response().apply { resultCode = 484 }
+            val body = resp.body() ?: Response()
+            body.apply { resultCode = resp.code() }
+        } catch (ex: Exception){
+            Response().apply { resultCode = HTTP_NOT_FOUND }
         }
     }
 }

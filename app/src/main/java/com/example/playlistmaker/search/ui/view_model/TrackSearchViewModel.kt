@@ -6,23 +6,21 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.R
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 import com.example.playlistmaker.player.domain.models.Track
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.playlistmaker.search.domain.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.TracksConsumer
+import com.example.playlistmaker.search.domain.TracksInteractor
 import com.example.playlistmaker.search.domain.models.Placeholder
-import com.example.playlistmaker.search.domain.models.SearchHistory
 
 
-class TrackSearchViewModel() : ViewModel() {
-    private val tracksInteractor = Creator.provideTracksInteractor()
+class TrackSearchViewModel(
+    private val tracksInteractor: TracksInteractor,
+    private val searchHistoryInteractor: SearchHistoryInteractor) : ViewModel() {
     private val handler = Handler(Looper.getMainLooper())
     private var latestSearchText: String? = null
     private var trackList = mutableListOf<Track>()
-    private var searchHistory = SearchHistory()
 
     private val trackSearchStateLiveData = MutableLiveData<TrackSearchState>()
     private val showPlayerTrigger = SingleEventLiveData<Track>()
@@ -56,7 +54,7 @@ class TrackSearchViewModel() : ViewModel() {
                     if (foundTracks != null) {
                         trackList.addAll(foundTracks)
                     } else {
-                        renderState(TrackSearchState.Error(Placeholder.ERROR, ERROR_MESSAGE))
+                        renderState(TrackSearchState.Error(Placeholder.ERROR, R.string.error))
                     }
 
                     if (trackList.isEmpty()) {
@@ -69,19 +67,19 @@ class TrackSearchViewModel() : ViewModel() {
         }
     }
     fun showPlayer(track: Track){
-        searchHistory.addToHistory(track)
+        searchHistoryInteractor.addToHistory(track)
         showPlayerTrigger.value = track
     }
     fun showHistory(){
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-        if(searchHistory.getHistory().size!=0) {
-            renderState(TrackSearchState.History(searchHistory))
+        if(searchHistoryInteractor.getHistory().size!=0) {
+            renderState(TrackSearchState.History(searchHistoryInteractor))
         } else {
             renderState(TrackSearchState.Error(Placeholder.EMPTY))
         }
     }
     fun clearHistory() {
-        searchHistory.clearHistory()
+        searchHistoryInteractor.clearHistory()
         renderState(TrackSearchState.Error(Placeholder.EMPTY))
     }
     override fun onCleared() {
@@ -89,11 +87,5 @@ class TrackSearchViewModel() : ViewModel() {
     }
     companion object {
         private val SEARCH_REQUEST_TOKEN = Any()
-        private const val ERROR_MESSAGE = "Проблемы с сетью. Попробуйте еще раз."
-        fun factory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                TrackSearchViewModel()
-            }
         }
     }
-}
