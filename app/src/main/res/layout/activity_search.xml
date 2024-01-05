@@ -58,7 +58,6 @@
             android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="?attr/textAppearanceBody2" />
-
         <ImageView
             android:id="@+id/clearIcon"
             android:layout_width="wrap_content"

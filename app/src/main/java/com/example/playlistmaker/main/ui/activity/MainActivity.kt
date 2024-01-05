@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import com.example.playlistmaker.R
-import com.example.playlistmaker.library.ui.LibraryActivity
+import com.example.playlistmaker.library.ui.activity.LibraryActivity
 import com.example.playlistmaker.settings.ui.activity.SettingsActivity
 import com.example.playlistmaker.search.ui.activity.TrackSearchActivity
 
