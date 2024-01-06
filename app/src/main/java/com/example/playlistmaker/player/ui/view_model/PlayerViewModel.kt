@@ -6,9 +6,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 
@@ -69,11 +66,5 @@ class PlayerViewModel(private val track: Track): ViewModel() {
         handler.removeCallbacksAndMessages(null)
         mediaPlayer.release()
     }
-    companion object{
-        fun factory(track: Track): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerViewModel(track)
-            }
-        }
-    }
+
 }

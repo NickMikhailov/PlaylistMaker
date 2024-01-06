@@ -34,6 +34,12 @@
     <string name="err_msg_to_send_email">Не удалось отправить сообщение!</string>
     <string name="err_msg_to_share">Не удалось поделиться ссылкой!</string>
     <string name="err_msg_to_open_url">Не удалось открыть ссылку!</string>
-
     <string name="msg_to_dev_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="favorite_tracks">Избранные треки</string>
+    <string name="playlists">Плейлисты</string>
+    <string name="library_is_empty">Ваша медиатека пуста</string>
+    <string name="playlists_are_empty_string1">Вы не создали</string>
+    <string name="playlists_are_empty_string2">ни одного плейлиста</string>
+    <string name="new_playlist">Новый плейлист</string>
+
 </resources>
