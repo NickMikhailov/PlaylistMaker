@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="black">#000000</color>
+    <color name="dark">#1A1B22</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#3772E7</color>
     <color name="grey">#AEAFB4</color>
@@ -9,10 +10,10 @@
     <color name="soft_red">#F56B6C</color>
 
     <color name="my_light_primary">@color/blue</color>
-    <color name="my_dark_primary">@color/black</color>
+    <color name="my_dark_primary">@color/dark</color>
     <color name="my_light_secondary">@color/white</color>
-    <color name="my_dark_secondary">@color/black</color>
-    <color name="light_mode_accent">#1A1B22</color>
+    <color name="my_dark_secondary">@color/dark</color>
+    <color name="light_mode_accent">@color/dark</color>
     <color name="dark_mode_accent">@color/white</color>
 
 </resources>

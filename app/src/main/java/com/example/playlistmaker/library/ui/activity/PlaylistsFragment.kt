@@ -12,12 +12,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {
 
-    private lateinit var binding: FragmentPlaylistsBinding
+    private var _binding: FragmentPlaylistsBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: PlaylistsViewModel by viewModel()
 
     companion object {
-        fun newInstance() = PlaylistsFragment().apply {
-        }
+        fun newInstance() = PlaylistsFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +29,7 @@ class PlaylistsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
+        _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -38,5 +38,9 @@ class PlaylistsFragment : Fragment() {
             PlaylistsStates.Empty -> binding.placeholder.visibility = View.VISIBLE
             else -> binding.placeholder.visibility = View.GONE
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

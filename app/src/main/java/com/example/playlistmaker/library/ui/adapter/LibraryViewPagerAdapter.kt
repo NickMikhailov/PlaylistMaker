@@ -7,20 +7,21 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.playlistmaker.library.ui.activity.FavoritesFragment
 import com.example.playlistmaker.library.ui.activity.PlaylistsFragment
 
-class LibraryViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
-    : FragmentStateAdapter(fragmentManager, lifecycle) {
+class LibraryViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+    FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
         return TABS_COUNT
     }
 
     override fun createFragment(position: Int): Fragment {
-        return when (position){
-        1 -> PlaylistsFragment.newInstance()
-        else -> FavoritesFragment.newInstance()
+        return when (position) {
+            1 -> PlaylistsFragment.newInstance()
+            else -> FavoritesFragment.newInstance()
         }
     }
-    companion object{
+
+    companion object {
         private const val TABS_COUNT = 2
     }
 }
