@@ -6,6 +6,7 @@
     <dimen name="text_main_16">16sp</dimen>
     <dimen name="text_medium_14">14sp</dimen>
     <dimen name="text_medium_13">13sp</dimen>
+    <dimen name="text_medium_12">12sp</dimen>
     <dimen name="text_small_11">11sp</dimen>
 
     <dimen name="text_block_height">52dp</dimen>
@@ -23,5 +24,6 @@
     <dimen name="square_image_45">45dp</dimen>
     <dimen name="square_image_51">51dp</dimen>
     <dimen name="square_image_100">100dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
 
 </resources>

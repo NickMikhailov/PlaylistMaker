@@ -24,11 +24,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:itemIconTint="@color/bottom_nav_item_color"
-        app:iconTint="@color/soft_red"
         app:itemTextColor="@color/bottom_nav_item_color"
         android:background="?attr/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:itemTextAppearanceActive="@style/text_regular_12"
+        app:itemTextAppearanceInactive="@style/text_regular_12"
+        app:itemIconSize="@dimen/icon_size"
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemActiveIndicatorStyle="@color/blue"
+        app:itemRippleColor="@android:color/transparent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
