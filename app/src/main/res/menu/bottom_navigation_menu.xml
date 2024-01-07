@@ -4,13 +4,11 @@
     <item
         android:id="@+id/TrackSearchFragment"
         android:title="@string/search"
-        android:icon="@drawable/search_icon"
-        android:textAppearance="@style/text_regular_13"/>
+        android:icon="@drawable/search_icon"/>
     <item
         android:id="@+id/LibraryFragment"
         android:title="@string/library"
-        android:icon="@drawable/library_icon"
-        android:textAppearance="@style/text_regular_13"/>
+        android:icon="@drawable/library_icon"/>
     <item
         android:id="@+id/SettingsFragment"
         android:title="@string/settings"
