@@ -2,22 +2,24 @@ package com.example.playlistmaker.search.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivitySearchBinding
-import com.example.playlistmaker.search.domain.models.DateTimeUtil
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
 import com.example.playlistmaker.search.domain.SearchHistoryInteractor
+import com.example.playlistmaker.search.domain.models.DateTimeUtil
 import com.example.playlistmaker.search.domain.models.Placeholder
 import com.example.playlistmaker.search.ui.TrackListAdapter
 import com.example.playlistmaker.search.ui.view_model.TrackSearchState
@@ -25,36 +27,45 @@ import com.example.playlistmaker.search.ui.view_model.TrackSearchViewModel
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TrackSearchActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivitySearchBinding
+class TrackSearchFragment : Fragment() {
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private var trackListAdapter = TrackListAdapter(ArrayList())
     private var searchHistoryAdapter = TrackListAdapter(ArrayList())
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
     private val viewModel by viewModel<TrackSearchViewModel>()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
+    companion object {
+        private const val SEARCH_TEXT_KEY = "searchText"
+        private const val KEY_TRACK = "track"
+        fun newInstance() = TrackSearchFragment()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.trackListView.adapter = trackListAdapter
         binding.searchHistoryView.adapter = searchHistoryAdapter
 
         setListeners()
 
-        viewModel.observeState().observe(this) { render(it) }
-        viewModel.observeStartPlayerEvent().observe(this) { track -> showPlayer(track) }
+        viewModel.observeState().observe(viewLifecycleOwner) { render(it) }
+        viewModel.observeStartPlayerEvent()
+            .observe(viewLifecycleOwner) { track -> showPlayer(track) }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT_KEY, binding.searchField.text.toString())
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        binding.searchField.setText(savedInstanceState.getString(SEARCH_TEXT_KEY))
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setListeners() {
@@ -84,14 +95,12 @@ class TrackSearchActivity : AppCompatActivity() {
             }
             false
         }
-        //слушатель кнопки назад
-        binding.arrowBack.setOnClickListener {
-            finish()
-        }
+
         //слушатель кнопки очистки строки поиска
         binding.clearIcon.setOnClickListener {
             binding.searchField.text.clear()
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
             binding.clearIcon.visibility = View.GONE
             viewModel.showHistory()
@@ -101,7 +110,7 @@ class TrackSearchActivity : AppCompatActivity() {
             override fun onItemClick(position: Int) {
                 if (clickDebounce()) {
                     viewModel.showPlayer(trackListAdapter.getTrack(position))
-                }
+                    }
             }
         })
         //слушатель клика на трек в списке истории поиска
@@ -121,7 +130,7 @@ class TrackSearchActivity : AppCompatActivity() {
     }
 
     private fun showPlayer(track: Track) {
-        val displayIntent = Intent(this, PlayerActivity::class.java)
+        val displayIntent = Intent(requireContext(), PlayerActivity::class.java)
         displayIntent.putExtra(KEY_TRACK, Gson().toJson(track))
         startActivity(displayIntent)
     }
@@ -162,12 +171,14 @@ class TrackSearchActivity : AppCompatActivity() {
         trackListAdapter.trackList.addAll(newTrackList)
         trackListAdapter.notifyDataSetChanged()
     }
+
     private fun showHistory(searchHistory: SearchHistoryInteractor) {
         searchHistoryAdapter.update(searchHistory.getHistory())
         searchHistoryAdapter.notifyDataSetChanged()
         binding.placeholder.visibility = View.GONE
         binding.history.visibility = View.VISIBLE
     }
+
     private fun showPlaceholder(placeHolderType: Placeholder, errorMessage: Int = 0) {
         binding.placeholder.visibility = View.VISIBLE
         binding.history.visibility = View.GONE
@@ -186,6 +197,7 @@ class TrackSearchActivity : AppCompatActivity() {
                 binding.placeholderText.visibility = View.VISIBLE
                 binding.placeholderText.text = getString(R.string.nothing_found)
             }
+
             Placeholder.ERROR -> {
                 binding.placeholderImage.visibility = View.VISIBLE
                 binding.placeholderImage.setImageResource(R.drawable.error_placeholder)
@@ -195,17 +207,14 @@ class TrackSearchActivity : AppCompatActivity() {
                 binding.placeholderButton.text = getString(R.string.update)
 
             }
+
             Placeholder.PROGRESSBAR -> {
                 binding.progressBar.visibility = View.VISIBLE
             }
         }
         if (errorMessage != 0) {
-            Toast.makeText(applicationContext, getString(errorMessage), Toast.LENGTH_LONG)
+            Toast.makeText(requireContext(), getString(errorMessage), Toast.LENGTH_LONG)
                 .show()
         }
-    }
-    companion object {
-        private const val SEARCH_TEXT_KEY = "searchText"
-        private const val KEY_TRACK = "track"
     }
 }

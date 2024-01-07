@@ -9,11 +9,10 @@
     <color name="light_grey">#E6E8EB</color>
     <color name="soft_red">#F56B6C</color>
 
-    <color name="my_light_primary">@color/blue</color>
-    <color name="my_dark_primary">@color/dark</color>
+    <color name="my_light_primary">@color/black</color>
+    <color name="my_dark_primary">@color/white</color>
     <color name="my_light_secondary">@color/white</color>
     <color name="my_dark_secondary">@color/dark</color>
     <color name="light_mode_accent">@color/dark</color>
     <color name="dark_mode_accent">@color/white</color>
-
 </resources>
