@@ -10,5 +10,6 @@
         <item name="tickColorInactive">@color/grey</item>
         <item name="colorAccent">@color/light_mode_accent</item>
         <item name="backgroundTint">@color/light_grey</item>
+
     </style>
 </resources>

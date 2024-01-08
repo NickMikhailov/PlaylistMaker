@@ -38,8 +38,7 @@
     <string name="favorite_tracks">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
     <string name="library_is_empty">Ваша медиатека пуста</string>
-    <string name="playlists_are_empty_string1">Вы не создали</string>
-    <string name="playlists_are_empty_string2">ни одного плейлиста</string>
+    <string name="playlists_are_empty_string1">Вы не создали\nни одного плейлиста</string>
     <string name="new_playlist">Новый плейлист</string>
 
 </resources>

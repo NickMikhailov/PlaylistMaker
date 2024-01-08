@@ -31,16 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginHorizontal="@dimen/default_margin_horizontal"
             android:text="@string/playlists_are_empty_string1" />
 
-        <TextView
-            android:id="@+id/placeholderTextString2"
-            style="@style/text_regular_22"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/default_margin_horizontal"
-            android:text="@string/playlists_are_empty_string2" />
     </LinearLayout>
 </FrameLayout>

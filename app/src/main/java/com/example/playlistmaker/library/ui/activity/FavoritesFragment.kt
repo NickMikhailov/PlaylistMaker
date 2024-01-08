@@ -20,19 +20,18 @@ class FavoritesFragment: Fragment() {
         fun newInstance() = FavoritesFragment()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.observeState().observe(this) {
-            render(it)
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.observeState().observe(viewLifecycleOwner) {
+            render(it)
+        }
+    }
     private fun render(state: FavoritesState){
         when (state) {
             FavoritesState.Empty -> binding.placeholder.visibility = View.VISIBLE

@@ -1,46 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?attr/colorSecondary">
+    android:background="?attr/colorSecondary"
+    android:orientation="vertical">
 
-
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_block_height"
+        android:layout_marginStart="@dimen/default_margin_horizontal"
         android:gravity="center_vertical|start"
-        android:orientation="horizontal">
+        android:text="@string/settings"
+        android:textAppearance="@style/text_regular_22" />
 
-        <ImageView
-            android:id="@+id/arrowBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin_horizontal"
-            android:contentDescription="@string/back"
-            android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/array_back_icon"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin_horizontal"
-            android:text="@string/settings"
-            android:textAppearance="@style/text_regular_22" />
-    </LinearLayout>
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/themeSwitcher"
-        android:text="@string/dark_mode"
         style="@style/text_regular_16"
-        android:layout_marginHorizontal="@dimen/default_margin_horizontal"
-        android:layout_gravity="start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:thumbTint="?attr/tickColorInactive"/>
+        android:layout_gravity="start"
+        android:layout_marginHorizontal="@dimen/default_margin_horizontal"
+        android:text="@string/dark_mode"
+        app:thumbTint="?attr/tickColorInactive" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -54,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:text="@string/share"/>
+            android:text="@string/share" />
 
         <ImageView
             android:id="@+id/shareIcon"
@@ -62,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:contentDescription="@string/share"
-            android:src="@drawable/share_inactive"/>
+            android:src="@drawable/share_inactive" />
     </FrameLayout>
 
     <FrameLayout
@@ -77,15 +60,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:text="@string/support"/>
+            android:text="@string/support" />
 
         <ImageView
             android:id="@+id/supportIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/support_icon"
-            android:contentDescription="@string/support"/>
+            android:contentDescription="@string/support"
+            android:src="@drawable/support_icon" />
     </FrameLayout>
 
     <FrameLayout
@@ -100,15 +83,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:text="@string/agreement"/>
+            android:text="@string/agreement" />
 
         <ImageView
             android:id="@+id/agreementIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/arrow_forward_icon"
-            android:contentDescription="@string/agreement"/>
+            android:contentDescription="@string/agreement"
+            android:src="@drawable/arrow_forward_icon" />
     </FrameLayout>
 </LinearLayout>
 
