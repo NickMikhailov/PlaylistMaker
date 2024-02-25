@@ -3,8 +3,6 @@ package com.example.playlistmaker.search.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -14,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.models.Track
@@ -25,6 +24,8 @@ import com.example.playlistmaker.search.ui.TrackListAdapter
 import com.example.playlistmaker.search.ui.view_model.TrackSearchState
 import com.example.playlistmaker.search.ui.view_model.TrackSearchViewModel
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TrackSearchFragment : Fragment() {
@@ -33,13 +34,10 @@ class TrackSearchFragment : Fragment() {
     private var trackListAdapter = TrackListAdapter(ArrayList())
     private var searchHistoryAdapter = TrackListAdapter(ArrayList())
     private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
     private val viewModel by viewModel<TrackSearchViewModel>()
 
     companion object {
-        private const val SEARCH_TEXT_KEY = "searchText"
         private const val KEY_TRACK = "track"
-        fun newInstance() = TrackSearchFragment()
     }
 
     override fun onCreateView(
@@ -110,7 +108,7 @@ class TrackSearchFragment : Fragment() {
             override fun onItemClick(position: Int) {
                 if (clickDebounce()) {
                     viewModel.showPlayer(trackListAdapter.getTrack(position))
-                    }
+                }
             }
         })
         //слушатель клика на трек в списке истории поиска
@@ -139,7 +137,10 @@ class TrackSearchFragment : Fragment() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, DateTimeUtil.CLICK_DEBOUNCE_DELAY)
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(DateTimeUtil.CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }
