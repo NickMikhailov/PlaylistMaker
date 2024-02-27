@@ -1,70 +1,90 @@
 package com.example.playlistmaker.player.ui.view_model
 
 import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-class PlayerViewModel(private val track: Track): ViewModel() {
+class PlayerViewModel(private val track: Track) : ViewModel() {
     private val mediaPlayer = MediaPlayer()
-    private val handler = Handler(Looper.getMainLooper())
-    private val playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.Default)
-
+    private var timerJob: Job? = null
+    private val playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.Default())
     fun observeState(): LiveData<PlayerState> = playerStateLiveData
-    private fun renderState(state: PlayerState) {
-        this.playerStateLiveData.postValue(state)
+
+    init {
+        initMediaPlayer()
     }
-    fun playBackControl() {
-        if(mediaPlayer.isPlaying) {
-            pausePlayer()
-        } else {
-            startPlayer()
-        }
+
+    fun onPause() {
+        pausePlayer()
     }
-    fun preparePlayer() {
-            renderState(PlayerState.Default)
+
+    public override fun onCleared() {
+        super.onCleared()
+        mediaPlayer.stop()
+        mediaPlayer.release()
+        playerStateLiveData.value = PlayerState.Default()
+    }
+
+    private fun initMediaPlayer() {
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            renderState(PlayerState.Prepared)
+            playerStateLiveData.postValue(PlayerState.Prepared())
         }
         mediaPlayer.setOnCompletionListener {
-            renderState(PlayerState.Stopped)
+            timerJob?.cancel()
+            playerStateLiveData.postValue(PlayerState.Prepared())
         }
     }
-    private fun startPlayer(){
+
+    fun onPlayButtonClicked() {
+        when (playerStateLiveData.value) {
+            is PlayerState.Playing -> {
+                pausePlayer()
+            }
+
+            is PlayerState.Prepared, is PlayerState.Paused -> {
+                startPlayer()
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun startPlayer() {
         mediaPlayer.start()
-        timerStart()
-        playerStateLiveData.value = PlayerState.Playing
+        playerStateLiveData.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+        startTimer()
     }
-    fun pausePlayer(){
+
+    private fun pausePlayer() {
         mediaPlayer.pause()
-        playerStateLiveData.value = PlayerState.Paused
+        timerJob?.cancel()
+        playerStateLiveData.postValue(PlayerState.Paused(getCurrentPlayerPosition()))
     }
-    private fun timerStart() {
-        handler.post(
-            updateTimer()
-        )
-    }
-    private fun updateTimer(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                val currentPosition = mediaPlayer.currentPosition/ DateTimeUtil.MILLISECONDS_IN_A_SECOND
-                if (mediaPlayer.isPlaying) {
-                    val currentTime  = String.format("%02d:%02d", currentPosition / DateTimeUtil.SECONDS_IN_A_MINUTE, currentPosition % DateTimeUtil.SECONDS_IN_A_MINUTE)
-                    renderState(PlayerState.TimerUpdated(currentTime))
-                    handler.postDelayed(this, DateTimeUtil.QUARTER_SECOND_DELAY)
-                }
+
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (mediaPlayer.isPlaying) {
+                delay(DateTimeUtil.MS_300_DELAY)
+                playerStateLiveData.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
             }
         }
     }
-    public override fun onCleared() {
-        handler.removeCallbacksAndMessages(null)
-        mediaPlayer.release()
+
+    private fun getCurrentPlayerPosition(): String {
+        return SimpleDateFormat(DateTimeUtil.FORMAT_MINUTES_SECONDS, Locale.getDefault()).format(
+            mediaPlayer.currentPosition
+        ) ?: DateTimeUtil.ZERO
     }
 
 }

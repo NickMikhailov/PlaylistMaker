@@ -20,12 +20,12 @@ class PlayerActivity : AppCompatActivity() {
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(track)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         track = Gson().fromJson(intent.getStringExtra(KEY_TRACK), Track::class.java)
-        viewModel.preparePlayer()
         renderTrack(track)
         setListeners()
         viewModel.observeState().observe(this) {
@@ -49,7 +49,7 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
         binding.playPauseButton.setOnClickListener {
-            viewModel.playBackControl()
+            viewModel.onPlayButtonClicked()
         }
         //заглушки для кнопок:
         binding.addToFavoriteButton.setOnClickListener {
@@ -81,39 +81,32 @@ class PlayerActivity : AppCompatActivity() {
         when (state) {
             is PlayerState.Default -> {
                 binding.playPauseButton.isEnabled = false
+                binding.playPauseButton.setImageResource(R.drawable.play_button_inactive)
             }
 
             is PlayerState.Prepared -> {
                 binding.playPauseButton.isEnabled = true
-            }
-
-            is PlayerState.Paused -> {
-                binding.playPauseButton.setImageResource(R.drawable.play_button)
-            }
-
-            is PlayerState.Playing -> {
-                binding.playPauseButton.setImageResource(R.drawable.pause_button)
-            }
-
-            is PlayerState.Stopped -> {
                 binding.playPauseButton.setImageResource(R.drawable.play_button)
                 binding.trackTime.text = DateTimeUtil.ZERO
             }
 
-            is PlayerState.TimerUpdated -> {
-                binding.trackTime.text = state.currentTime
+            is PlayerState.Paused -> {
+                binding.playPauseButton.isEnabled = true
+                binding.playPauseButton.setImageResource(R.drawable.play_button)
+                binding.trackTime.text = state.progress
+            }
+
+            is PlayerState.Playing -> {
+                binding.playPauseButton.isEnabled = true
+                binding.playPauseButton.setImageResource(R.drawable.pause_button)
+                binding.trackTime.text = state.progress
             }
         }
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.pausePlayer()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onCleared()
+        viewModel.onPause()
     }
 
     companion object {

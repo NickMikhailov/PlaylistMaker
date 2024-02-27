@@ -8,7 +8,7 @@ import com.example.playlistmaker.settings.domain.impl.SettingsInteractorImpl
 import com.example.playlistmaker.sharing.SharingInteractor
 import com.example.playlistmaker.sharing.data.ExternalNavigator
 import com.example.playlistmaker.sharing.data.impl.ExternalNavigatorImpl
-import com.example.playlistmaker.sharing.domain.impl.SharingInteractorImpl
+import com.example.playlistmaker.sharing.data.impl.domain.impl.SharingInteractorImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

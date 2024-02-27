@@ -1,11 +1,11 @@
 package com.example.playlistmaker.player.ui.view_model
 
-sealed interface PlayerState {
-    object Default: PlayerState
-    object Prepared: PlayerState
-    object Paused: PlayerState
-    object Playing: PlayerState
-    object Stopped: PlayerState
-    data class TimerUpdated(val currentTime:String): PlayerState
+import com.example.playlistmaker.search.domain.models.DateTimeUtil
+
+sealed class PlayerState(val progress: String) {
+    class Default : PlayerState(DateTimeUtil.ZERO)
+    class Prepared : PlayerState(DateTimeUtil.ZERO)
+    class Paused(progress: String) : PlayerState(progress)
+    class Playing(progress: String) : PlayerState(progress)
 
 }
