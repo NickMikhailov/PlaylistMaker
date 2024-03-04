@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.library.domain.db.FavoritesInteractor
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 import kotlinx.coroutines.Job
@@ -13,7 +14,10 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val track: Track) : ViewModel() {
+class PlayerViewModel(
+    private val track: Track,
+    private val favoritesInteractor: FavoritesInteractor
+) : ViewModel() {
     private val mediaPlayer = MediaPlayer()
     private var timerJob: Job? = null
     private val playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.Default())
@@ -60,31 +64,43 @@ class PlayerViewModel(private val track: Track) : ViewModel() {
         }
     }
 
-    private fun startPlayer() {
-        mediaPlayer.start()
-        playerStateLiveData.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
-        startTimer()
-    }
+    fun onFavoriteClicked(track: Track) {
+        viewModelScope.launch {
 
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        timerJob?.cancel()
-        playerStateLiveData.postValue(PlayerState.Paused(getCurrentPlayerPosition()))
-    }
-
-    private fun startTimer() {
-        timerJob = viewModelScope.launch {
-            while (mediaPlayer.isPlaying) {
-                delay(DateTimeUtil.MS_300_DELAY)
-                playerStateLiveData.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+            if (favoritesInteractor.isFavorite(track)) {
+             favoritesInteractor.removeFromFavorites(track)
+          } else {
+              favoritesInteractor.addToFavorites(track)
             }
-        }
-    }
+                playerStateLiveData.postValue(playerStateLiveData.value)
 
-    private fun getCurrentPlayerPosition(): String {
-        return SimpleDateFormat(DateTimeUtil.FORMAT_MINUTES_SECONDS, Locale.getDefault()).format(
-            mediaPlayer.currentPosition
-        ) ?: DateTimeUtil.ZERO
-    }
+      }
+  }
 
+  private fun startPlayer() {
+      mediaPlayer.start()
+      playerStateLiveData.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+      startTimer()
+  }
+
+  private fun pausePlayer() {
+      mediaPlayer.pause()
+      timerJob?.cancel()
+      playerStateLiveData.postValue(PlayerState.Paused(getCurrentPlayerPosition()))
+  }
+
+  private fun startTimer() {
+      timerJob = viewModelScope.launch {
+          while (mediaPlayer.isPlaying) {
+              delay(DateTimeUtil.MS_300_DELAY)
+              playerStateLiveData.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+          }
+      }
+  }
+
+  private fun getCurrentPlayerPosition(): String {
+      return SimpleDateFormat(DateTimeUtil.FORMAT_MINUTES_SECONDS, Locale.getDefault()).format(
+          mediaPlayer.currentPosition
+      ) ?: DateTimeUtil.ZERO
+  }
 }

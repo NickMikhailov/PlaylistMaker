@@ -51,10 +51,10 @@ class PlayerActivity : AppCompatActivity() {
         binding.playPauseButton.setOnClickListener {
             viewModel.onPlayButtonClicked()
         }
-        //заглушки для кнопок:
         binding.addToFavoriteButton.setOnClickListener {
-            binding.addToFavoriteButton.setImageResource(R.drawable.add_to_favorite_button_true)
+            viewModel.onFavoriteClicked(track)
         }
+        //заглушка для кнопки
         binding.addToPlayListButton.setOnClickListener {
             binding.addToPlayListButton.setImageResource(R.drawable.add_to_playlist_button_true)
         }
@@ -69,6 +69,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.listYearValue.text = track.releaseDate.substring(FIRST_SYMBOL, FOURTH_SYMBOL)
         binding.listGenreValue.text = track.primaryGenreName
         binding.listCountryValue.text = track.country
+        setFavoriteButtonState()
         Glide.with(this)
             .load(track.artworkUrl500)
             .placeholder(R.drawable.cover_placeholder)
@@ -80,27 +81,52 @@ class PlayerActivity : AppCompatActivity() {
     private fun render(state: PlayerState) {
         when (state) {
             is PlayerState.Default -> {
-                binding.playPauseButton.isEnabled = false
-                binding.playPauseButton.setImageResource(R.drawable.play_button_inactive)
+                setDefaultState()
             }
 
             is PlayerState.Prepared -> {
-                binding.playPauseButton.isEnabled = true
-                binding.playPauseButton.setImageResource(R.drawable.play_button)
-                binding.trackTime.text = DateTimeUtil.ZERO
+                setPlayerPreparedState()
             }
 
             is PlayerState.Paused -> {
-                binding.playPauseButton.isEnabled = true
-                binding.playPauseButton.setImageResource(R.drawable.play_button)
-                binding.trackTime.text = state.progress
+                setPausedState(state)
             }
 
             is PlayerState.Playing -> {
-                binding.playPauseButton.isEnabled = true
-                binding.playPauseButton.setImageResource(R.drawable.pause_button)
-                binding.trackTime.text = state.progress
+                setPlayingState(state)
             }
+        }
+        setFavoriteButtonState()
+    }
+
+    private fun setDefaultState() {
+        binding.playPauseButton.isEnabled = false
+        binding.playPauseButton.setImageResource(R.drawable.play_button_inactive)
+    }
+
+    private fun setPlayerPreparedState() {
+        binding.playPauseButton.isEnabled = true
+        binding.playPauseButton.setImageResource(R.drawable.play_button)
+        binding.trackTime.text = DateTimeUtil.ZERO
+    }
+
+    private fun setPausedState(state: PlayerState) {
+        binding.playPauseButton.isEnabled = true
+        binding.playPauseButton.setImageResource(R.drawable.play_button)
+        binding.trackTime.text = state.progress
+    }
+
+    private fun setPlayingState(state: PlayerState) {
+        binding.playPauseButton.isEnabled = true
+        binding.playPauseButton.setImageResource(R.drawable.pause_button)
+        binding.trackTime.text = state.progress
+    }
+
+    private fun setFavoriteButtonState() {
+        if (track.isFavorite) {
+            binding.addToFavoriteButton.setImageResource(R.drawable.add_to_favorite_button_true)
+        } else {
+            binding.addToFavoriteButton.setImageResource(R.drawable.add_to_favorite_button_false)
         }
     }
 

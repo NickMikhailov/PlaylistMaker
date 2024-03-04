@@ -1,4 +1,6 @@
 import android.content.Context
+import androidx.room.Room
+import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.main.data.shared_prefs.AppSharedPreferences
 import com.example.playlistmaker.search.data.network.ITunesSearchAPI
 import com.example.playlistmaker.search.data.network.NetworkClient
@@ -32,4 +34,8 @@ val dataModule = module {
 
     factory { Gson() }
 
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
+    }
 }

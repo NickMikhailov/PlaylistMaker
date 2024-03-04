@@ -1,6 +1,11 @@
-package com.example.playlistmaker.player.domain.models
+package com.example.playlistmaker.library.data.db.entity
 
-data class Track (
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "tracks_table")
+data class TrackEntity (
+    @PrimaryKey
     val trackId: Int,   //Id
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя
@@ -12,20 +17,6 @@ data class Track (
     val primaryGenreName: String, //Жанр
     val country: String, //Страна
     val previewUrl: String, //Ссылка на аудио
-    var isFavorite: Boolean //Наличие в избранном
+    val isFavorite: Boolean
 )
-{
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Track
-        return trackId == other.trackId
-    }
-
-    override fun hashCode(): Int {
-        return trackId.hashCode()
-    }
-}
-
 

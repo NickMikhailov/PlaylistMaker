@@ -1,4 +1,5 @@
-import com.example.playlistmaker.player.domain.models.Track
+import com.example.playlistmaker.library.domain.db.FavoritesInteractor
+import com.example.playlistmaker.library.domain.impl.FavoritesInteractorImpl
 import com.example.playlistmaker.search.domain.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.TracksInteractor
 import com.example.playlistmaker.search.domain.impl.SearchHistoryInteractorImpl
@@ -19,7 +20,7 @@ val interactorModule = module {
     }
 
     factory<SearchHistoryInteractor> {
-        SearchHistoryInteractorImpl(get(), ArrayList<Track>())
+        SearchHistoryInteractorImpl(get(),get())
     }
 
     factory<SharingInteractor>{
@@ -30,5 +31,8 @@ val interactorModule = module {
     }
     factory<ExternalNavigator>{
         ExternalNavigatorImpl(androidContext())
+    }
+    single<FavoritesInteractor> {
+        FavoritesInteractorImpl(get())
     }
 }
