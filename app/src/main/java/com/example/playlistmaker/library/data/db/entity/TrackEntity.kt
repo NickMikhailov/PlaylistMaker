@@ -17,6 +17,7 @@ data class TrackEntity (
     val primaryGenreName: String, //Жанр
     val country: String, //Страна
     val previewUrl: String, //Ссылка на аудио
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
+    val dateTime: Long
 )
 

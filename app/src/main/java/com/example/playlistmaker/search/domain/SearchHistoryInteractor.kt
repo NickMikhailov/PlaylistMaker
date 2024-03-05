@@ -6,5 +6,4 @@ interface SearchHistoryInteractor {
     fun addToHistory(track: Track)
     fun clearHistory()
     fun getHistory(): List<Track>
-    suspend fun updateHistory()
 }

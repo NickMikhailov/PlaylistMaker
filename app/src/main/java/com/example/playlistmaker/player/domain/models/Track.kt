@@ -14,18 +14,5 @@ data class Track (
     val previewUrl: String, //Ссылка на аудио
     var isFavorite: Boolean //Наличие в избранном
 )
-{
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Track
-        return trackId == other.trackId
-    }
-
-    override fun hashCode(): Int {
-        return trackId.hashCode()
-    }
-}
 
 

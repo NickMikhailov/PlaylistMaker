@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.data.repository
 
-import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.search.domain.TracksRepository
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.data.network.NetworkClient
@@ -12,9 +11,7 @@ import java.net.HttpURLConnection.HTTP_NOT_FOUND
 import java.net.HttpURLConnection.HTTP_OK
 
 class TracksRepositoryImpl(
-    private val networkClient: NetworkClient,
-    private val appDatabase: AppDatabase
-    ) : TracksRepository {
+    private val networkClient: NetworkClient) : TracksRepository {
 
     override fun getTracks(expression: String): Flow<List<Track>?> = flow {
         val response = networkClient.doTrackSearchRequest(TrackSearchRequest(expression))
@@ -22,8 +19,7 @@ class TracksRepositoryImpl(
             HTTP_OK -> {
                 with(response as TrackSearchResponse) {
                     val data = results.map {
-                        val isFavorite = isFavorite(it.trackId)
-                        it.getTrack(isFavorite)
+                        it.getTrack()
                     }
                     emit(data)
                 }
@@ -34,9 +30,4 @@ class TracksRepositoryImpl(
             }
         }
     }
-    private suspend fun isFavorite(trackId: Int): Boolean{
-        val favoritesList = appDatabase.trackDao().getTrackIdList()
-        return favoritesList.contains(trackId)
-    }
-
 }

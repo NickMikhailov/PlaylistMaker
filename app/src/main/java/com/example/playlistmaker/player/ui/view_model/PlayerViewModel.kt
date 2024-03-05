@@ -68,39 +68,48 @@ class PlayerViewModel(
         viewModelScope.launch {
 
             if (favoritesInteractor.isFavorite(track)) {
-             favoritesInteractor.removeFromFavorites(track)
-          } else {
-              favoritesInteractor.addToFavorites(track)
+                favoritesInteractor.removeFromFavorites(track)
+            } else {
+                favoritesInteractor.addToFavorites(track)
             }
-                playerStateLiveData.postValue(playerStateLiveData.value)
+            playerStateLiveData.postValue(playerStateLiveData.value)
 
-      }
-  }
+        }
+    }
 
-  private fun startPlayer() {
-      mediaPlayer.start()
-      playerStateLiveData.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
-      startTimer()
-  }
+    fun setTrackFavoriteState(track: Track) {
+        viewModelScope.launch {
+            track.isFavorite = favoritesInteractor.isFavorite(track)
+            playerStateLiveData.postValue(playerStateLiveData.value)
+        }
+    }
 
-  private fun pausePlayer() {
-      mediaPlayer.pause()
-      timerJob?.cancel()
-      playerStateLiveData.postValue(PlayerState.Paused(getCurrentPlayerPosition()))
-  }
+    private fun startPlayer() {
+        mediaPlayer.start()
+        playerStateLiveData.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+        startTimer()
+    }
 
-  private fun startTimer() {
-      timerJob = viewModelScope.launch {
-          while (mediaPlayer.isPlaying) {
-              delay(DateTimeUtil.MS_300_DELAY)
-              playerStateLiveData.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
-          }
-      }
-  }
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        timerJob?.cancel()
+        playerStateLiveData.postValue(PlayerState.Paused(getCurrentPlayerPosition()))
+    }
 
-  private fun getCurrentPlayerPosition(): String {
-      return SimpleDateFormat(DateTimeUtil.FORMAT_MINUTES_SECONDS, Locale.getDefault()).format(
-          mediaPlayer.currentPosition
-      ) ?: DateTimeUtil.ZERO
-  }
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (mediaPlayer.isPlaying) {
+                delay(DateTimeUtil.MS_300_DELAY)
+                playerStateLiveData.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+            }
+        }
+    }
+
+    private fun getCurrentPlayerPosition(): String {
+        return SimpleDateFormat(DateTimeUtil.FORMAT_MINUTES_SECONDS, Locale.getDefault()).format(
+            mediaPlayer.currentPosition
+        ) ?: DateTimeUtil.ZERO
+    }
+
+
 }

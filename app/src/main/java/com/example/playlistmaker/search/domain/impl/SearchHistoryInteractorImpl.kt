@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.domain.impl
 
-import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.main.data.shared_prefs.AppSharedPreferences
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.SearchHistoryInteractor
@@ -8,9 +7,8 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
 class SearchHistoryInteractorImpl(
-    private val sharedPreferences: AppSharedPreferences,
-    private val appDatabase: AppDatabase
-) : SearchHistoryInteractor {
+    private val sharedPreferences: AppSharedPreferences
+    ) : SearchHistoryInteractor {
     private var trackListHistory = mutableListOf<Track>()
     override fun addToHistory(track: Track) {
         getHistory()
@@ -43,19 +41,6 @@ class SearchHistoryInteractorImpl(
             json.fromJson<MutableList<Track>>(jsonString, itemType) ?: mutableListOf()
         return trackListHistory
     }
-
-    override suspend fun updateHistory() {
-        for (track in trackListHistory){
-            track.isFavorite = isFavorite(track.trackId)
-        }
-        sharedPreferences.saveString(TRACK_HISTORY, trackListHistory)
-    }
-
-    private suspend fun isFavorite(trackId: Int): Boolean {
-        val favoritesList = appDatabase.trackDao().getTrackIdList()
-        return favoritesList.contains(trackId)
-    }
-
     companion object {
         private const val TRACK_HISTORY = "track_history"
     }

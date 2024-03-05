@@ -15,12 +15,12 @@ class FavoritesRepositoryImpl (
 
     override suspend fun addToFavorites(track: Track) {
         track.isFavorite = true
-        appDatabase.trackDao().insertTrack(trackDbConvertor.map(track))
+        appDatabase.trackDao().insertTrack(trackDbConvertor.map(track.copy(isFavorite = true)))
     }
 
     override suspend fun removeFromFavorites(track: Track) {
         track.isFavorite = false
-        appDatabase.trackDao().deleteTrack(trackDbConvertor.map(track))
+        appDatabase.trackDao().deleteTrack(trackDbConvertor.map(track.copy(isFavorite = false)))
     }
 
     override suspend fun getFavoriteTrackList(): Flow<List<Track>> = flow {
@@ -35,7 +35,7 @@ class FavoritesRepositoryImpl (
             .contains(track.trackId)
     }
 
-    private fun convertFromTrackEntity(trackList: List<TrackEntity>): List<Track> {
-        return trackList.map { trackEntity -> trackDbConvertor.map(trackEntity) }
-    }
+    private fun convertFromTrackEntity(
+        trackList: List<TrackEntity>
+    ) = trackList.map (trackDbConvertor::map)
 }

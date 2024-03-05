@@ -35,7 +35,7 @@ class FavoritesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,19 +44,14 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.favoritesTrackListView.adapter = favoritesTrackListAdapter
         viewModel.updateFavorites()
-        //слушатель клика на трек в списке поиска
-        favoritesTrackListAdapter.setOnItemClickListener(object : TrackListAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                if (clickDebounce()) {
-                    viewModel.showPlayer(favoritesTrackListAdapter.getTrack(position))
-                }
+        //слушатель клика на трек в списке избранного
+        favoritesTrackListAdapter.setOnItemClickListener { position ->
+            if (clickDebounce()) {
+                viewModel.showPlayer(favoritesTrackListAdapter.getTrack(position))
             }
-        })
-        viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
         }
-        viewModel.observeStartPlayerEvent()
-            .observe(viewLifecycleOwner) { track -> showPlayer(track) }
+        viewModel.observeState().observe(viewLifecycleOwner, ::render)
+        viewModel.observeStartPlayerEvent().observe(viewLifecycleOwner, ::showPlayer)
     }
 
     override fun onResume() {

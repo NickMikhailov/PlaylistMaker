@@ -17,7 +17,7 @@ data class TrackDto(
     val country: String, //Страна
     val previewUrl: String //Ссылка на аудио
 ) {
-    fun getTrack(isFavorite: Boolean): Track {
+    fun getTrack(): Track {
         return Track(
             trackId,
             trackName,
@@ -30,7 +30,7 @@ data class TrackDto(
             primaryGenreName,
             country,
             previewUrl,
-            isFavorite //переписать на проверку в избранном
+            false
         )
     }
 

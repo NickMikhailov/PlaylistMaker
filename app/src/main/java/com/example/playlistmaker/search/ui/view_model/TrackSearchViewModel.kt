@@ -75,15 +75,12 @@ class TrackSearchViewModel(
     }
 
     fun showHistory() {
-                if (searchHistoryInteractor.getHistory().isEmpty()) {
-                    renderState(TrackSearchState.Error(Placeholder.EMPTY))
-                } else {
-                    viewModelScope.launch {
-                        searchHistoryInteractor.updateHistory()
-                        renderState(TrackSearchState.History(searchHistoryInteractor))
-                    }
-                }
-            }
+        if (searchHistoryInteractor.getHistory().isEmpty()) {
+            renderState(TrackSearchState.Error(Placeholder.EMPTY))
+        } else {
+            renderState(TrackSearchState.History(searchHistoryInteractor))
+        }
+    }
 
     fun clearHistory() {
         searchHistoryInteractor.clearHistory()

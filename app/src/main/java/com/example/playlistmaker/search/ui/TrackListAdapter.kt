@@ -9,7 +9,7 @@ import com.example.playlistmaker.player.domain.models.Track
 
 class TrackListAdapter(var trackList: MutableList<Track>) :
     RecyclerView.Adapter<TrackCardViewHolder>() {
-    interface OnItemClickListener {
+    fun interface OnItemClickListener {
         fun onItemClick(position: Int)
     }
     fun setOnItemClickListener(listener: OnItemClickListener) {

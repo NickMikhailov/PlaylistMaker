@@ -6,16 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.db.FavoritesInteractor
 import com.example.playlistmaker.player.domain.models.Track
-import com.example.playlistmaker.search.domain.SearchHistoryInteractor
 import com.example.playlistmaker.search.ui.view_model.SingleEventLiveData
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel(
-    private val favoritesInteractor: FavoritesInteractor,
-    private val searchHistoryInteractor: SearchHistoryInteractor
+    private val favoritesInteractor: FavoritesInteractor
 ):ViewModel() {
 
-    private var favoritesTrackList = mutableListOf<Track>()
     private val showPlayerTrigger = SingleEventLiveData<Track>()
     private val favoritesStateLiveData = MutableLiveData<FavoritesState>(FavoritesState.Empty)
     fun observeState(): LiveData<FavoritesState> = favoritesStateLiveData
@@ -25,7 +22,7 @@ class FavoritesViewModel(
         this.favoritesStateLiveData.postValue(state)
     }
     fun showPlayer(track: Track) {
-        searchHistoryInteractor.addToHistory(track)
+//        searchHistoryInteractor.addToHistory(track)
         showPlayerTrigger.value = track
     }
     fun updateFavorites() {
@@ -33,9 +30,7 @@ class FavoritesViewModel(
             favoritesInteractor
                 .getFavoritesTrackList()
                 .collect { favoritesTracks ->
-                    favoritesTrackList.clear()
                     if (favoritesTracks.isNotEmpty()) {
-                        favoritesTrackList.addAll(favoritesTracks)
                         renderState(FavoritesState.Content(favoritesTracks))
                     } else {
                         renderState(FavoritesState.Empty)

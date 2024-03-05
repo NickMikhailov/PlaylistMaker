@@ -31,6 +31,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.observeState().observe(this) {
             render(it)
         }
+        viewModel.setTrackFavoriteState(track)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -54,7 +55,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.addToFavoriteButton.setOnClickListener {
             viewModel.onFavoriteClicked(track)
         }
-        //заглушка для кнопки
+        //заглушка для кнопки создания плейлиста
         binding.addToPlayListButton.setOnClickListener {
             binding.addToPlayListButton.setImageResource(R.drawable.add_to_playlist_button_true)
         }
@@ -69,13 +70,13 @@ class PlayerActivity : AppCompatActivity() {
         binding.listYearValue.text = track.releaseDate.substring(FIRST_SYMBOL, FOURTH_SYMBOL)
         binding.listGenreValue.text = track.primaryGenreName
         binding.listCountryValue.text = track.country
-        setFavoriteButtonState()
         Glide.with(this)
             .load(track.artworkUrl500)
             .placeholder(R.drawable.cover_placeholder)
             .fitCenter()
             .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius_medium)))
             .into(binding.trackCover)
+        setFavoriteButtonState()
     }
 
     private fun render(state: PlayerState) {
