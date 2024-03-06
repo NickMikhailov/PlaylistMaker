@@ -22,7 +22,7 @@ class SharingInteractorImpl(
     }
     @StringRes
     private fun getShareAppLink(): Int {
-        return R.string.msg_to_dev_subject
+        return R.string.share_app_link
         }
 
     private fun getSupportEmailData(): EmailData {
