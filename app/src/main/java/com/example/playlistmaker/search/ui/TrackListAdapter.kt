@@ -7,9 +7,9 @@ import com.example.playlistmaker.databinding.TrackViewBinding
 import com.example.playlistmaker.player.domain.models.Track
 
 
-class TrackListAdapter(var trackList: ArrayList<Track>) :
+class TrackListAdapter(var trackList: MutableList<Track>) :
     RecyclerView.Adapter<TrackCardViewHolder>() {
-    interface OnItemClickListener {
+    fun interface OnItemClickListener {
         fun onItemClick(position: Int)
     }
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -30,7 +30,8 @@ class TrackListAdapter(var trackList: ArrayList<Track>) :
     fun getTrack(position: Int): Track {
         return trackList[position]
     }
-    fun update(newTrackList: ArrayList<Track>){
-        trackList = newTrackList
+    fun update(newTrackList: List<Track>){
+        trackList.clear()
+        trackList.addAll(newTrackList)
     }
 }

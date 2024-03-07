@@ -10,7 +10,8 @@ import kotlinx.coroutines.flow.flow
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
 import java.net.HttpURLConnection.HTTP_OK
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
+class TracksRepositoryImpl(
+    private val networkClient: NetworkClient) : TracksRepository {
 
     override fun getTracks(expression: String): Flow<List<Track>?> = flow {
         val response = networkClient.doTrackSearchRequest(TrackSearchRequest(expression))

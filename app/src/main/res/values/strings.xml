@@ -10,9 +10,9 @@
     <string name="settings">Настройки</string>
     <string name="back">Назад</string>
     <string name="msg_to_dev_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
-    <string name="terms_link">https://practicum.yandex.ru/profile/android-developer/?from=new_landing_android-developer</string>
+    <string name="share_app_link">https://practicum.yandex.ru/android-developer/</string>
     <string name="email">mikhailov.nick@ya.ru</string>
-    <string name="uri_practicum_offer">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="terms_link">https://yandex.ru/legal/practicum_offer/</string>
     <string name="nothing_found">Ничего не нашлось</string>
     <string name="error">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="itunes_base_url">https://itunes.apple.com</string>

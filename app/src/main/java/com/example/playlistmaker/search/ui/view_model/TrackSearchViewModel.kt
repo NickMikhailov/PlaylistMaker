@@ -75,10 +75,10 @@ class TrackSearchViewModel(
     }
 
     fun showHistory() {
-        if (searchHistoryInteractor.getHistory().size != 0) {
-            renderState(TrackSearchState.History(searchHistoryInteractor))
-        } else {
+        if (searchHistoryInteractor.getHistory().isEmpty()) {
             renderState(TrackSearchState.Error(Placeholder.EMPTY))
+        } else {
+            renderState(TrackSearchState.History(searchHistoryInteractor))
         }
     }
 
