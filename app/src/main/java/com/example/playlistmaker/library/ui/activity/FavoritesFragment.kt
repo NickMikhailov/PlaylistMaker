@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentFavoritesBinding
 import com.example.playlistmaker.library.ui.view_model.FavoritesState
 import com.example.playlistmaker.library.ui.view_model.FavoritesViewModel
 import com.example.playlistmaker.player.domain.models.Track
-import com.example.playlistmaker.player.ui.activity.PlayerActivity
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 import com.example.playlistmaker.search.ui.TrackListAdapter
 import com.google.gson.Gson
@@ -89,9 +90,9 @@ class FavoritesFragment : Fragment() {
         favoritesTrackListAdapter.notifyDataSetChanged()
     }
     private fun showPlayer(track: Track) {
-        val displayIntent = Intent(requireContext(), PlayerActivity::class.java)
-        displayIntent.putExtra(KEY_TRACK, Gson().toJson(track))
-        startActivity(displayIntent)
+        var bundle = Bundle()
+        bundle.putString("jsonString", Gson().toJson(track))
+        findNavController().navigate(R.id.action_LibraryFragment_to_playerFragment, bundle)
     }
     override fun onDestroyView() {
         super.onDestroyView()

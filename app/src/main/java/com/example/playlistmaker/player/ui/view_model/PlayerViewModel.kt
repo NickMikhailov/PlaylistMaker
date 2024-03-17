@@ -1,31 +1,42 @@
 package com.example.playlistmaker.player.ui.view_model
 
 import android.media.MediaPlayer
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.db.FavoritesInteractor
+import com.example.playlistmaker.library.domain.db.PlaylistInteractor
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerViewModel(
     private val track: Track,
-    private val favoritesInteractor: FavoritesInteractor
+    private val favoritesInteractor: FavoritesInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
     private val mediaPlayer = MediaPlayer()
     private var timerJob: Job? = null
     private val playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.Default())
+    private val bottomSheetLiveData = MutableLiveData<BottomSheetState>(BottomSheetState.Default)
+
     fun observeState(): LiveData<PlayerState> = playerStateLiveData
+    fun observeBottomSheetState(): LiveData<BottomSheetState> = bottomSheetLiveData
 
     init {
         initMediaPlayer()
+        initBottomSheet()
     }
+
 
     fun onPause() {
         pausePlayer()
@@ -48,6 +59,10 @@ class PlayerViewModel(
             timerJob?.cancel()
             playerStateLiveData.postValue(PlayerState.Prepared())
         }
+    }
+
+    private fun initBottomSheet() {
+        bottomSheetLiveData.postValue(BottomSheetState.Default)
     }
 
     fun onPlayButtonClicked() {
@@ -111,5 +126,27 @@ class PlayerViewModel(
         ) ?: DateTimeUtil.ZERO
     }
 
+    fun onPlaylistClicked(track: Track) {
+        viewModelScope.launch {
+            playlistInteractor
+                .getPlaylists()
+                .collect { playlists ->
+                    bottomSheetLiveData.postValue(
+                        BottomSheetState.PlaylistsEditing(
+                            playlists,
+                            track
+                        )
+                    )
+                }
+        }
+    }
 
+    fun addTrackToPlaylist(position: Int, track: Track) {
+        viewModelScope.launch {
+            playlistInteractor.getPlaylists().collect {
+                val trackAdded = playlistInteractor.insertTrack(it[position].id, track)
+                bottomSheetLiveData.postValue(BottomSheetState.PlaylistEditingComplete(trackAdded, it[position].name))
+            }
+        }
+    }
 }

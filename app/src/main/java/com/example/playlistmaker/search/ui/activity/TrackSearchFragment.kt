@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.Layout
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.models.Track
-import com.example.playlistmaker.player.ui.activity.PlayerActivity
 import com.example.playlistmaker.search.domain.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 import com.example.playlistmaker.search.domain.models.Placeholder
@@ -128,9 +129,9 @@ class TrackSearchFragment : Fragment() {
     }
 
     private fun showPlayer(track: Track) {
-        val displayIntent = Intent(requireContext(), PlayerActivity::class.java)
-        displayIntent.putExtra(KEY_TRACK, Gson().toJson(track))
-        startActivity(displayIntent)
+        var bundle = Bundle()
+        bundle.putString("jsonString", Gson().toJson(track))
+        findNavController().navigate(R.id.action_TrackSearchFragment_to_playerFragment, bundle)
     }
 
     private fun clickDebounce(): Boolean {

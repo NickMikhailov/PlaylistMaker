@@ -32,7 +32,7 @@ val dataModule = module {
         AppSharedPreferences(androidContext())
     }
 
-    factory { Gson() }
+    single { Gson() }
 
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")

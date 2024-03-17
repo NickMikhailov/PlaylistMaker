@@ -1,7 +1,19 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSecondary">
+    android:background="?attr/colorSecondary"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/newPlaylistButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/default_margin_vertical"
+        android:backgroundTint="?attr/textAppearanceBody1"
+        android:text="@string/new_playlist"
+        android:layout_marginTop="@dimen/default_margin_vertical"
+        android:layout_marginHorizontal="@dimen/default_margin_horizontal"
+        android:layout_gravity="center|top"/>
 
     <LinearLayout
         android:id="@+id/placeholder"
@@ -9,15 +21,6 @@
         android:layout_height="match_parent"
         android:gravity="center|top"
         android:orientation="vertical">
-
-        <Button
-            android:id="@+id/newPlaylistButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/default_margin_vertical"
-            android:backgroundTint="?attr/textAppearanceBody1"
-            android:text="@string/new_playlist" />
-
         <ImageView
             android:id="@+id/placeholderImage"
             android:layout_width="wrap_content"
@@ -36,4 +39,10 @@
             android:text="@string/playlists_are_empty_string1" />
 
     </LinearLayout>
-</FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlistsGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
