@@ -82,8 +82,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/default_margin_vertical"
-                app:boxStrokeColor="@color/blue"
-                app:boxStrokeWidthFocused="@dimen/_2dp"
+                app:boxStrokeColor="@color/textblock_border_color"
+                app:boxStrokeWidthFocused="@dimen/line_width"
+                app:boxStrokeWidth="@dimen/line_width"
+                app:hintTextColor="@color/textblock_border_color"
                 app:hintEnabled="true"
                 app:layout_constraintTop_toBottomOf="@id/playlistCover">
 
@@ -104,8 +106,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/default_margin_vertical"
-                app:boxStrokeColor="@color/blue"
-                app:boxStrokeWidthFocused="@dimen/_2dp"
+                app:boxStrokeColor="@color/textblock_border_color"
+                app:hintTextColor="@color/textblock_border_color"
+                app:boxStrokeWidthFocused="@dimen/line_width"
+                app:boxStrokeWidth="@dimen/line_width"
                 app:hintEnabled="true"
                 app:layout_constraintTop_toBottomOf="@id/playlistNameLayout">
 
@@ -130,6 +134,8 @@
         android:layout_height="@dimen/text_block_height"
         android:layout_marginBottom="@dimen/big_margin_vertical"
         android:background="@drawable/create_new_playlist_button_color"
+        android:backgroundTintMode="multiply"
+        android:enabled="false"
         android:text="@string/create"
         android:textAllCaps="false"
         android:textColor="@color/white"

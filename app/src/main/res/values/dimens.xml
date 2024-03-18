@@ -4,6 +4,7 @@
     <dimen name="text_button_big_22">22sp</dimen>
     <dimen name="text_big_22">22sp</dimen>
     <dimen name="text_big_19">19sp</dimen>
+    <dimen name="text_main_14">14sp</dimen>
     <dimen name="text_main_16">16sp</dimen>
     <dimen name="text_medium_14">14sp</dimen>
     <dimen name="text_medium_13">13sp</dimen>
@@ -30,6 +31,4 @@
     <dimen name="icon_size">24dp</dimen>
     <dimen name="line_width">2dp</dimen>
     <dimen name="peekHeight_240">240dp</dimen>
-    <dimen name="_2dp">2dp</dimen>
-
 </resources>

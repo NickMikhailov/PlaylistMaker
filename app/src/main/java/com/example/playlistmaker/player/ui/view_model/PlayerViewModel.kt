@@ -1,20 +1,16 @@
 package com.example.playlistmaker.player.ui.view_model
 
 import android.media.MediaPlayer
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.fragment.findNavController
-import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.db.FavoritesInteractor
 import com.example.playlistmaker.library.domain.db.PlaylistInteractor
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -50,6 +46,7 @@ class PlayerViewModel(
     }
 
     private fun initMediaPlayer() {
+        mediaPlayer.reset()
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {

@@ -1,6 +1,5 @@
 package com.example.playlistmaker.library.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +29,7 @@ class FavoritesFragment : Fragment() {
 
     companion object {
         fun newInstance() = FavoritesFragment()
-        private const val KEY_TRACK = "track"
+        private const val KEY_TRACK = "jsonString"
     }
 
     override fun onCreateView(
@@ -58,6 +57,7 @@ class FavoritesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.updateFavorites()
+
     }
     private fun render(state: FavoritesState) {
         when (state) {
@@ -90,13 +90,14 @@ class FavoritesFragment : Fragment() {
         favoritesTrackListAdapter.notifyDataSetChanged()
     }
     private fun showPlayer(track: Track) {
-        var bundle = Bundle()
-        bundle.putString("jsonString", Gson().toJson(track))
+        val bundle = Bundle()
+        bundle.putString(KEY_TRACK, Gson().toJson(track))
         findNavController().navigate(R.id.action_LibraryFragment_to_playerFragment, bundle)
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        isClickAllowed = true
     }
 
 }

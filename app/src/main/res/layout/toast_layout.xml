@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="#000000"> <!-- Черный фон -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_block_height"
+        style="@style/text_regular_14"
+        android:text="@string/playlist_created"
+        android:gravity="center"/>
+</LinearLayout>

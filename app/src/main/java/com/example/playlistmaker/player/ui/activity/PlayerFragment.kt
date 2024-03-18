@@ -130,11 +130,12 @@ class PlayerFragment : Fragment() {
 
         when (state) {
             is BottomSheetState.Default -> {
-                binding.bottomSheetPlaylists.isVisible = false
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
 
             is BottomSheetState.PlaylistsEditing -> {
                 binding.bottomSheetPlaylists.isVisible = true
+                binding.overlay.isVisible = true
                 playlistListViewAdapter = PlaylistsListViewAdapter(state.playlists)
                 binding.PlaylistsListView.adapter = playlistListViewAdapter
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
@@ -144,8 +145,8 @@ class PlayerFragment : Fragment() {
             }
 
             is BottomSheetState.PlaylistEditingComplete -> {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                binding.bottomSheetPlaylists.isVisible = false
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                binding.overlay.isVisible = true
                 val toastText = if (state.trackAdded) {
                     getString(R.string.added_to_playlist, state.playlistName)
                 } else {
@@ -154,13 +155,18 @@ class PlayerFragment : Fragment() {
                 Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
             }
         }
-
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
 
-                binding.overlay.isVisible = newState != BottomSheetBehavior.STATE_HIDDEN
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.isVisible = false
+                    }
+                    else -> {
+                        binding.overlay.isVisible = true
+                    }
+                }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}

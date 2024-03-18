@@ -15,4 +15,5 @@
     <color name="my_dark_secondary">@color/dark</color>
     <color name="light_mode_accent">@color/dark</color>
     <color name="dark_mode_accent">@color/white</color>
+    <color name="overlay">#99000000</color>
 </resources>

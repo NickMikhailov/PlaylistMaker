@@ -1,27 +1,14 @@
 package com.example.playlistmaker.library.ui.activity
 
-import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Rect
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
@@ -30,8 +17,6 @@ import com.example.playlistmaker.library.ui.view_model.NewPlaylistState
 import com.example.playlistmaker.library.ui.view_model.NewPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
 
 class NewPlaylistFragment : Fragment() {
     private var _binding: FragmentNewPlaylistBinding? = null
@@ -59,7 +44,8 @@ class NewPlaylistFragment : Fragment() {
                 binding.playlistDescription.text.toString(),
                 uriString
             )
-            Toast.makeText(
+            Toast
+                .makeText(
                 requireContext(),
                 getString(R.string.playlist_created, binding.playlistName.text.toString()),
                 Toast.LENGTH_LONG
@@ -91,7 +77,7 @@ class NewPlaylistFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {}
         }
-        textWatcherDescription.let { binding.playlistName.addTextChangedListener(it) }
+        textWatcherDescription.let { binding.playlistDescription.addTextChangedListener(it) }
     }
 
     private fun setPictureUploaderListener() {
@@ -104,6 +90,7 @@ class NewPlaylistFragment : Fragment() {
             }
         binding.playlistCover.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            viewModel.isEditing = true
         }
     }
 
@@ -122,16 +109,12 @@ class NewPlaylistFragment : Fragment() {
 
     private fun render(state: NewPlaylistState) {
         when (state) {
-            NewPlaylistState.Empty -> {
+            NewPlaylistState.Disabled -> {
                 binding.createNewPlaylistButton.isEnabled = false
-                binding.createNewPlaylistButton.backgroundTintList =
-                    ColorStateList.valueOf(requireContext().getColor(R.color.grey))
             }
 
-            NewPlaylistState.Editing -> {
+            NewPlaylistState.Enabled -> {
                 binding.createNewPlaylistButton.isEnabled = true
-                binding.createNewPlaylistButton.backgroundTintList =
-                    ColorStateList.valueOf(requireContext().getColor(R.color.blue))
             }
         }
     }

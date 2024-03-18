@@ -4,12 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSecondary"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/colorSecondary">
@@ -257,7 +254,7 @@
     <View android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#99000000"
+        android:background="@color/overlay"
         android:visibility="gone"/>
 
     <LinearLayout
@@ -267,31 +264,34 @@
         android:background="@drawable/bottom_sheet_layout"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/medium_padding"
+        android:visibility="visible"
         app:behavior_hideable="true"
         app:behavior_peekHeight="@dimen/peekHeight_240"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        android:visibility="gone">
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
         <ImageView
-            android:id="@+id/playlistCover"
+            android:id="@+id/rect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/rectangle_1457"
-            android:layout_marginVertical="@dimen/small_margin_vertical"/>
+            android:layout_marginVertical="@dimen/default_margin_vertical"
+            android:src="@drawable/rectangle_1457" />
+
         <TextView
+            style="@style/text_medium_19"
             android:layout_width="match_parent"
             android:layout_height="@dimen/text_block_height"
-            android:text="@string/add_to_playlist"
-            style="@style/text_medium_19"
             android:gravity="center"
-            />
+            android:text="@string/add_to_playlist" />
+
         <Button
             android:id="@+id/newPlaylistButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/default_margin_vertical"
             android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/default_margin_vertical"
             android:backgroundTint="?attr/textAppearanceBody1"
             android:text="@string/new_playlist" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/PlaylistsListView"
             android:layout_width="match_parent"

@@ -14,10 +14,10 @@ class NewPlaylistViewModel(
     private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
     private val newPlaylistsStateLiveData =
-        MutableLiveData<NewPlaylistState>(NewPlaylistState.Empty)
+        MutableLiveData<NewPlaylistState>(NewPlaylistState.Disabled)
+    var isEditing = false
 
     fun observeState(): LiveData<NewPlaylistState> = newPlaylistsStateLiveData
-    var isEditing = false
 
     private fun renderState(state: NewPlaylistState) {
         this.newPlaylistsStateLiveData.postValue(state)
