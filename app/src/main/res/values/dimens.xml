@@ -31,4 +31,5 @@
     <dimen name="icon_size">24dp</dimen>
     <dimen name="line_width">2dp</dimen>
     <dimen name="peekHeight_240">240dp</dimen>
+    <dimen name="large_top_margin">102dp</dimen>
 </resources>

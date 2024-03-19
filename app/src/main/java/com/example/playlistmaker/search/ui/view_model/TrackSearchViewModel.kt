@@ -53,16 +53,15 @@ class TrackSearchViewModel(
                     .search(newSearchText)
                     .collect { foundTracks ->
                         trackList.clear()
-                        if (foundTracks != null) {
-                            trackList.addAll(foundTracks)
-                        } else {
+                        if (foundTracks == null) {
                             renderState(TrackSearchState.Error(Placeholder.ERROR, R.string.error))
-                        }
-
-                        if (trackList.isEmpty()) {
-                            renderState(TrackSearchState.Error(Placeholder.NOTHING_FOUND))
                         } else {
-                            renderState(TrackSearchState.Content(trackList))
+                            trackList.addAll(foundTracks)
+                            if (trackList.isEmpty()) {
+                                renderState(TrackSearchState.Error(Placeholder.NOTHING_FOUND))
+                            } else {
+                                renderState(TrackSearchState.Content(trackList))
+                            }
                         }
                     }
             }

@@ -1,6 +1,10 @@
 package com.example.playlistmaker.library.ui.activity
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,10 +17,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
-import com.example.playlistmaker.library.ui.view_model.NewPlaylistState
 import com.example.playlistmaker.library.ui.view_model.NewPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
+import java.io.FileOutputStream
 
 class NewPlaylistFragment : Fragment() {
     private var _binding: FragmentNewPlaylistBinding? = null
@@ -27,9 +32,9 @@ class NewPlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
-        }
+
+        binding.createNewPlaylistButton.isEnabled = binding.playlistName.text.toString().isNotEmpty()
+
         setArrowBackListener()
         setPictureUploaderListener()
         setEditTextListeners()
@@ -58,7 +63,8 @@ class NewPlaylistFragment : Fragment() {
     private fun setEditTextListeners() {
         //слушатель поля Name
         val textWatcherName = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.createNewPlaylistButton.isEnabled = s.toString().isNotEmpty()
                 viewModel.isEditing = true
@@ -85,6 +91,7 @@ class NewPlaylistFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     binding.playlistCover.setImageURI(uri)
+                    saveImageToPrivateStorage(uri)
                     uriString = uri.toString()
                 }
             }
@@ -92,6 +99,19 @@ class NewPlaylistFragment : Fragment() {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             viewModel.isEditing = true
         }
+    }
+
+    private fun saveImageToPrivateStorage(uri: Uri) {
+        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+        if (!filePath.exists()){
+            filePath.mkdirs()
+        }
+        val file = File(filePath, "temp_cover.jpg")
+        val inputStream = requireActivity().contentResolver.openInputStream(uri)
+        val outputStream = FileOutputStream(file)
+        BitmapFactory
+            .decodeStream(inputStream)
+            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
 
     override fun onCreateView(
@@ -105,18 +125,6 @@ class NewPlaylistFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun render(state: NewPlaylistState) {
-        when (state) {
-            NewPlaylistState.Disabled -> {
-                binding.createNewPlaylistButton.isEnabled = false
-            }
-
-            NewPlaylistState.Enabled -> {
-                binding.createNewPlaylistButton.isEnabled = true
-            }
-        }
     }
 
     private fun setArrowBackListener() {
@@ -136,5 +144,4 @@ class NewPlaylistFragment : Fragment() {
             }
         }
     }
-
 }

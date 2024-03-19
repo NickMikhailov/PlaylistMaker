@@ -41,6 +41,12 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
 
+    <style name="text_medium_14_button" >
+        <item name="android:textSize">@dimen/text_medium_14</item>
+        <item name="android:textColor">?attr/textAppearanceButton</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
     <style name="text_regular_13" >
         <item name="android:textSize">@dimen/text_medium_13</item>
         <item name="android:textColor">?attr/textAppearanceBody1</item>

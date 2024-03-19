@@ -13,15 +13,10 @@ import kotlinx.coroutines.launch
 class NewPlaylistViewModel(
     private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
-    private val newPlaylistsStateLiveData =
-        MutableLiveData<NewPlaylistState>(NewPlaylistState.Disabled)
+
     var isEditing = false
 
-    fun observeState(): LiveData<NewPlaylistState> = newPlaylistsStateLiveData
 
-    private fun renderState(state: NewPlaylistState) {
-        this.newPlaylistsStateLiveData.postValue(state)
-    }
 
     fun createPlayList(name: String, description: String, coverName: String) {
         val playlist = Playlist(0, name, description, "", 0, coverName)
