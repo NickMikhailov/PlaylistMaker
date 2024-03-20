@@ -60,13 +60,6 @@ class PlayerFragment : Fragment() {
 
         binding.PlaylistsListView.adapter = PlaylistsListViewAdapter(ArrayList())
     }
-
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(KEY_TRACK, Gson().toJson(track))
-    }
-
     private fun setListeners() {
         binding.arrowBack.setOnClickListener {
             findNavController().popBackStack()

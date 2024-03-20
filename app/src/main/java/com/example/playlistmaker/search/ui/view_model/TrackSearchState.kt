@@ -7,6 +7,6 @@ import com.example.playlistmaker.search.domain.models.Placeholder
 sealed interface TrackSearchState {
     object Loading: TrackSearchState
     data class Content(val trackList:List<Track>): TrackSearchState
-    data class Error(val placeholder: Placeholder, val errorMessage:Int=0): TrackSearchState
+    data class Error(val placeholder: Placeholder): TrackSearchState
     data class History(val searchHistory: SearchHistoryInteractor): TrackSearchState
 }
