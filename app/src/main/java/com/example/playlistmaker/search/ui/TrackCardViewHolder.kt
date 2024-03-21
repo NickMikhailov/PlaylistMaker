@@ -15,7 +15,7 @@ class TrackCardViewHolder(private val binding: TrackViewBinding): RecyclerView.V
             .load(model.artworkUrl100)
             .placeholder(R.drawable.cover_placeholder)
             .fitCenter()
-            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_small)))
+            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_small_2)))
             .into(binding.trackCover)
     }
 }

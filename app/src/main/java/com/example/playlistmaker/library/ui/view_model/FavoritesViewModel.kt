@@ -22,7 +22,6 @@ class FavoritesViewModel(
         this.favoritesStateLiveData.postValue(state)
     }
     fun showPlayer(track: Track) {
-//        searchHistoryInteractor.addToHistory(track)
         showPlayerTrigger.value = track
     }
     fun updateFavorites() {

@@ -1,5 +1,6 @@
 package com.example.playlistmaker.player.ui.view_model
 
+import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 
 sealed class PlayerState(val progress: String) {
@@ -7,5 +8,4 @@ sealed class PlayerState(val progress: String) {
     class Prepared : PlayerState(DateTimeUtil.ZERO)
     class Paused(progress: String) : PlayerState(progress)
     class Playing(progress: String) : PlayerState(progress)
-
 }

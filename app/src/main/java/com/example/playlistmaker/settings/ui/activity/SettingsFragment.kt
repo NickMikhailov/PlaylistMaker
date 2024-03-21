@@ -16,9 +16,9 @@ class SettingsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: SettingsViewModel by viewModel()
 
-    companion object {
+/*    companion object {
         fun newInstance() = SettingsFragment()
-    }
+    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,

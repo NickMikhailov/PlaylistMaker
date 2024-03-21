@@ -1,7 +1,6 @@
 package com.example.playlistmaker.search.ui.activity
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,13 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.models.Track
-import com.example.playlistmaker.player.ui.activity.PlayerActivity
 import com.example.playlistmaker.search.domain.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 import com.example.playlistmaker.search.domain.models.Placeholder
@@ -36,15 +34,11 @@ class TrackSearchFragment : Fragment() {
     private var isClickAllowed = true
     private val viewModel by viewModel<TrackSearchViewModel>()
 
-    companion object {
-        private const val KEY_TRACK = "track"
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -128,9 +122,9 @@ class TrackSearchFragment : Fragment() {
     }
 
     private fun showPlayer(track: Track) {
-        val displayIntent = Intent(requireContext(), PlayerActivity::class.java)
-        displayIntent.putExtra(KEY_TRACK, Gson().toJson(track))
-        startActivity(displayIntent)
+        val bundle = Bundle()
+        bundle.putString("jsonString", Gson().toJson(track))
+        findNavController().navigate(R.id.action_TrackSearchFragment_to_playerFragment, bundle)
     }
 
     private fun clickDebounce(): Boolean {
@@ -156,7 +150,7 @@ class TrackSearchFragment : Fragment() {
             }
 
             is TrackSearchState.Error -> {
-                showPlaceholder(state.placeholder, state.errorMessage)
+                showPlaceholder(state.placeholder)
             }
 
             is TrackSearchState.History -> {
@@ -180,7 +174,7 @@ class TrackSearchFragment : Fragment() {
         binding.history.visibility = View.VISIBLE
     }
 
-    private fun showPlaceholder(placeHolderType: Placeholder, errorMessage: Int = 0) {
+    private fun showPlaceholder(placeHolderType: Placeholder) {
         binding.placeholder.visibility = View.VISIBLE
         binding.history.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
@@ -212,10 +206,6 @@ class TrackSearchFragment : Fragment() {
             Placeholder.PROGRESSBAR -> {
                 binding.progressBar.visibility = View.VISIBLE
             }
-        }
-        if (errorMessage != 0) {
-            Toast.makeText(requireContext(), getString(errorMessage), Toast.LENGTH_LONG)
-                .show()
         }
     }
 }

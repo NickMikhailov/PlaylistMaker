@@ -57,7 +57,7 @@
         android:id="@+id/placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:gravity="top"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -65,6 +65,7 @@
             android:id="@+id/progressBar"
             android:layout_width="@dimen/square_image_45"
             android:layout_height="@dimen/square_image_45"
+            android:layout_marginTop="@dimen/large_top_margin"
             android:layout_gravity="center"
             android:indeterminateTint="@color/blue"
             android:visibility="gone" />
@@ -80,7 +81,7 @@
 
         <TextView
             android:id="@+id/placeholderText"
-            style="@style/text_regular_22"
+            style="@style/text_medium_19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -93,6 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_vertical"
+            android:layout_gravity="center"
             android:backgroundTint="?attr/textAppearanceBody1"
             android:text="@string/update"
             android:visibility="gone" />

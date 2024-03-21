@@ -11,26 +11,61 @@
         android:label="LibraryFragment"
         tools:layout="@layout/fragment_library">
         <action
-            android:id="@+id/action_libraryFragment_to_playerActivity"
-            app:destination="@id/PlayerActivity" />
+            android:id="@+id/action_LibraryFragment_to_newPlaylistFragment"
+            app:destination="@id/NewPlaylistFragment"/>
+        <action
+            android:id="@+id/action_LibraryFragment_to_playerFragment"
+            app:destination="@id/PlayerFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/SettingsFragment"
         android:name="com.example.playlistmaker.settings.ui.activity.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings"/>
+        tools:layout="@layout/fragment_settings" />
+
     <fragment
         android:id="@+id/TrackSearchFragment"
         android:name="com.example.playlistmaker.search.ui.activity.TrackSearchFragment"
         android:label="TrackSearchFragment"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_trackSearchFragment_to_playerActivity2"
-            app:destination="@id/PlayerActivity" />
+            android:id="@+id/action_TrackSearchFragment_to_playerFragment"
+            app:destination="@id/PlayerFragment">
+            <argument
+                android:name="jsonTrack"
+                app:argType="string"/>
+        </action>
     </fragment>
-    <activity
-        android:id="@+id/PlayerActivity"
-        android:name="com.example.playlistmaker.player.ui.activity.PlayerActivity"
-        android:label="PlayerActivity"
-        tools:layout="@layout/activity_player"/>
+
+    <fragment
+        android:id="@+id/FavoritesFragment"
+        android:name="com.example.playlistmaker.library.ui.activity.FavoritesFragment"
+        android:label="FavoritesFragment"
+        tools:layout="@layout/fragment_favorites"/>
+
+    <fragment
+        android:id="@+id/PlaylistsFragment"
+        android:name="com.example.playlistmaker.library.ui.activity.PlaylistsFragment"
+        android:label="PlaylistsFragment"
+        tools:layout="@layout/fragment_playlists"/>
+
+    <fragment
+        android:id="@+id/NewPlaylistFragment"
+        android:name="com.example.playlistmaker.library.ui.activity.NewPlaylistFragment"
+        android:label="NewPlaylistFragment"
+        tools:layout="@layout/fragment_new_playlist" />
+
+    <fragment
+        android:id="@+id/PlayerFragment"
+        android:name="com.example.playlistmaker.player.ui.activity.PlayerFragment"
+        android:label="PlayerFragment"
+        tools:layout="@layout/fragment_player">
+        <action
+            android:id="@+id/action_playerFragment_to_newPlaylistFragment"
+            app:destination="@id/NewPlaylistFragment" />
+        <argument
+            android:name="jsonTrack"
+            app:argType="string" />
+    </fragment>
 </navigation>

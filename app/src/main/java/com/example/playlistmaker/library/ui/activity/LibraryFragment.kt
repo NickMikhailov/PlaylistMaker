@@ -14,9 +14,7 @@ class LibraryFragment : Fragment() {
     private var _binding: FragmentLibraryBinding? = null
     private val binding get() = _binding!!
     private lateinit var tabMediator: TabLayoutMediator
-    companion object {
-        fun newInstance() = LibraryFragment()
-    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
         _binding = FragmentLibraryBinding.inflate(layoutInflater)

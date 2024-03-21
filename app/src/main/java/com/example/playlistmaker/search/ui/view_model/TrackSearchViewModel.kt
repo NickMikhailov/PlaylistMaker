@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.R
 import com.example.playlistmaker.search.domain.models.DateTimeUtil
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.SearchHistoryInteractor
@@ -53,16 +52,15 @@ class TrackSearchViewModel(
                     .search(newSearchText)
                     .collect { foundTracks ->
                         trackList.clear()
-                        if (foundTracks != null) {
+                        if (foundTracks == null) {
+                            renderState(TrackSearchState.Error(Placeholder.ERROR))
+                        } else {
                             trackList.addAll(foundTracks)
-                        } else {
-                            renderState(TrackSearchState.Error(Placeholder.ERROR, R.string.error))
-                        }
-
-                        if (trackList.isEmpty()) {
-                            renderState(TrackSearchState.Error(Placeholder.NOTHING_FOUND))
-                        } else {
-                            renderState(TrackSearchState.Content(trackList))
+                            if (trackList.isEmpty()) {
+                                renderState(TrackSearchState.Error(Placeholder.NOTHING_FOUND))
+                            } else {
+                                renderState(TrackSearchState.Content(trackList))
+                            }
                         }
                     }
             }
