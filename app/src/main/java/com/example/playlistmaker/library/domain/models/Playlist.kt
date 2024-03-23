@@ -6,5 +6,6 @@ data class Playlist (
     val description: String,
     val trackListGson: String,
     val trackCount: Int,
-    var coverName: String
+    var coverName: String,
+    var duration: Long
 )

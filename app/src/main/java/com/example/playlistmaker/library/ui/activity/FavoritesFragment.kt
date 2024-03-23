@@ -29,7 +29,7 @@ class FavoritesFragment : Fragment() {
 
     companion object {
         fun newInstance() = FavoritesFragment()
-        private const val KEY_TRACK = "jsonString"
+        private const val KEY_TRACK = "jsonTrack"
     }
 
     override fun onCreateView(

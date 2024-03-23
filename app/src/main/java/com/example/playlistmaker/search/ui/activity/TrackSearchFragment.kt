@@ -123,7 +123,7 @@ class TrackSearchFragment : Fragment() {
 
     private fun showPlayer(track: Track) {
         val bundle = Bundle()
-        bundle.putString("jsonString", Gson().toJson(track))
+        bundle.putString("jsonTrack", Gson().toJson(track))
         findNavController().navigate(R.id.action_TrackSearchFragment_to_playerFragment, bundle)
     }
 

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import com.example.playlistmaker.R
 import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.library.data.db.PlaylistDbConverter
@@ -29,8 +30,8 @@ class PlaylistRepositoryImpl(
 
     override suspend fun addPlaylist(playlist: Playlist) {
         playlist.id = appDatabase.playlistDao().addPlaylist(playlistDbConverter.map(playlist))
-        playlist.coverName = playlist.id.toString() + ".jpg"
-        saveImageToPrivateStorage(playlist.coverName, playlist.id)
+        playlist.coverName = saveImageToPrivateStorage(playlist.id, playlist.coverName, )
+        appDatabase.playlistDao().saveCoverPath(playlist.id, playlist.coverName)
     }
 
     override suspend fun removePlaylist(playlist: Playlist) {
@@ -63,9 +64,8 @@ class PlaylistRepositoryImpl(
                     newTrackList.addAll(trackList)
                     newTrackList.add(track)
                     val trackListGson = Gson().toJson(newTrackList)
-
                     appDatabase.playlistDao()
-                        .updateTrackList(playlistId, trackListGson, newTrackList.size)
+                        .updateTrackList(playlistId, trackListGson, newTrackList.size, getDuration(newTrackList))
 
                     trackAdded = true
                 }
@@ -83,17 +83,24 @@ class PlaylistRepositoryImpl(
                 newTrackList.remove(track)
                 val trackListGson = Gson().toJson(newTrackList)
                 appDatabase.playlistDao()
-                    .updateTrackList(playlistId, trackListGson, newTrackList.size)
+                    .updateTrackList(playlistId, trackListGson, newTrackList.size, getDuration(newTrackList))
             }
     }
 
-    private fun saveImageToPrivateStorage(uriString: String, playlistId: Long) {
+    override suspend fun getPlaylist(playlistId: Long): Playlist {
+       val playlistEntity = appDatabase.playlistDao().getPlaylist(playlistId)
+        return playlistDbConverter.map(playlistEntity)
+    }
+
+    private fun saveImageToPrivateStorage(playlistId: Long, uriString: String, ):String {
         val filePath =
             File(applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES), ALBUM)
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
         val file = File(filePath, "$playlistId.jpg")
+        Log.d("filesave",file.toString())
+        Log.d("filesave",uriString)
         try {
             val uri = Uri.parse(uriString)
             val inputStream = applicationContext.contentResolver.openInputStream(uri)
@@ -109,6 +116,21 @@ class PlaylistRepositoryImpl(
                 bitmap.compress(Bitmap.CompressFormat.JPEG, QUALITY, outputStream)
             }
         }
+        return file.toString()
+    }
+    private fun getDuration(trackList: List<Track>):Long {
+        var duration = 0L
+        for (track in trackList) {
+            duration += convertTimeToMillis(track.trackTime)
+        }
+        return duration
+    }
+    private fun convertTimeToMillis(time: String): Long {
+        val parts = time.split(":")
+        val minutes = parts[0].toLong()
+        val seconds = parts[1].toLong()
+
+        return (minutes * 60 + seconds) * 1000
     }
 
     companion object {

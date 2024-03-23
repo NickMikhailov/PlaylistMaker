@@ -17,7 +17,11 @@
         <item name="android:textColor">?attr/textAppearanceBody1</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
-
+    <style name="text_bold_24" >
+        <item name="android:textSize">@dimen/text_big_24</item>
+        <item name="android:textColor">?attr/textAppearanceBody1</item>
+        <item name="android:fontFamily">@font/ys_display_bold</item>
+    </style>
     <style name="text_medium_19" >
         <item name="android:textSize">@dimen/text_big_19</item>
         <item name="android:textColor">?attr/textAppearanceBody1</item>
@@ -29,7 +33,11 @@
         <item name="android:textColor">?attr/textAppearanceBody1</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
-    <style name="text_regular_16" >
+    <style name="text_regular_18" >
+        <item name="android:textSize">@dimen/text_main_18</item>
+        <item name="android:textColor">?attr/textAppearanceBody1</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>    <style name="text_regular_16" >
         <item name="android:textSize">@dimen/text_main_16</item>
         <item name="android:textColor">?attr/textAppearanceBody1</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>

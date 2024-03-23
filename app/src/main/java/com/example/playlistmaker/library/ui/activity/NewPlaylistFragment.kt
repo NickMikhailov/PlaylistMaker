@@ -91,7 +91,6 @@ class NewPlaylistFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     binding.playlistCover.setImageURI(uri)
-                    saveImageToPrivateStorage(uri)
                     uriString = uri.toString()
                 }
             }
@@ -99,19 +98,6 @@ class NewPlaylistFragment : Fragment() {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             viewModel.isEditing = true
         }
-    }
-
-    private fun saveImageToPrivateStorage(uri: Uri) {
-        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
-        if (!filePath.exists()){
-            filePath.mkdirs()
-        }
-        val file = File(filePath, "temp_cover.jpg")
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
 
     override fun onCreateView(
@@ -133,7 +119,7 @@ class NewPlaylistFragment : Fragment() {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(getString(R.string.finish_playlist_creating))
                     .setMessage(getString(R.string.data_save_warning))
-                    .setNeutralButton(getString(R.string.Cancel)) { dialog, which ->
+                    .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
                     }
                     .setPositiveButton(getString(R.string.finish)) { dialog, which ->
                         findNavController().popBackStack()
