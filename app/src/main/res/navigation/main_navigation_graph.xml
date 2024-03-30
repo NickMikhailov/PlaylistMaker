@@ -23,9 +23,9 @@
         <action
             android:id="@+id/action_LibraryFragment_to_playlistFragment"
             app:destination="@id/PlaylistFragment">
-        <argument
-            android:name="playlistId"
-            app:argType="string" />
+            <argument
+                android:name="playlistId"
+                app:argType="string" />
         </action>
     </fragment>
 
@@ -83,13 +83,24 @@
         android:id="@+id/PlaylistFragment"
         android:name="com.example.playlistmaker.library.ui.activity.PlaylistFragment"
         android:label="PlaylistFragment"
-        tools:layout="@layout/fragment_playlist" >
+        tools:layout="@layout/fragment_playlist">
         <action
             android:id="@+id/action_PlaylistFragment_to_PlayerFragment"
-            app:destination="@id/PlayerFragment" >
+            app:destination="@id/PlayerFragment">
             <argument
                 android:name="jsonTrack"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_PlaylistFragment_to_EditPlaylistFragment"
+            app:destination="@id/EditPlaylistFragment">
+            <argument
+                android:name="playlist"
+                app:argType="string" />
+        </action>
     </fragment>
+    <fragment
+        android:id="@+id/EditPlaylistFragment"
+        android:name="com.example.playlistmaker.library.ui.activity.EditPlaylistFragment"
+        android:label="EditPlaylistFragment" />
 </navigation>

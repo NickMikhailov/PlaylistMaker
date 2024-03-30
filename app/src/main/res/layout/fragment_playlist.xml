@@ -9,26 +9,42 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/dark_grey"
-    android:backgroundTintMode="multiply"
+    android:background="@color/light_grey"
     >
+    <ImageButton
+        android:id="@+id/arrowBack"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/text_block_height"
+        android:background="@null"
+        android:contentDescription="@string/back"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back_icon_black" />
+    <View
+        android:id="@+id/emptyView"
+        android:layout_width="@dimen/text_block_height"
+        android:layout_height="@dimen/text_block_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
         <ImageView
             android:id="@+id/playlistCover"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/big_margin_vertical"
             android:src="@drawable/cover_placeholder"
             android:scaleType="centerCrop"
             app:flow_horizontalAlign="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/arrowBack"
+            app:layout_constraintStart_toEndOf="@id/arrowBack"
+            app:layout_constraintEnd_toStartOf="@id/emptyView"
             app:layout_constraintDimensionRatio="H,1:1"/>
 
     <TextView
         android:id="@+id/playlistName"
-        style="@style/text_bold_24"
+        style="@style/text_bold_24_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin_horizontal"
@@ -39,7 +55,7 @@
         />
     <TextView
         android:id="@+id/playlistDescription"
-        style="@style/text_regular_18"
+        style="@style/text_regular_18_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/small_margin_vertical"
@@ -58,7 +74,7 @@
         android:id="@+id/ln1">
         <TextView
             android:id="@+id/playlistDuration"
-            style="@style/text_regular_18"
+            style="@style/text_regular_18_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin_horizontal"
@@ -69,12 +85,12 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ellipse_2"
+            android:src="@drawable/ellipse_black"
             android:layout_marginHorizontal="@dimen/small_margin_vertical"
             />
         <TextView
             android:id="@+id/playlistTrackCount"
-            style="@style/text_regular_18"
+            style="@style/text_regular_18_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,18 +110,22 @@
             android:id="@+id/shareIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/share_icon"
+            android:src="@drawable/share_icon_black"
             android:layout_marginHorizontal="@dimen/default_margin_horizontal"
             />
         <ImageView
             android:id="@+id/menuIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/three_dots_vertical"
+            android:src="@drawable/three_dots_vertical_black"
             android:layout_marginHorizontal="@dimen/small_margin_vertical"
             />
     </LinearLayout>
-
+    <View android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/overlay"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
         android:id="@+id/bottomSheetEditPlaylist"
@@ -157,6 +177,7 @@
             android:text="@string/delete_playlist"/>
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/bottomSheetTracks"
         android:layout_width="match_parent"

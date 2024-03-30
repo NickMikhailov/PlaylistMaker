@@ -23,18 +23,25 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class NewPlaylistFragment : Fragment() {
+open class NewPlaylistFragment : Fragment() {
+
     private var _binding: FragmentNewPlaylistBinding? = null
     private val binding get() = _binding!!
     private val viewModel: NewPlaylistViewModel by viewModel()
     private var uriString = ""
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.createNewPlaylistButton.isEnabled = binding.playlistName.text.toString().isNotEmpty()
-
+        binding.createNewPlaylistButton.isEnabled =
+            binding.playlistName.text.toString().isNotEmpty()
         setArrowBackListener()
         setPictureUploaderListener()
         setEditTextListeners()
@@ -51,20 +58,21 @@ class NewPlaylistFragment : Fragment() {
             )
             Toast
                 .makeText(
-                requireContext(),
-                getString(R.string.playlist_created, binding.playlistName.text.toString()),
-                Toast.LENGTH_LONG
-            )
+                    requireContext(),
+                    getString(R.string.playlist_created, binding.playlistName.text.toString()),
+                    Toast.LENGTH_LONG
+                )
                 .show()
             findNavController().popBackStack()
         }
     }
 
-    private fun setEditTextListeners() {
+    protected fun setEditTextListeners() {
         //слушатель поля Name
         val textWatcherName = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.createNewPlaylistButton.isEnabled = s.toString().isNotEmpty()
                 viewModel.isEditing = true
@@ -100,13 +108,7 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

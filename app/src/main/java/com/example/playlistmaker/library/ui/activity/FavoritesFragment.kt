@@ -12,7 +12,7 @@ import com.example.playlistmaker.databinding.FragmentFavoritesBinding
 import com.example.playlistmaker.library.ui.view_model.FavoritesState
 import com.example.playlistmaker.library.ui.view_model.FavoritesViewModel
 import com.example.playlistmaker.player.domain.models.Track
-import com.example.playlistmaker.search.domain.models.DateTimeUtil
+import com.example.playlistmaker.main.domain.models.DateTimeUtil
 import com.example.playlistmaker.search.ui.TrackListAdapter
 import com.google.gson.Gson
 import kotlinx.coroutines.delay

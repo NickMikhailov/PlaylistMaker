@@ -4,7 +4,7 @@
     android:id="@+id/newPlaylistLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSecondary">
+    android:background="?attr/colorPrimary">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline"
@@ -37,7 +37,7 @@
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/array_back_icon" />
+        app:srcCompat="@drawable/arrow_back_icon" />
 
     <TextView
         android:id="@+id/newPlayListHeader"

@@ -6,7 +6,7 @@
     android:layout_height="@dimen/card_height"
     android:gravity="center_vertical|start"
     android:orientation="horizontal"
-    android:background="?attr/colorSecondary">
+    android:background="?attr/colorPrimary">
 
     <ImageView
         android:id="@+id/trackCover"
@@ -41,7 +41,7 @@
 
             <TextView
                 android:id="@+id/artistName"
-                style="@style/text_regular_11"
+                style="@style/text_regular_11_list_item_small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxWidth="150dp"
@@ -59,7 +59,7 @@
 
             <TextView
                 android:id="@+id/trackTime"
-                style="@style/text_regular_11"
+                style="@style/text_regular_11_list_item_small"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/medium_padding"

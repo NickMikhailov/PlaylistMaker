@@ -10,14 +10,11 @@ import com.example.playlistmaker.library.domain.models.Playlist
 import kotlinx.coroutines.launch
 
 
-class NewPlaylistViewModel(
-    private val playlistInteractor: PlaylistInteractor
+open class NewPlaylistViewModel(
+    val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     var isEditing = false
-
-
-
     fun createPlayList(name: String, description: String, coverName: String) {
         val playlist = Playlist(0, name, description, "", 0, coverName,0L)
         viewModelScope.launch {

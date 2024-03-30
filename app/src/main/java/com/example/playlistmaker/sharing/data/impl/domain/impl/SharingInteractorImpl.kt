@@ -21,8 +21,8 @@ class SharingInteractorImpl(
         externalNavigator.openEmail(getSupportEmailData())
     }
 
-    override fun sharePlaylist() {
-        externalNavigator.sharePlaylist()
+    override fun sharePlaylist(message: String) {
+        externalNavigator.sharePlaylist(message)
     }
 
     @StringRes

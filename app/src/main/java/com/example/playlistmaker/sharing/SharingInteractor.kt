@@ -4,5 +4,5 @@ interface SharingInteractor {
     fun shareApp()
     fun openTerms()
     fun openSupport()
-    fun sharePlaylist()
+    fun sharePlaylist(message: String)
 }

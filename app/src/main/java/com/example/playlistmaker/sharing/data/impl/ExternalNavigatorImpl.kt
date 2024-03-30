@@ -36,10 +36,10 @@ class ExternalNavigatorImpl(private val applicationContext: Context): ExternalNa
         applicationContext.startActivity(intent)
     }
 
-    override fun sharePlaylist() {
+    override fun sharePlaylist(message: String) {
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "testMessage")
+            putExtra(Intent.EXTRA_TEXT, message)
             type = "text/plain"
         }
         val shareIntent = Intent.createChooser(sendIntent, null)
