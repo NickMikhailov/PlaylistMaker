@@ -26,6 +26,16 @@
         <item name="android:textColor">?attr/textAppearanceBody1</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
+    <style name="text_regular_14_dark" >
+        <item name="android:textSize">@dimen/text_main_14</item>
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+    <style name="text_regular_14_blue" >
+        <item name="android:textSize">@dimen/text_main_14</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
     <style name="text_regular_16" >
         <item name="android:textSize">@dimen/text_main_16</item>
         <item name="android:textColor">?attr/textAppearanceBody1</item>
@@ -36,9 +46,9 @@
         <item name="android:textColor">?attr/textAppearanceBody1</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
-    <style name="text_regular_18_black" >
+    <style name="text_regular_18_dark" >
         <item name="android:textSize">@dimen/text_main_18</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/dark</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
     <style name="text_regular_22" >
@@ -122,4 +132,13 @@
         <item name="iconTint">@color/black</item>
     </style>
 
+    <style name="AlertDialogStyle" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="buttonBarButtonStyle">@style/Widget.AppCompat.Button.ButtonBarAlertDialog</item>
+    </style>
+    <style name="Widget.AppCompat.Button.ButtonBarAlertDialog" parent="Widget.AppCompat.ButtonBar.AlertDialog">
+        <item name="android:textSize">@dimen/text_medium_14</item>
+        <item name="color">@color/blue</item>
+        <item name="android:gravity">end</item>
+    </style>
 </resources>

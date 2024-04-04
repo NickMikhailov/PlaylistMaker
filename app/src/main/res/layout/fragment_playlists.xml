@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/default_margin_vertical"
-        android:backgroundTint="?attr/buttonTint"
+        android:backgroundTint="?attr/colorTertiary"
         android:text="@string/new_playlist"
         android:layout_marginTop="@dimen/default_margin_vertical"
         android:layout_marginHorizontal="@dimen/default_margin_horizontal"

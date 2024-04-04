@@ -1,15 +1,12 @@
 package com.example.playlistmaker.library.ui.activity
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,8 +17,7 @@ import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.library.ui.view_model.NewPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
+
 
 open class NewPlaylistFragment : Fragment() {
 
@@ -109,7 +105,6 @@ open class NewPlaylistFragment : Fragment() {
     }
 
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -118,15 +113,23 @@ open class NewPlaylistFragment : Fragment() {
     private fun setArrowBackListener() {
         binding.arrowBack.setOnClickListener() {
             if (viewModel.isEditing) {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(R.string.finish_playlist_creating))
-                    .setMessage(getString(R.string.data_save_warning))
-                    .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
-                    }
-                    .setPositiveButton(getString(R.string.finish)) { dialog, which ->
-                        findNavController().popBackStack()
-                    }
+                val dialogView = layoutInflater.inflate(R.layout.alert_dialog_layout, null)
+                val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogStyle)
+                    .setView(dialogView)
                     .show()
+                val title = dialogView.findViewById<TextView>(R.id.dialog_header)
+                val body = dialogView.findViewById<TextView>(R.id.dialog_body)
+                val buttonPositive = dialogView.findViewById<TextView>(R.id.buttonPositive)
+                val buttonNeutral = dialogView.findViewById<TextView>(R.id.buttonNeutral)
+                title.text = getString(R.string.finish_playlist_creating)
+                body.text = getString(R.string.data_save_warning)
+                buttonNeutral.setOnClickListener {
+                    dialog.dismiss()
+                }
+                buttonPositive.setOnClickListener {
+                    dialog.dismiss()
+                    findNavController().popBackStack()
+                }
             } else {
                 findNavController().popBackStack()
             }

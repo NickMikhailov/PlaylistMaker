@@ -1,12 +1,12 @@
 package com.example.playlistmaker.library.ui.activity
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -58,7 +58,7 @@ class PlaylistFragment : Fragment() {
         viewModel.observeEditPlaylistEvent().observe(viewLifecycleOwner, ::editPlaylist)
 
         val bottomSheetTrackListBehavior = BottomSheetBehavior.from(binding.bottomSheetTracks)
-        bottomSheetTrackListBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        bottomSheetTrackListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         setListeners(playlistId)
     }
 
@@ -82,16 +82,24 @@ class PlaylistFragment : Fragment() {
         //слушатель долгого нажатия на трек в плейлисте
         playlistTrackListAdapter.setOnItemLongClickListener { position ->
             val selectedTrack = playlistTrackListAdapter.getTrack(position)
-            val dialog = MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.delete_track_confirmation))
-                .setNeutralButton(getString(R.string.no)) { dialog, which -> dialog.dismiss() }
-                .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                    viewModel.deleteTrackFromPlaylist(playlistId, selectedTrack)
-                }
+            val dialogView = layoutInflater.inflate(R.layout.alert_dialog_layout, null)
+            val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogStyle)
+                .setView(dialogView)
                 .show()
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(requireContext().getColor(R.color.blue))
-            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(requireContext().getColor(R.color.blue))
-
+            val title = dialogView.findViewById<TextView>(R.id.dialog_header)
+            val body = dialogView.findViewById<TextView>(R.id.dialog_body)
+            val buttonPositive = dialogView.findViewById<TextView>(R.id.buttonPositive)
+            val buttonNeutral = dialogView.findViewById<TextView>(R.id.buttonNeutral)
+            title.isVisible = false
+            body.text = getString(R.string.delete_track_confirmation)
+            buttonNeutral.setOnClickListener {
+                dialog.dismiss()
+            }
+            buttonPositive.setOnClickListener {
+                viewModel.deleteTrackFromPlaylist(playlistId, selectedTrack)
+                viewModel.updatePlaylist(playlistId)
+                dialog.dismiss()
+            }
         }
         //слушатель клика на иконку поделиться
         binding.shareIcon.setOnClickListener {
@@ -127,18 +135,24 @@ class PlaylistFragment : Fragment() {
         //слушатель клика на пункт меню удалить плейлист
         binding.deletePlaylist.setOnClickListener {
             binding.bottomSheetEditPlaylist.isVisible = false
-            val dialog = MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.delete_playlist_confirmation, playlist.name))
-                .setNeutralButton(getString(R.string.no)) { dialog, which ->
-                    binding.bottomSheetEditPlaylist.isVisible = true
-                    dialog.dismiss() }
-                .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                    viewModel.deletePlaylist(playlistId)
-                }
+            val dialogView = layoutInflater.inflate(R.layout.alert_dialog_layout, null)
+            val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogStyle)
+                .setView(dialogView)
                 .show()
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(requireContext().getColor(R.color.blue))
-            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(requireContext().getColor(R.color.blue))
-
+            val title = dialogView.findViewById<TextView>(R.id.dialog_header)
+            val body = dialogView.findViewById<TextView>(R.id.dialog_body)
+            val buttonPositive = dialogView.findViewById<TextView>(R.id.buttonPositive)
+            val buttonNeutral = dialogView.findViewById<TextView>(R.id.buttonNeutral)
+            title.isVisible = false
+            body.text = getString(R.string.delete_playlist_confirmation, playlist.name)
+            buttonNeutral.setOnClickListener {
+                binding.bottomSheetEditPlaylist.isVisible = true
+                dialog.dismiss()
+            }
+            buttonPositive.setOnClickListener {
+                viewModel.deletePlaylist(playlistId)
+                dialog.dismiss()
+            }
         }
         //слушатель клика на пункт меню редактировать плейлист
         binding.editPlaylist.setOnClickListener {
@@ -153,10 +167,12 @@ class PlaylistFragment : Fragment() {
             }
             is PlaylistState.EmptyList -> {
                 binding.PlaylistTrackListView.isVisible = false
+                binding.noTracksMessage.isVisible = true
                 showContent(state.playlist, listOf())
             }
             is PlaylistState.Content -> {
                 binding.PlaylistTrackListView.isVisible = true
+                binding.noTracksMessage.isVisible = false
                 showContent(state.playlist, state.tracklist)
             }
 
@@ -169,10 +185,21 @@ class PlaylistFragment : Fragment() {
         if (playlistTrackListAdapter.trackList.isNotEmpty()) {
             viewModel.sharePlaylist(playlistId)
         } else {
-            MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.share_empty_list_warning))
-                .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
+            val dialogView = layoutInflater.inflate(R.layout.alert_dialog_layout, null)
+            val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogStyle)
+                .setView(dialogView)
                 .show()
+            val title = dialogView.findViewById<TextView>(R.id.dialog_header)
+            val body = dialogView.findViewById<TextView>(R.id.dialog_body)
+            val buttonPositive = dialogView.findViewById<TextView>(R.id.buttonPositive)
+            val buttonNeutral = dialogView.findViewById<TextView>(R.id.buttonNeutral)
+            title.isVisible = false
+            body.text = getString(R.string.share_empty_list_warning)
+            buttonNeutral.isVisible = false
+            buttonPositive.text = getString(R.string.ok)
+            buttonPositive.setOnClickListener {
+                dialog.dismiss()
+            }
         }
 
 
@@ -186,12 +213,12 @@ class PlaylistFragment : Fragment() {
             val inputStream = FileInputStream(file)
             val image = BitmapFactory.decodeStream(inputStream)
             binding.playlistCover.setImageBitmap(image)
-            binding.arrowBack.visibility = View.GONE
-            binding.emptyView.visibility = View.GONE
+            binding.leftCorner.visibility = View.GONE
+            binding.rightCorner.visibility = View.GONE
         } catch (e: Exception) {
             binding.playlistCover.setImageResource(R.drawable.cover_placeholder)
-            binding.arrowBack.visibility = View.VISIBLE
-            binding.emptyView.visibility = View.VISIBLE
+            binding.leftCorner.visibility = View.VISIBLE
+            binding.rightCorner.visibility = View.VISIBLE
         }
         //название и описание
         binding.playlistName.text = playlist.name

@@ -289,7 +289,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginVertical="@dimen/default_margin_vertical"
-            android:backgroundTint="?attr/buttonTint"
             android:text="@string/new_playlist" />
 
         <androidx.recyclerview.widget.RecyclerView

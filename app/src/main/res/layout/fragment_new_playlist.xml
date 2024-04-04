@@ -27,31 +27,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.933" />
 
-    <ImageButton
-        android:id="@+id/arrowBack"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@null"
-        android:contentDescription="@string/back"
-        app:layout_constraintBottom_toTopOf="@+id/top_guideline"
-        app:layout_constraintDimensionRatio="w,1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_back_icon" />
-
-    <TextView
-        android:id="@+id/newPlayListHeader"
-        style="@style/text_regular_22"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/medium_padding"
-        android:text="@string/new_playlist"
-        app:layout_constraintBottom_toTopOf="@+id/top_guideline"
-        app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-        app:layout_constraintStart_toEndOf="@+id/arrowBack"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ScrollView
         android:id="@+id/scrollArea"
         android:layout_width="0dp"
@@ -127,6 +102,31 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/arrowBack"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:contentDescription="@string/back"
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back_icon" />
+
+    <TextView
+        android:id="@+id/newPlayListHeader"
+        style="@style/text_regular_22"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/medium_padding"
+        android:text="@string/new_playlist"
+        app:layout_constraintBottom_toTopOf="@+id/top_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+        app:layout_constraintStart_toEndOf="@+id/arrowBack"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/createNewPlaylistButton"

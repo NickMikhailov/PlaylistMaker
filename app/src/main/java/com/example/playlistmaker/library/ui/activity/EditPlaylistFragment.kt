@@ -1,6 +1,5 @@
 package com.example.playlistmaker.library.ui.activity
 
-import android.app.AlertDialog
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,7 +29,6 @@ class EditPlaylistFragment() : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: EditPlaylistViewModel by viewModel()
     private var uriString = ""
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,18 +36,19 @@ class EditPlaylistFragment() : Fragment() {
         _binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.observeState().observe(viewLifecycleOwner, ::render)
         val playlistId = arguments?.getString(getString(R.string.playlist_id))
         viewModel.getPlaylist(playlistId)
         renderInit()
-        viewModel.isEditing = false
         setArrowBackListener()
         setListeners(playlistId)
+        viewModel.isEditing = false
     }
 
-    private fun setListeners(playlistId:String?) {
+    private fun setListeners(playlistId: String?) {
         //слушатель поля Name
         val textWatcherName = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -63,17 +63,17 @@ class EditPlaylistFragment() : Fragment() {
         }
         textWatcherName.let { binding.playlistName.addTextChangedListener(it) }
         //слушатель загрузки картинки
-            val pickMedia =
-                registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                    if (uri != null) {
-                        binding.playlistCover.setImageURI(uri)
-                        uriString = uri.toString()
-                    }
+        val pickMedia =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                if (uri != null) {
+                    binding.playlistCover.setImageURI(uri)
+                    uriString = uri.toString()
                 }
-            binding.playlistCover.setOnClickListener {
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                viewModel.isEditing = true
             }
+        binding.playlistCover.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            viewModel.isEditing = true
+        }
         //слушатель кнопки обновить лист
         binding.createNewPlaylistButton.setOnClickListener() {
             viewModel.updatePlayList(
@@ -97,6 +97,7 @@ class EditPlaylistFragment() : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     private fun renderInit() {
         binding.newPlayListHeader.text = getString(R.string.edit)
         binding.createNewPlaylistButton.text = getString(R.string.update)
@@ -128,20 +129,27 @@ class EditPlaylistFragment() : Fragment() {
         binding.playlistName.setText(playlist.name)
         binding.playlistDescription.setText(playlist.description)
     }
+
     private fun setArrowBackListener() {
         binding.arrowBack.setOnClickListener() {
             if (viewModel.isEditing) {
-                val dialog = MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(R.string.finish_playlist_creating))
-                    .setMessage(getString(R.string.data_save_warning))
-                    .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
-                    }
-                    .setPositiveButton(getString(R.string.finish)) { dialog, which ->
-                        findNavController().popBackStack()
-                    }
+                val dialogView = layoutInflater.inflate(R.layout.alert_dialog_layout, null)
+                val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogStyle)
+                    .setView(dialogView)
                     .show()
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(requireContext().getColor(R.color.blue))
-                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(requireContext().getColor(R.color.blue))
+                val title = dialogView.findViewById<TextView>(R.id.dialog_header)
+                val body = dialogView.findViewById<TextView>(R.id.dialog_body)
+                val buttonPositive = dialogView.findViewById<TextView>(R.id.buttonPositive)
+                val buttonNeutral = dialogView.findViewById<TextView>(R.id.buttonNeutral)
+                title.text = getString(R.string.finish_playlist_creating)
+                body.text = getString(R.string.data_save_warning)
+                buttonNeutral.setOnClickListener {
+                    dialog.dismiss()
+                }
+                buttonPositive.setOnClickListener {
+                    dialog.dismiss()
+                    findNavController().popBackStack()
+                }
             } else {
                 findNavController().popBackStack()
             }

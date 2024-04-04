@@ -65,5 +65,6 @@
     <string name="json_playlist">jsonPlaylist</string>
     <string name="ss">\"$s$s\"</string>
     <string name="edit">Редактировать</string>
+    <string name="no_tracks_in_playlist">В плейлисте нет треков</string>
 
 </resources>

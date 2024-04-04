@@ -48,7 +48,12 @@ class PlaylistViewModel(
                     playlist.trackListGson,
                     object : TypeToken<List<Track>>() {}.type
                 )
-                renderState(PlaylistState.Content(playlist, trackList))
+                if (trackList.isNotEmpty()) {
+                    renderState(PlaylistState.Content(playlist, trackList))
+                }
+                else {
+                    renderState(PlaylistState.EmptyList(playlist))
+                }
             } catch (e: Exception) {
                 val playlist = playlistInteractor.getPlaylist(id)
                 renderState(PlaylistState.EmptyList(playlist))
@@ -101,7 +106,7 @@ class PlaylistViewModel(
         sb.append("${playlist.trackCount} ${GrammarUtil.getEnding(playlist.trackCount,"трек","трека","треков")} \n\n")
         trackList.forEachIndexed { index, track ->
             val trackInfo =
-                "$index. ${track.artistName} - ${track.trackName} - (${track.trackTime})" // Формат трека: "[номер]. [исполнитель] - [название] ([продолжительность])"
+                "${index + 1}. ${track.artistName} - ${track.trackName} - (${track.trackTime})" // Формат трека: "[номер]. [исполнитель] - [название] ([продолжительность])"
             sb.append("$trackInfo\n")
         }
         return sb.toString()
