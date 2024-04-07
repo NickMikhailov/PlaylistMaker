@@ -11,7 +11,8 @@ class PlaylistDbConverter {
             playlistEntity.description,
             playlistEntity.trackListGson,
             playlistEntity.trackCount,
-            playlistEntity.coverName
+            playlistEntity.coverName,
+            playlistEntity.duration
         )
     }
 
@@ -22,7 +23,8 @@ class PlaylistDbConverter {
             playlist.description,
             playlist.trackListGson,
             playlist.trackCount,
-            playlist.coverName
+            playlist.coverName,
+            playlist.duration
         )
     }
 }

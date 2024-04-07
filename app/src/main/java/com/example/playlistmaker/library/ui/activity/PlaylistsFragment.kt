@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -15,7 +14,8 @@ import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.library.ui.adapter.PlaylistsGridViewAdapter
 import com.example.playlistmaker.library.ui.view_model.PlaylistsState
 import com.example.playlistmaker.library.ui.view_model.PlaylistsViewModel
-import com.example.playlistmaker.search.domain.models.DateTimeUtil
+import com.example.playlistmaker.main.domain.models.DateTimeUtil
+import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,6 +30,7 @@ class PlaylistsFragment : Fragment() {
     companion object {
         fun newInstance() = PlaylistsFragment()
         const val COLUMN_COUNT = 2
+        const val PLAYLIST_ID = "playlistId"
     }
 
     override fun onCreateView(
@@ -41,9 +42,9 @@ class PlaylistsFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
-        }
+        viewModel.observeState().observe(viewLifecycleOwner, ::render)
+        viewModel.observeShowPlaylistEvent().observe(viewLifecycleOwner, ::showPlaylist)
+
         binding.newPlaylistButton.setOnClickListener{
             findNavController().navigate(R.id.action_LibraryFragment_to_newPlaylistFragment)
         }
@@ -52,10 +53,17 @@ class PlaylistsFragment : Fragment() {
 
     }
 
+    private fun showPlaylist(playlistId: Long?) {
+        val bundle = Bundle()
+        bundle.putString(PLAYLIST_ID, Gson().toJson(playlistId))
+        findNavController().navigate(R.id.action_LibraryFragment_to_playlistFragment, bundle)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        isClickAllowed = true
     }
 
     private fun render(state: PlaylistsState) {
@@ -71,8 +79,6 @@ class PlaylistsFragment : Fragment() {
                 binding.playlistsGrid.adapter = playlistGridAdapter
                 playlistGridAdapter.setOnItemClickListener{ position ->
                     if (clickDebounce()){
-                        Toast.makeText(requireContext(), "здесь должен открыться плейлист", Toast.LENGTH_LONG)
-                            .show()
                         viewModel.showPlaylist(position)
                     }
                 }

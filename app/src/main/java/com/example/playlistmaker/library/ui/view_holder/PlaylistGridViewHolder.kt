@@ -1,5 +1,6 @@
 package com.example.playlistmaker.library.ui.view_holder
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -18,6 +19,8 @@ class PlaylistGridViewHolder(private val binding: PlaylistGridViewBinding): Recy
             .placeholder(R.drawable.cover_placeholder)
             .transform(CenterCrop(), RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_medium_8)))
             .into(binding.playlistCover)
+        Log.d("filesave",model.coverName)
+
     }
 
     private fun getTrackEnding(count: Int): String {

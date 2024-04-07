@@ -1,15 +1,12 @@
 package com.example.playlistmaker.library.ui.activity
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,21 +17,27 @@ import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.library.ui.view_model.NewPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
 
-class NewPlaylistFragment : Fragment() {
+
+open class NewPlaylistFragment : Fragment() {
+
     private var _binding: FragmentNewPlaylistBinding? = null
     private val binding get() = _binding!!
     private val viewModel: NewPlaylistViewModel by viewModel()
     private var uriString = ""
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.createNewPlaylistButton.isEnabled = binding.playlistName.text.toString().isNotEmpty()
-
+        binding.createNewPlaylistButton.isEnabled =
+            binding.playlistName.text.toString().isNotEmpty()
         setArrowBackListener()
         setPictureUploaderListener()
         setEditTextListeners()
@@ -51,20 +54,21 @@ class NewPlaylistFragment : Fragment() {
             )
             Toast
                 .makeText(
-                requireContext(),
-                getString(R.string.playlist_created, binding.playlistName.text.toString()),
-                Toast.LENGTH_LONG
-            )
+                    requireContext(),
+                    getString(R.string.playlist_created, binding.playlistName.text.toString()),
+                    Toast.LENGTH_LONG
+                )
                 .show()
             findNavController().popBackStack()
         }
     }
 
-    private fun setEditTextListeners() {
+    protected fun setEditTextListeners() {
         //слушатель поля Name
         val textWatcherName = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.createNewPlaylistButton.isEnabled = s.toString().isNotEmpty()
                 viewModel.isEditing = true
@@ -91,7 +95,6 @@ class NewPlaylistFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     binding.playlistCover.setImageURI(uri)
-                    saveImageToPrivateStorage(uri)
                     uriString = uri.toString()
                 }
             }
@@ -101,26 +104,6 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private fun saveImageToPrivateStorage(uri: Uri) {
-        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
-        if (!filePath.exists()){
-            filePath.mkdirs()
-        }
-        val file = File(filePath, "temp_cover.jpg")
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -130,15 +113,23 @@ class NewPlaylistFragment : Fragment() {
     private fun setArrowBackListener() {
         binding.arrowBack.setOnClickListener() {
             if (viewModel.isEditing) {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(R.string.finish_playlist_creating))
-                    .setMessage(getString(R.string.data_save_warning))
-                    .setNeutralButton(getString(R.string.Cancel)) { dialog, which ->
-                    }
-                    .setPositiveButton(getString(R.string.finish)) { dialog, which ->
-                        findNavController().popBackStack()
-                    }
+                val dialogView = layoutInflater.inflate(R.layout.alert_dialog_layout, null)
+                val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogStyle)
+                    .setView(dialogView)
                     .show()
+                val title = dialogView.findViewById<TextView>(R.id.dialog_header)
+                val body = dialogView.findViewById<TextView>(R.id.dialog_body)
+                val buttonPositive = dialogView.findViewById<TextView>(R.id.buttonPositive)
+                val buttonNeutral = dialogView.findViewById<TextView>(R.id.buttonNeutral)
+                title.text = getString(R.string.finish_playlist_creating)
+                body.text = getString(R.string.data_save_warning)
+                buttonNeutral.setOnClickListener {
+                    dialog.dismiss()
+                }
+                buttonPositive.setOnClickListener {
+                    dialog.dismiss()
+                    findNavController().popBackStack()
+                }
             } else {
                 findNavController().popBackStack()
             }

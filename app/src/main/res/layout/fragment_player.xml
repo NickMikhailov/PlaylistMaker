@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorSecondary">
+        android:background="?attr/colorPrimary">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/top_guideline"
@@ -42,7 +42,7 @@
             app:layout_constraintDimensionRatio="w,1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/array_back_icon" />
+            app:srcCompat="@drawable/arrow_back_icon" />
 
         <ImageView
             android:id="@+id/trackCover"
@@ -264,7 +264,7 @@
         android:background="@drawable/bottom_sheet_layout"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/medium_padding"
-        android:visibility="visible"
+        android:visibility="gone"
         app:behavior_hideable="true"
         app:behavior_peekHeight="@dimen/peekHeight_240"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -290,6 +290,7 @@
             android:layout_gravity="center"
             android:layout_marginVertical="@dimen/default_margin_vertical"
             android:backgroundTint="?attr/textAppearanceBody1"
+            android:textColor="?attr/colorPrimary"
             android:text="@string/new_playlist" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSecondary"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical">
 
     <TextView
@@ -37,14 +37,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:text="@string/share" />
+            android:text="@string/shareApp" />
 
         <ImageView
             android:id="@+id/shareIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:contentDescription="@string/share"
+            android:contentDescription="@string/shareApp"
             android:src="@drawable/share_inactive" />
     </FrameLayout>
 

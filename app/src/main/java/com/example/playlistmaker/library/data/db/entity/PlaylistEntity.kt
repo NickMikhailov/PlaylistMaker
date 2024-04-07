@@ -11,6 +11,7 @@ data class PlaylistEntity(
     val description: String,
     val trackListGson: String,
     val trackCount: Int,
-    val coverName: String
+    val coverName: String,
+    val duration: Long
 )
 

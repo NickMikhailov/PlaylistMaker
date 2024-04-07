@@ -17,7 +17,7 @@ import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.player.ui.view_model.BottomSheetState
 import com.example.playlistmaker.player.ui.view_model.PlayerState
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
-import com.example.playlistmaker.search.domain.models.DateTimeUtil
+import com.example.playlistmaker.main.domain.models.DateTimeUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -74,7 +74,7 @@ class PlayerFragment : Fragment() {
             viewModel.onPlaylistClicked(track)
         }
         binding.newPlaylistButton.setOnClickListener() {
-            findNavController().navigate(R.id.action_playerFragment_to_newPlaylistFragment)
+            findNavController().navigate(R.id.action_PlayerFragment_to_newPlaylistFragment)
         }
     }
 
@@ -203,7 +203,7 @@ class PlayerFragment : Fragment() {
     }
 
     companion object {
-        private const val KEY_TRACK = "jsonString"
+        private const val KEY_TRACK = "jsonTrack"
         private const val FIRST_SYMBOL = 0
         private const val FOURTH_SYMBOL = 4
     }

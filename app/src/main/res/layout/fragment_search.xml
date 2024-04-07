@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSecondary"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical">
 
     <TextView
@@ -40,7 +40,8 @@
             android:padding="@dimen/medium_padding"
             android:singleLine="true"
             android:textColor="@color/black"
-            android:textColorHint="?attr/textAppearanceBody2" />
+            android:textColorHint="?attr/textAppearanceBody2"
+/>
 
         <ImageView
             android:id="@+id/clearIcon"
@@ -95,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_vertical"
             android:layout_gravity="center"
-            android:backgroundTint="?attr/textAppearanceBody1"
+            android:backgroundTint="?attr/colorTertiary"
             android:text="@string/update"
             android:visibility="gone" />
     </LinearLayout>
@@ -136,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin_vertical"
-                android:backgroundTint="?attr/textAppearanceBody1"
+                android:backgroundTint="?attr/colorTertiary"
                 android:text="@string/clear_history"
                 android:visibility="visible" />
         </LinearLayout>

@@ -16,7 +16,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.models.Track
 import com.example.playlistmaker.search.domain.SearchHistoryInteractor
-import com.example.playlistmaker.search.domain.models.DateTimeUtil
+import com.example.playlistmaker.main.domain.models.DateTimeUtil
 import com.example.playlistmaker.search.domain.models.Placeholder
 import com.example.playlistmaker.search.ui.TrackListAdapter
 import com.example.playlistmaker.search.ui.view_model.TrackSearchState
@@ -58,6 +58,7 @@ class TrackSearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        isClickAllowed = true
     }
 
     private fun setListeners() {
@@ -123,7 +124,7 @@ class TrackSearchFragment : Fragment() {
 
     private fun showPlayer(track: Track) {
         val bundle = Bundle()
-        bundle.putString("jsonString", Gson().toJson(track))
+        bundle.putString("jsonTrack", Gson().toJson(track))
         findNavController().navigate(R.id.action_TrackSearchFragment_to_playerFragment, bundle)
     }
 

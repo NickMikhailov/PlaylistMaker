@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/dialog_width_280dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_header"
+        style="@style/text_regular_18_dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/default_margin_horizontal"
+        android:layout_marginVertical="@dimen/default_margin_vertical"
+        android:gravity="start"
+        tools:text="Dialog Title" />
+
+    <TextView
+        android:id="@+id/dialog_body"
+        style="@style/text_regular_14_dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/default_margin_horizontal"
+        android:layout_marginVertical="@dimen/default_margin_vertical"
+        android:gravity="start"
+        tools:text="Dialog Body Dialog Body Dialog Body Dialog Body Dialog Body Dialog Body Dialog Body" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/buttonNeutral"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/text_field_height"
+            android:backgroundTint="@color/white"
+            android:text="@string/no"
+            style="@style/text_regular_14_blue"
+            />
+
+        <Button
+            android:id="@+id/buttonPositive"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/text_field_height"
+            android:text="@string/yes"
+            android:backgroundTint="@color/white"
+            style="@style/text_regular_14_blue"/>
+    </LinearLayout>
+
+</LinearLayout>

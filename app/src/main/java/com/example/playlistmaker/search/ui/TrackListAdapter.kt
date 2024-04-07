@@ -9,13 +9,21 @@ import com.example.playlistmaker.player.domain.models.Track
 
 class TrackListAdapter(var trackList: MutableList<Track>) :
     RecyclerView.Adapter<TrackCardViewHolder>() {
+    private var itemClickListener: OnItemClickListener? = null
+    private var itemLongClickListener: OnItemLongClickListener? = null
     fun interface OnItemClickListener {
         fun onItemClick(position: Int)
+    }
+    fun interface OnItemLongClickListener {
+        fun onItemLongClick(position: Int)
     }
     fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
     }
-    private var itemClickListener: OnItemClickListener? = null
+
+    fun setOnItemLongClickListener(listener: OnItemLongClickListener) {
+        itemLongClickListener = listener
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackCardViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
         return TrackCardViewHolder(TrackViewBinding.inflate(layoutInspector, parent, false))
@@ -24,6 +32,10 @@ class TrackListAdapter(var trackList: MutableList<Track>) :
         holder.bind(trackList[position])
         holder.itemView.setOnClickListener {
             itemClickListener?.onItemClick(position)
+        }
+        holder.itemView.setOnLongClickListener {
+            itemLongClickListener?.onItemLongClick(position)
+            true
         }
     }
     override fun getItemCount() = trackList.size
@@ -34,4 +46,6 @@ class TrackListAdapter(var trackList: MutableList<Track>) :
         trackList.clear()
         trackList.addAll(newTrackList)
     }
+
+
 }

@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.db.FavoritesInteractor
 import com.example.playlistmaker.library.domain.db.PlaylistInteractor
 import com.example.playlistmaker.player.domain.models.Track
-import com.example.playlistmaker.search.domain.models.DateTimeUtil
+import com.example.playlistmaker.main.domain.models.DateTimeUtil
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
